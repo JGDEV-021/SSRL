@@ -3,7 +3,7 @@
 > **A camada semântica que preserva o entendimento do software na era em que ele pode ser gerado mais rápido do que pode ser compreendido.**
 
 [![Status](https://img.shields.io/badge/status-research%20%2F%20pre--implementation-orange)]()
-[![Version](https://img.shields.io/badge/version-Primary%20Project%20Research-blue)]()
+[![Version](https://img.shields.io/badge/version-V0.1-blue)]()
 [![License](https://img.shields.io/badge/license-MIT-lightgrey)]()
 
 ---
