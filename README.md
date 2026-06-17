@@ -464,6 +464,6 @@ O objetivo não é compreensão perfeita. **O objetivo é compreensão útil.**
 
 ## Status do projeto
 
-Este repositório documenta a **especificação arquitetural e agenda de pesquisa (v3.0)** do SSRL. Trata-se de um projeto em estágio de pesquisa — os mecanismos de calibração de confiança, otimização de regeneração incremental e a Semantic Query Language ainda são problemas abertos, não implementações finalizadas.
+Este repositório documenta a **especificação arquitetural e agenda de pesquisa (v0.1)** do SSRL. Trata-se de um projeto em estágio de pesquisa — os mecanismos de calibração de confiança, otimização de regeneração incremental e a Semantic Query Language ainda são problemas abertos, não implementações finalizadas.
 
 Contribuições, críticas e propostas de validação empírica são bem-vindas enquanto o projeto evolui de especificação para protótipo.
