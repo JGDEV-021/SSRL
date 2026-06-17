@@ -198,11 +198,11 @@ Hipóteses, metodologia de avaliação e métricas detalhadas em [`paper/SSRL-v0
 SSRL/
 ├── README.md
 ├── LICENSE
+├── roadmap.md
 ├── docs/
 │   ├── architecture.md
 │   ├── graph-schema.md
 │   ├── related-work.md
-│   └── roadmap.md
 ├── paper/
 │   └── SSRL-v0.1.md
 ├── prototype/
