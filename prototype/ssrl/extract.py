@@ -326,6 +326,19 @@ def build(root, cache_dir=None, verbose=False):
     if cache_dir:
         save_cache(cache_dir, entries)
 
+    seen_imports = set()
+    clean, dup = [], 0
+    for e in edges:
+        if e["relationship"] == "IMPORTS":
+            key = (e["source"], e["target"])
+            if key in seen_imports:
+                dup += 1
+                continue
+            seen_imports.add(key)
+        clean.append(e)
+    if dup:
+        edges = clean
+
     _link_calls(nodes, edges, modules)
 
     elapsed = time.time() - start

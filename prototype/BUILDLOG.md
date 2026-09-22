@@ -331,6 +331,43 @@ fabricated citation **1/1 caught**. Full write-up: `REPORT-P10.md`.
 
 ---
 
+## 9.6. Live demo fallout (coin-toss) — three issues found & fixed
+
+After 9.5, a live demonstration ran the ADR-009 loop for real: an opencode
+subagent acting as an external coding AI built an interactive "cara ou coroa"
+CLI (`Downloads\coin_toss\coin.py` + `game.py`), ran the SSRL pipeline on it,
+wrote its own WHY/HOW narration and audited it with `verify` (faithful → PASS
+1.0; an adulterated narration inventing `coin.cheat_coin` → REVIEW, invented 2).
+The demo surfaced three gaps, all fixed and regression-tested:
+
+1. **Duplicate `IMPORTS` edges** (`extract.py`): `from coin import flip, other`
+   emitted one edge per imported symbol, all collapsing to the same target
+   module → duplicate `module::game → module::coin` and an inflated imports
+   count (4 instead of 3). Fixed with an end-of-`build()` dedupe (covers both
+   freshly-parsed and D-8 cached replay). Demo corpus: imports 4 → 3, edges
+   17 → 16. Test `test_imports_deduped_per_module`.
+2. **Auditor consistency grammar was EN-only** (`explain.py`): PT narrations
+   resolved citations but `claims.checked` stayed 0 — asserted relations in
+   Portuguese ("`X` chama `Y`", "depende de", "importa", "usa", "contém") were
+   never consistency-checked against the artifact. Fixed: EN+PT relation
+   patterns. Call forms deliberately narrowed (exact `usa`/`usam`/`usar`, not
+   the gerund "usando") to avoid false positives. After the fix the faithful
+   demo narration reports `claims.checked=2 failures=0`; the adulterated one
+   `checked=2 unsupported=1` (still caught via invented citations). Tests
+   `test_pt_relation_consistency_checked` / `_inconsistency_caught`.
+3. **QA intent parser was EN-only** (`qa.py`): "quem chama flip" fell back to
+   name lookup and "o que play_round chama" answered *"couldn't find `chama`"*.
+   Fixed: PT question patterns (callers/callees/where/summary/imports/
+   importers/deps/revdeps/entry/functions/classes/fluxos/ajuda) + PT stopwords
+   in target extraction. Now the demo corpus answers both correctly. Tests
+   `test_pt_callers` / `test_pt_callees` / `test_pt_where` / `test_pt_summary`.
+
+**Verification:** suite 88 → **95 green**; battery re-run unchanged (ceiling
+3/3, adversarial 1/1); demo evidence re-captured in
+`Downloads\coin_toss\_evidence\`.
+
+---
+
 ## 10. Remaining (post-Phase 9.5)
 
 - Definitive RQ-3 study: human-graded multi-arm (Source-only vs Source+SSRL vs

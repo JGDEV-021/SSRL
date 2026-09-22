@@ -65,7 +65,7 @@ The graph is *one* projection. The product is the layer. Which projection become
 | Position Paper | Draft (v0.3 — G1 resolution + prototype findings) |
 | Research Plan | Executed (G1 passed; W1–W5, ADR-001…009) |
 | Research & Analysis | Done |
-| Prototype (V1 MVP) | **Shipped — v0.7.0**, Phases 3–9.5 complete, 88 unit tests |
+| Prototype (V1 MVP) | **Shipped — v0.7.0**, Phases 3–9.5 complete, 95 unit tests |
 | Validation | Phase 9 draft automated study + refusal probe executed; Phase 9.5 Explainable-AI battery executed; definitive human-graded study next (Phase 10) |
 
 The prototype is no longer deferred: `prototype/ssrl/` is a working, dependency-free
@@ -108,7 +108,7 @@ SSRL/
     ├── REPORT-P7.md / REPORT-P8.md / REPORT-P9.md / REPORT-P10.md
     ├── ssrl/                  # The V1 package (stdlib only, zero deps)
     ├── lab/                   # Phase 7–10 labs + study/probe/battery harnesses
-    └── tests/                 # 88 unit tests
+    └── tests/                 # 95 unit tests
 ```
 
 ---

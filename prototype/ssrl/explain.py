@@ -46,16 +46,16 @@ QUOTE_RE = re.compile(r"`([^`]+)`|\"([^\"]+)\"|'([^']+)'")
 _IDENT_RE = re.compile(
     r"[a-z][a-z0-9_]*(?:\.[a-z][a-z0-9_]*)+|[a-z][a-z0-9_]*_[a-z0-9_]+|[A-Z][A-Za-z0-9]{2,}")
 
-# relation assertion patterns, most specific first
+# relation assertion patterns, most specific first (EN + PT)
 _REL_PATTERNS = [
-    ("called_by", re.compile(r"called by|invoked by|called from|referenced by", re.I)),
-    ("imported_by", re.compile(r"imported by", re.I)),
-    ("used_by", re.compile(r"used by|relied on by|consumed by", re.I)),
-    ("depends_on", re.compile(r"depends? on|dependent on", re.I)),
-    ("calls_out", re.compile(r"\binvokes?\b|\bcalls?\b|\bcall to\b", re.I)),
-    ("imports_out", re.compile(r"\bimport\w*", re.I)),
-    ("uses_out", re.compile(r"\buses?\b", re.I)),
-    ("contains", re.compile(r"contain(s|ed|ing)?\b|owns?\b", re.I)),
+    ("called_by", re.compile(r"called by|invoked by|called from|referenced by|call\w*\s+por|chamad\w+\s+por", re.I)),
+    ("imported_by", re.compile(r"imported by|importad\w+\s+por", re.I)),
+    ("used_by", re.compile(r"used by|relied on by|consumed by|usad\w+\s+por", re.I)),
+    ("depends_on", re.compile(r"depends? on|dependent on|depende\w+\s+de", re.I)),
+    ("calls_out", re.compile(r"\binvokes?\b|\bcalls?\b|\bcall to\b|chama\w*", re.I)),
+    ("imports_out", re.compile(r"\bimport\w*|\bimporta\b|\bimportam\b|\bimportou\b|\bimportar\b", re.I)),
+    ("uses_out", re.compile(r"\buses?\b|\busa\b|\busam\b|\busou\b|\busar\b", re.I)),
+    ("contains", re.compile(r"contain(s|ed|ing)?\b|owns?\b|\bcont\u00e9m\b|\bcontem\w*", re.I)),
     ("depends", re.compile(r"\bdepend\w*", re.I)),
 ]
 

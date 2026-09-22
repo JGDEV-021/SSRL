@@ -2,7 +2,8 @@
 
 - Status: **Accepted** (2026) — ratified by the author ("implemente") and fully implemented as
   roadmap Phase 9.5: `ssrl/explain.py`, MCP `explain`/`verify_explanation`, CLI `explain`/`verify`,
-  88 tests green, battery executed (`lab/p10_eai.py`) with an opencode subagent on
+  95 tests green (live-demo fallout fixed EN→EN+PT relation grammar + PT QA routing),
+  battery executed (`lab/p10_eai.py`) with an opencode subagent on
   `opencode/big-pickle` as the synthetic coding AI. See `prototype/REPORT-P10.md`.
 - Decides: how SSRL serves **external coding AIs** (Claude, Codex, Copilot, Cline, …) with
   a grounded **self-explanation** surface + an **explanation auditor**; extends ADR-006 (D-7:

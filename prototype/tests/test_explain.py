@@ -135,6 +135,21 @@ class TestVerifyExplanation(unittest.TestCase):
         d = explain.verify_explanation(art, ["db.py"], n, index=idx)
         self.assertTrue(d["claims"]["consistency_failures"])
 
+    def test_pt_relation_consistency_checked(self):
+        art, idx = a_ctx()
+        n = "Troquei `db.py`: agora `save` chama `models.validate`."
+        d = explain.verify_explanation(art, ["db.py"], n, index=idx)
+        self.assertGreaterEqual(d["claims"]["checked"], 1)
+        self.assertEqual(d["claims"]["consistency_failures"], [])
+        self.assertEqual(d["verdict"], "PASS")
+
+    def test_pt_relation_inconsistency_caught(self):
+        art, idx = a_ctx()
+        n = "Troquei `init_db` para chamar `models.validate`."
+        d = explain.verify_explanation(art, ["db.py"], n, index=idx)
+        self.assertGreaterEqual(d["claims"]["checked"], 1)
+        self.assertTrue(d["claims"]["consistency_failures"])
+
     def test_unquoted_resolves_but_never_invents(self):
         art, idx = a_ctx()
         n = "I touched init_db and the save path; init_db is a one-liner."

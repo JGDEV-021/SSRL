@@ -102,9 +102,10 @@ warned about, now measurable on the external process.
 
 ## 6. Verification
 
-- **Tests:** 88 green (`tests.test_mvp` + `tests.test_explain`, incl. MCP
-  wiring for both new tools, determinism double-runs, empty-narration REVIEW,
-  and the external-import-not-invented case).
+- **Tests:** 95 green (incl. MCP wiring for both new tools, determinism
+  double-runs, empty-narration REVIEW, the external-import-not-invented case,
+  the PT relation-consistency pair, PT QA routing and the IMPORTS-dedupe
+  regression).
 - **CLI e2e:** `ssrl explain <repo> --node func::db::save` (WHAT/WHY/HOW with
   callers/callees + deriving stage) and `ssrl verify <repo> file.py
   --explanation-file narration.txt` → `VERDICT: PASS groundedness=1.0
@@ -141,10 +142,35 @@ warned about, now measurable on the external process.
 - The definitive Phase 9 human-graded multi-arm study is unchanged and still
   required for the publication claims (see REPORT-P9 §6.1).
 
-## 9. To run
+## 9. Live demo — three fixes shipped
+
+A real external-coding-AI loop (an opencode subagent building an interactive
+"cara ou coroa" CLI and self-explaining against SSRL, faithful → PASS 1.0,
+an adulterated narration inventing `coin.cheat_coin` → REVIEW, invented 2)
+surfaced three gaps that the static battery hadn't stressed:
+
+1. **Duplicate `IMPORTS` edges** — `from coin import flip, other` emitted one
+   edge per imported symbol, all collapsing to the same target module
+   (imports 4 instead of 3 on the demo corpus). Fixed with an end-of-`build()`
+   dedupe covering fresh and D-8 cached paths (`extract.py`).
+2. **Auditor relation grammar was EN-only** — PT narrations resolved citations
+   but `claims.checked` stayed 0, so asserted relations like "`X` chama `Y`"
+   were never consistency-checked. Fixed with EN+PT patterns (`explain.py`);
+   call forms narrowed (exact `usa`, not the gerund "usando") to avoid false
+   positives. Post-fix, the faithful narration shows `checked=2 failures=0`
+   and the adulterated one `checked=2 unsupported=1`.
+3. **QA intent parser was EN-only** — "quem chama flip" fell back to name
+   lookup and "o que play_round chama" answered *couldn't find `chama`*.
+   Fixed with PT question patterns + PT stopwords (`qa.py`); the demo corpus
+   now answers both correctly.
+
+Each has a regression test; battery re-run unchanged (ceiling 3/3,
+adversarial 1/1); suite 88 → **95 green**. Full trace: BUILDLOG §9.6.
+
+## 10. To run
 
 ```console
-python -m unittest tests.test_mvp tests.test_explain        # 88 tests
+python -m unittest tests.test_mvp tests.test_explain        # 95 tests
 python -m ssrl.cli explain tests/fixtures/pkgapp --node func::db::save
 printf 'I changed `db.py`: `save` now calls `models.validate`.' | \
   python -m ssrl.cli verify tests/fixtures/pkgapp db.py

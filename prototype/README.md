@@ -108,7 +108,7 @@ python -m unittest discover -s tests -v
 | Fact confidence | Structural facts carry `confidence: 1.0`; hypotheses are `< 1.0` and labeled (FR-3/FR-4) |
 | Incremental cache (D-8) | File-level sha256 cache: cold 0 hits → warm 31/31 from_cache, artifact identical |
 | Call resolution | Same-module + cross-module (import-alias and attribute-prefix) linkage, labeled `resolution:` |
-| Test suite | `unittest`: 88 tests green (extract, cache, semantics, confidence, index, qa, narrative, watch, impact, mcp, llm, explain) |
+| Test suite | `unittest`: 95 tests green (extract, cache, semantics, confidence, index, qa, narrative, watch, impact, mcp, llm, explain) |
 
 ## Measured stats (V1)
 

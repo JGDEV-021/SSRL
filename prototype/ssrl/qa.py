@@ -30,7 +30,14 @@ def _extract_target(q):
             "that", "which", "who", "module", "function", "class", "method",
             "import", "imports", "dependency", "dependencies", "depend",
             "depends", "on", "entry", "point", "points", "start", "all",
-            "list", "show", "me", "give", "its", "it", "? ", "give me", "tell"]
+            "list", "show", "me", "give", "its", "it", "? ", "give me", "tell",
+            "o", "a", "e", "que", "quem", "como", "onde", "qual", "quais",
+            "para", "por", "de", "da", "do", "das", "dos", "em", "com",
+            "chama", "chamam", "chamar", "chamado", "chamada", "chamados",
+            "chamadas", "importa", "importam", "importar", "importado",
+            "importada", "usa", "usam", "usar", "usado", "usada",
+            "depende", "dependem", "depender", "faz", "fazem", "fazer",
+            "esta", "est\u00e1", "fica", "ficam", "serve"]
     # remove trailing '?' and contractions
     q = q.replace("?", " ").replace("'", " ")
     # target is last meaningful token(s) — try longest suffix match first in Index.
@@ -43,21 +50,21 @@ def _extract_target(q):
 
 
 INTENTS = [
-    ("callers",    re.compile(r"who\s+calls\s+(\w+)|what\s+calls\s+(\w+)|callers?\s+of\s+(\w+)|(\w+)\s+called\s+by", re.I)),
-    ("callees",    re.compile(r"what\s+does\s+(\w+)\s+call|does\s+(\w+)\s+call|callees?\s+of\s+(\w+)", re.I)),
-    ("where",      re.compile(r"where\s+is\s+(\w+)|where\s+are\s+(\w+)|location\s+of\s+(\w+)", re.I)),
-    ("summary",    re.compile(r"what\s+does\s+(\w+)\s+do|summary\s+of\s+(\w+)|overview\s+of\s+(\w+)|describe\s+(\w+)|about\s+(\w+)", re.I)),
-    ("imports",    re.compile(r"imports?\s+of\s+(\w+)|what\s+does\s+(\w+)\s+import", re.I)),
-    ("importers",  re.compile(r"who\s+imports\s+(\w+)|(\w+)\s+imported\s+by|imports?\s+by\s+(\w+)", re.I)),
-    ("deps",       re.compile(r"dependencies?\s+of\s+(\w+)|what\s+does\s+(\w+)\s+need|(\w+)\s+depends\s+on", re.I)),
-    ("revdeps",    re.compile(r"what\s+depends\s+on\s+(\w+)|reverse\s+dependencies?\s+of\s+(\w+)|needs?\s+(\w+)\s+by", re.I)),
-    ("entry",      re.compile(r"entry\s+points|where\s+.*start|start\s+here|public\s+api", re.I)),
-    ("functions",  re.compile(r"functions?\s+in\s+(\w+)|methods?\s+in\s+(\w+)", re.I)),
-    ("classes",    re.compile(r"classes?\s+in\s+(\w+)", re.I)),
-    ("flows",      re.compile(r"\bflows?\b", re.I)),
+    ("callers",    re.compile(r"who\s+calls\s+(\w+)|what\s+calls\s+(\w+)|callers?\s+of\s+(\w+)|(\w+)\s+called\s+by|quem\s+chama\w*\s+(\w+)|(\w+)\s+chamad\w+\s+por", re.I)),
+    ("callees",    re.compile(r"what\s+does\s+(\w+)\s+call|does\s+(\w+)\s+call|callees?\s+of\s+(\w+)|o\s+que\s+(\w+)\s+chama\w*", re.I)),
+    ("where",      re.compile(r"where\s+is\s+(\w+)|where\s+are\s+(\w+)|location\s+of\s+(\w+)|onde\s+(?:esta|est\u00e1|fica)\s+(\w+)", re.I)),
+    ("summary",    re.compile(r"what\s+does\s+(\w+)\s+do|summary\s+of\s+(\w+)|overview\s+of\s+(\w+)|describe\s+(\w+)|about\s+(\w+)|o\s+que\s+(\w+)\s+faz|para\s+que\s+serve\s+(\w+)", re.I)),
+    ("imports",    re.compile(r"imports?\s+of\s+(\w+)|what\s+does\s+(\w+)\s+import|o\s+que\s+(\w+)\s+importa\w*", re.I)),
+    ("importers",  re.compile(r"who\s+imports\s+(\w+)|(\w+)\s+imported\s+by|imports?\s+by\s+(\w+)|quem\s+importa\w*\s+(\w+)", re.I)),
+    ("deps",       re.compile(r"dependencies?\s+of\s+(\w+)|what\s+does\s+(\w+)\s+need|(\w+)\s+depends\s+on|(\w+)\s+depende\w*\s+de", re.I)),
+    ("revdeps",    re.compile(r"what\s+depends\s+on\s+(\w+)|reverse\s+dependencies?\s+of\s+(\w+)|needs?\s+(\w+)\s+by|o\s+que\s+depende\w*\s+de\s+(\w+)", re.I)),
+    ("entry",      re.compile(r"entry\s+points|where\s+.*start|start\s+here|public\s+api|pontos?\s+de\s+entrada|por\s+onde\s+come\w*", re.I)),
+    ("functions",  re.compile(r"functions?\s+in\s+(\w+)|methods?\s+in\s+(\w+)|fun\w*s?\s+em\s+(\w+)", re.I)),
+    ("classes",    re.compile(r"classes?\s+in\s+(\w+)|classes?\s+em\s+(\w+)", re.I)),
+    ("flows",      re.compile(r"\bflows?\b|\bfluxo\w*", re.I)),
     ("intents",    re.compile(r"\bintents?\b", re.I)),
-    ("services",   re.compile(r"\bservices?\b|\bdomain\s+concepts?\b", re.I)),
-    ("help",       re.compile(r"\bhelp\b|what\s+can\s+you\b|how\s+do\s+i\s+use", re.I)),
+    ("services",   re.compile(r"\bservices?\b|\bdomain\s+concepts?\b|\bservi\w*\s+de\s+dom\w*", re.I)),
+    ("help",       re.compile(r"\bhelp\b|what\s+can\s+you\b|how\s+do\s+i\s+use|\bajuda\b|o\s+que\s+voce\s+faz", re.I)),
 ]
 
 

@@ -81,6 +81,23 @@ class TestExtract(unittest.TestCase):
             if e["relationship"] == "CONTAINS" and e["source"] == repo and e["target"].startswith("module::")]
         self.assertEqual(len(per_module), 6)
 
+    def test_imports_deduped_per_module(self):
+        import tempfile, shutil
+        d = tempfile.mkdtemp()
+        try:
+            with open(os.path.join(d, "coin.py"), "w", encoding="utf-8") as f:
+                f.write("FACES = ('cara', 'coroa')\n\ndef flip(rng):\n    return rng.choice(FACES)\n")
+            with open(os.path.join(d, "game.py"), "w", encoding="utf-8") as f:
+                f.write("from coin import flip, other\n\ndef run():\n    return flip(None)\n")
+            a = extract.build(d, cache_dir=None)
+            imps = [e for e in a["edges"] if e["relationship"] == "IMPORTS"]
+            self.assertEqual(len(imps), 1)
+            self.assertEqual(imps[0]["source"], "module::game")
+            self.assertEqual(imps[0]["target"], "module::coin")
+            self.assertEqual(a["stats"]["imports"], 1)
+        finally:
+            shutil.rmtree(d)
+
 
 class TestIncrementalCache(unittest.TestCase):
     def test_cache_reused(self):
@@ -214,6 +231,26 @@ class TestQA(unittest.TestCase):
     def test_notfound(self):
         a = qa.answer(self.idx, "what does zzzzzz do")
         self.assertIn("couldn't find", a["answer_text"])
+
+    def test_pt_callers(self):
+        a = qa.answer(self.idx, "quem chama validate")
+        self.assertEqual(a["intent"], "callers")
+        self.assertIn("save", a["answer_text"])
+
+    def test_pt_callees(self):
+        a = qa.answer(self.idx, "o que store chama")
+        self.assertEqual(a["intent"], "callees")
+        self.assertIn("save", a["answer_text"])
+
+    def test_pt_where(self):
+        a = qa.answer(self.idx, "onde esta db")
+        self.assertEqual(a["intent"], "where")
+        self.assertIn("db.py", a["answer_text"])
+
+    def test_pt_summary(self):
+        a = qa.answer(self.idx, "o que main faz")
+        self.assertEqual(a["intent"], "summary")
+        self.assertTrue(a["facts"])
 
 
 class TestNarrative(unittest.TestCase):

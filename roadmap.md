@@ -35,6 +35,7 @@ Completed:
 - [x] **Phase 8: end-to-end + agent surface** — MCP server over stdio (zero-dep, evidence-preserving tools `ask/why/narrative/stats/audit/impact`) + CI impact report `impact [--git]`; CLI and MCP answer the same layer coherently (see `prototype/REPORT-P8.md`)
 - [x] **Phase 9: experimental validation groundwork** — micro-LLM proposer (ADR-008), probe battery → prompt-contract fix, study re-run **baseline 0.15 / ssrl 0.61 / layer 0.32**, ssrl recall 1.0/6 (see `prototype/REPORT-P9.md`)
 - [x] **Phase 9.5: Explainable AI for external coding agents (ADR-009)** — grounded self-explanation axis: MCP/CLI `explain` + `verify_explanation` auditor, "the AI is the witness, the layer is the notary"; battery with an opencode big-pickle subagent as synthetic coding AI: **ceiling 3/3 PASS, fabricated reference 1/1 caught** (see `prototype/REPORT-P10.md`)
+- [x] **Live demo + three fixes** — a real external-coding-AI loop (subagent builds a CLI game, self-explains, `verify` audits) exposed: duplicate `IMPORTS` edges for multi-symbol `from x import a, b`; auditor relation grammar EN-only (now EN+PT); QA PT question patterns (now routed). Suite 88 → **95 green** (BUILDLOG §9.6)
 
 ---
 
@@ -261,6 +262,11 @@ to the *external* process).
       1.0, invented 0); 1/1 adversarial narration with a fabricated reference
       caught → REVIEW, invented=1.** See `prototype/REPORT-P10.md`.
 - [x] Tests: 88 green (21 new EAI tests incl. MCP wiring).
+- [x] Live-demo fallout (coin-toss): three gaps found and fixed — duplicate
+      `IMPORTS` edges per multi-symbol `from x import a, b` (extract.py);
+      auditor relation grammar EN-only → **EN+PT** (explain.py); QA intent
+      parser EN-only → **PT patterns + stopwords** (qa.py). Suite now **95 green**
+      (BUILDLOG §9.6).
 - [ ] Open items, documented in REPORT-P10: nested/ambiguous identifier
       extraction noise, "grounded but wrong reason" (no semantic entailment) —
       both by-design ceilings, not bugs.
