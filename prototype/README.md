@@ -14,7 +14,11 @@ runtime dependencies — stdlib `ast` only (ADR-002).
 V1 MVP complete: extract -> enrich -> calibrate -> Q&A -> narrative -> CLI
 Roadmap Phase 7 (lab integration: `watch`, continuous regeneration), Phase 8
 (agent surface: MCP over stdio + CI impact report) and Phase 9 (micro-LLM
-hypothesis proposer, ADR-008) complete (v0.7.0).
+hypothesis proposer, ADR-008) complete (v0.7.0). Phase 9 validation included a
+draft automated study (`lab/p9_study.py`) plus a refusal probe battery
+(`lab/p9_probe.py`) that proved the micro-model refusals were a prompt artifact;
+the resulting context-system improvement (CLI contract + evidence filtering)
+lifted the grounded condition's F1 0.34 → 0.61 (REPORT-P9 §6.1–§6.2).
 ```
 
 ## Package layout (`prototype/ssrl/`)
@@ -149,6 +153,8 @@ Ids are stable (`module::<id>`, `class::<mid>::<name>`, `func::<mid>::<name>`).
 - The LLM side (Phase 9, ADR-008) is **proponent-only, micro, and optional**: a
   real model must be reachable locally (Ollama `qwen3:0.6b`, ~0.6 B params);
   proposals are deliberately small-named and confined to the closed tasks —
-  no open-ended reasoning. The experiment harness (`lab/p9_experiment_seed.jsonl`)
-  seeds the controlled RQ-3 study; grading is a human step, not yet run
-  (documented in `REPORT-P9.md`).
+  no open-ended reasoning. A **draft automated study pass** (`lab/p9_study.py`,
+  live) shows grounded facts flip enumeration questions from 0 to ≥ 0.8 F1 for
+  the micro model and that it stays format-fragile on open extraction — the
+  human-graded multi-arm study is the remaining validation step
+  (documented in `REPORT-P9.md` §6.1).

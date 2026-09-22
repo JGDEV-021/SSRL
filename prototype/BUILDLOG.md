@@ -229,6 +229,38 @@ CLI subcommand `propose`, lab driver `lab/p9_lab.py`, report
   `lab/p9_experiment_seed.jsonl` with questions × two contexts — *baseline*
   (raw unit names, naive agent) vs *SSRL-grounded* (deterministic evidence
   bundles) — to be answered and graded in the controlled RQ-3 study.
+  Seed regenerated with q2 = "where is embed" (the original `save` has no symbol
+  in doc_rag; gold must be derivable from facts).
+- **Study — draft automated pass (executed live, `lab/p9_study.py`, qwen3:0.6b):**
+  6 questions × 3 conditions (baseline / ssrl / deterministic layer-`ask`
+  reference), entity-level F1 vs a facts-derived gold. Means: baseline 0.022,
+  ssrl 0.338, layer 0.315; enumeration questions flip 0 → ssrl 0.84 (entry
+  points) / 0.83 (deps). Pilot findings: grounded evidence is what makes a micro
+  LLM answerable; the 0.6B stays format-fragile (refuses open extraction or
+  echoes the asked entity — q2→`embed`, q3→`db`); prompt wording shifts which
+  questions succeed, so the definitive study uses human grading + a mid-size
+  model + closed-task arms (full plan: REPORT-P9 §6.1). Artifacts:
+  `lab/p9_study_results.{json,md}`, `lab/p9_study_graded.jsonl`.
+  Findings documented with the worst-case CPU-only hardware (REPORT-P9 §5.1).
+- **Refusal probe battery (`lab/p9_probe.py`, REPORT-P9 §6.2):** A/B over
+  evidence rendering (json vs answer-framed assertions) × prompt contract
+  (lookup vs deterministic-CLI vs CLI+few-shot) × think on/off, classified
+  reject/empty/answer + entity F1. Findings: (1) refusals were a **prompt
+  artifact** — the CLI contract ("authoritative tool, reproduce verbatim, one
+  per line, do not refuse") answered 30/30 where `lookup` slotted rejected q5 6/6;
+  (2) best variant `json_cli` mean 0.61; `answer_*` scoring 1.00/0.65–0.68 are
+  read-off ceilings; (3) answer-framed render had a **mutation bug** (JSON render
+  popped `question` from shared rows so the assertion branches never fired) —
+  fixed, results re-measured; (4) evidence size is the residual killer (q3's 30
+  importer rows flooded the 0.6B → importer evidence noise-filtered to rows that
+  import the asked module, 30 → 4); (5) temp 0 is not byte-reproducible (±0.3 F1
+  run-to-run), so conclusions use variant means.
+- **Context-system improvement + study re-run:** adopted the CLI agent contract
+  in `lab/p9_study.py` and the importer evidence filter (`lab/p9_lab.py`), then
+  re-ran the draft study live: **ssrl 0.338 → 0.613** (recall 1.0 on all 6
+  questions) at lower prompt tokens (2631 vs 3173); baseline 0.022 → 0.153 (name
+  soup + CLI + nondeterminism); layer unchanged 0.315. The seed was regenerated
+  with the corrected evidence (`lab/p9_experiment_seed.jsonl`, q3 = 4 rows).
 - **Tests:** `TestLLMProposer` (8) → suite **67 green** (compileall clean,
   determinism re-verified end-to-end).
 
@@ -236,7 +268,8 @@ CLI subcommand `propose`, lab driver `lab/p9_lab.py`, report
 
 ## 10. Remaining (post-Phase 9)
 
-- Phase 9 study execution: run the seeded experiment (baseline vs Source+SSRL)
-  with a live micro model and grade answers (roadmap success criterion).
+- Definitive RQ-3 study: human-graded multi-arm (Source-only vs Source+SSRL vs
+  raw-agent), ≥ 3 graders, a mid-size model arm in addition to qwen3:0.6b,
+  accuracy + time-to-understand (draft automated pass done — REPORT-P9 §6.1).
 - H2 progressive-zoom drill-down and H4 graph navigation (supporting projections).
 - Line-level/intra-file impact (whole-module today) and MCP resources/streaming.

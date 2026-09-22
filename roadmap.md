@@ -168,9 +168,10 @@ Compressed Phases 3–6 into a minimal cohesive package shipped as the **V1 MVP*
 - [x] Determinism verified end-to-end on both corpora (fresh + cached)
 - [x] Reports: `prototype/BUILDLOG.md`, `prototype/REPORT-V1.md`, `prototype/README.md`
 
-**Next (post-Phase 9):** Phase 10 publication prep; Phase 9 *study execution* —
-grade the seeded experiment (`lab/p9_experiment_seed.jsonl`) with a live micro
-model and run the full calibration analysis.
+**Next (post-Phase 9):** Phase 10 publication prep. Phase 9 groundwork + the
+draft automated study pass are done (§6.1 of `prototype/REPORT-P9.md`); the
+human-graded multi-arm study and full calibration analysis remain as the
+definitive validation step.
 
 ---
 
@@ -216,8 +217,17 @@ model and run the full calibration analysis.
 - [x] Experiment seed (`lab/p9_experiment_seed.jsonl`): 6 questions × baseline
       (raw names) vs SSRL-grounded contexts, answers + grading left to the
       study run.
-- [ ] Study execution: run baseline vs Source+SSRL vs raw-agent on a live model
-      and grade answers (see `prototype/REPORT-P9.md`).
+- [x] Study execution — **draft automated pass** (`lab/p9_study.py`, live
+      `qwen3:0.6b`): baseline vs Source+SSRL vs deterministic-layer reference,
+      entity-level F1 vs facts-derived gold. After the refusal probe battery
+      (§6.2 **`lab/p9_probe.py`**) proved refusals were a prompt artifact, the
+      context system was improved (deterministic-CLI contract + importer
+      evidence filter) and re-run: **baseline 0.15 / ssrl 0.61 / layer 0.32**,
+      ssrl recall 1.0 on all 6 questions. Full detail + the **definitive study
+      plan** (human-graded, multi-model, closed-task arms) in
+      `prototype/REPORT-P9.md` §6.1 / §6.2.
+- [ ] Definitive study: human-graded multi-arm (Source-only vs Source+SSRL vs
+      raw-agent), ≥ 3 graders, mid-size model arm, accuracy + time-to-understand.
 
 **Success criteria:** measurable, significant comprehension improvement.
 
