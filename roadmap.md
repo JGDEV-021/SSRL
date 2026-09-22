@@ -1,537 +1,244 @@
 # SSRL Roadmap
 
-## From Research Paper to End-to-End Prototype
+## From Documentation to a Validated Understanding Layer
 
-> SSRL is not a software project.
->
 > SSRL is a research initiative that may eventually become software.
 >
-> The purpose of this roadmap is to transform a theoretical framework into a validated software knowledge representation system.
+> The cardinal rule of this roadmap: **research gates code.** We do not write a parser before we know the questions, the projections, and the evidence.
 
 ---
 
-# Vision
-
-Artificial Intelligence is reducing the cost of software creation.
-
-SSRL aims to reduce the cost of software understanding.
-
-The long-term objective is to create a new abstraction layer capable of representing software as navigable knowledge.
-
----
-
-# Current Status
+## Current Status
 
 ```text
-Stage: Research
+Stage: Prototype — V1 MVP complete (Phases 3–6 compressed into an MVP)
 
 Progress:
-████░░░░░░ 40%
+█████████░ 90%
 ```
 
 Completed:
 
-* Core Vision
-* Problem Definition
-* Position Paper
-* Architecture Definition
-* Graph Schema
-* Research Agenda
+- [x] Vision & principles
+- [x] Spec-driven requirements (draft)
+- [x] Position paper (v0.2 → **v0.3**, updated with G1 resolution + prototype findings)
+- [x] Research plan
+- [x] Research leads (related work)
+- [x] W1 literature (validates facts/hypotheses, structural grounding)
+- [x] W2 prior art & market (graph-first refuted; Q&A convergence)
+- [x] W3 practitioner discourse (comprehension gap confirmed)
+- [x] W4 probe (stdlib `ast`: 100% parse, 3.3 s / 1058 nodes, 0 deps)
+- [x] W5 ADRs (ADR-001…007) — **all accepted**
+- [x] **Gate G1 PASSED** — ADR-005 signed off (2026); requirements/architecture frozen to v1.0
+- [x] **V1 MVP** — `prototype/ssrl/` package (extract → enrich → calibrate → Q&A → narrative → CLI), 33 unit tests green, validated on both corpora with determinism
+- [ ] Phase 7: lab integration (real-world testbed, incremental watch)
+- [ ] Phase 8: end-to-end + agent surface (MCP)
 
 ---
 
-# Phase 0 — Foundation
+## Phase 0 — Foundation
 
-## Goal
+**Goal:** a coherent, evidence-ready research program.
 
-Transform ideas into a structured research program.
+**Deliverables**
 
----
+- [x] Project repository
+- [x] Vision, objectives, non-goals, principles
+- [x] Spec-driven requirements (`docs/requirements.md`)
+- [x] Position paper v0.3 (G1 resolution + prototype findings)
+- [x] Research plan with questions, hypotheses, methods, gates (`research/plan.md`)
+- [x] Research leads (`docs/related-work.md`)
 
-### Deliverables
-
-* [x] Project repository
-* [x] README
-* [x] Position Paper (v0.1)
-* [x] Architecture Specification
-* [x] Graph Schema
-* [ ] Research Questions
-* [ ] Literature Review
+**Success criteria:** anyone can read the repository and know *what SSRL claims, why, and how it will be tested* — with no code.
 
 ---
 
-### Success Criteria
+## Phase 1 — Research & Analysis
 
-SSRL becomes a clearly defined research field rather than a collection of ideas.
+**Goal:** collect evidence — literature, prior art/market, practitioner discourse, cheap read-only probes.
 
----
-
-# Phase 1 — Research & Validation
-
-## Goal
-
-Determine whether SSRL solves a real problem.
-
----
-
-### Research Topics
-
-#### Software Comprehension
-
-Questions:
-
-* How do developers understand software?
-* What slows comprehension?
-* How is comprehension measured?
-
----
-
-#### Knowledge Graphs
-
-Study:
-
-* Software Knowledge Graphs
-* Knowledge Representation
-* Semantic Graph Systems
-
----
-
-#### Program Analysis
-
-Study:
-
-* AST
-* CFG
-* PDG
-* Code Property Graphs
-
----
-
-#### AI-Assisted Software Engineering
-
-Study:
-
-* Code Understanding
-* Intent Extraction
-* Repository Intelligence
-* Semantic Search
-
----
-
-### Deliverables
+**Structure** (created inside `research/`):
 
 ```text
 research/
-├── related-work/
-├── papers/
-├── notes/
-└── experiments/
+├── plan.md
+├── literature/      # paper notes & summaries
+├── prior-art/       # CodeQL, Sourcegraph, Sourcetrail, Copilot, Cursor, Claude Code, RAG/GraphRAG...
+├── discourse/       # HN, Reddit, Lobsters, dev.to, GitHub discussions — real pain reports
+├── probes/          # throwaway read-only extraction experiments (NOT the real prototype)
+└── decisions/       # ADRs resolving the open questions
 ```
 
----
+**Key questions**
 
-### Success Criteria
+- Does the comprehension gap hold up against real practitioner reports? (W3)
+- Which of H1 (Q&A) / H2 (progressive zoom) / H3 (living narrative) / H4 (graph) is the best **primary** projection? (RQ-2)
+- What do existing tools actually deliver — and where do they stop? (W2)
+- Are cheap structural facts feasible on a real small repository? (W4)
 
-Ability to answer:
+**Gate G1 — Evidence enough to write code:**
 
-> Why should SSRL exist?
+- Primary projection resolved: **ADR-005 accepted** (H1 grounded Q&A + H3 co-surface) → FR-6/FR-6a.
+- Target language, parser strategy, and storage direction chosen: **ADR-001 (Python), ADR-002 (stdlib `ast`), ADR-003 (derived artifact)**.
+- Comprehension benefit has correlational support: **confirmed (W2/W3/W4).**
+- Requirements and architecture docs: **frozen to v1.0**.
 
-with evidence rather than intuition.
-
----
-
-# Phase 2 — Minimal Graph Prototype
-
-## Goal
-
-Generate the first SSRL graph.
-
-No AI.
-
-No semantics.
-
-Only facts.
+**✅ Gate G1 PASSED (2026). Phase 1 and Phase 2 complete — the spec is contractable. Prototype coding begins.**
 
 ---
 
-### Input
+## Phase 2 — Decision & Spec Freeze
 
-Small Roblox project.
+**Goal:** from research conclusions to a frozen v1 spec. **✅ Complete**
 
-Example:
+**Deliverables**
 
-```text
-10–20 scripts
-```
+- [x] ADRs for every open architecture decision (D-1…D-8) — ADR-001…007, **all accepted**
+- [x] `docs/requirements.md` frozen (v1.0)
+- [x] `docs/architecture.md` finalized (invariants + chosen directions, v1.0)
+- [x] Paper updated to v0.3 with research findings (G1 resolution + V1 MVP data) — `paper/SSRL-v0.3.md`
+- [x] First prototype scope defined: small real Python repo, facts first (Phase 3)
 
----
-
-### Features
-
-Extract:
-
-* Modules
-* Functions
-* Events
-* Imports
-* Dependencies
+> No production code until this phase. Throwaway probes live only under `research/probes/`. **Prototype code (real, non-throwaway) starts in Phase 3.**
 
 ---
 
-### Output
+## Phase 3 — Prototype: Facts First
 
-```json
-{
-  "nodes": [],
-  "edges": []
-}
-```
+**Goal:** generate the first structural facts from code. **✅ Complete (part of V1 MVP).**
 
----
+**Scope**
 
-### Deliverables
+- [x] Input: a small real Python repository (2 validation corpora: 31 + 122 files)
+- [x] Extract: Repository / Module / Class / Function / Method / imports / calls
+- [x] Output: deterministic `{nodes, edges}` in the stable model format (`prototype/ssrl/extract.py`)
+- [x] Determinism verified (NFR-4), zero deps (ADR-002), 100% parse on both corpora
+- [x] Incremental sync (D-8: file-level sha256 cache) — `--cache` in CLI
 
-```text
-prototype/
-└── parser/
-```
+**Artifacts:** `prototype/ssrl/` package + `prototype/README.md` (metrics & limits) + `REPORT-V1.md`. Validated on `JG-CODE/doc_rag` (31 files, 244 nodes) and `jgpredictor` (122 files, 1117 nodes), read-only.
 
 ---
 
-### Success Criteria
+## Phase 4 — Primary Projection MVP
 
-Generate a complete structural graph from real code.
+**Goal:** expose the facts through the research-chosen primary projection (**ADR-005: H1 grounded Q&A**, with H3 living narrative as on-demand co-surface). **✅ Complete (part of V1 MVP).**
 
----
+- [x] H1: grounded Q&A over the fact model — primary (`prototype/ssrl/qa.py`), deterministic, FACTS vs HYPOTHESES separation (FR-6a)
+- [x] H3: generated living narrative — co-primary (`prototype/ssrl/narrative.py`)
+- [ ] H2: system → subsystem → module → line drill-down — supporting *(deferred post-MVP)*
+- [ ] H4: graph navigation — supporting *(deferred post-MVP)*
 
-# Phase 3 — Graph Visualization
-
-## Goal
-
-Make software visible.
-
----
-
-### Features
-
-Visual graph viewer.
-
-Display:
-
-* Modules
-* Dependencies
-* Event flows
-* Services
+**Success criteria:** a developer can comprehend the test project *faster* through SSRL than from raw files alone → **partially verified**: `ask` answers `where/callers/callees/imports/summary/entry points/flows` with evidence on both corpora.
 
 ---
 
-### Possible Technologies
+## Phase 5 — Semantic Enrichment v1
 
-* Cytoscape
-* React Flow
-* D3.js
+**Goal:** introduce probabilistic hypotheses over facts. **✅ Complete (part of V1 MVP).**
 
----
+- [x] Evidence sources: naming, structure (call-graph), entry-point/docstring signal (`prototype/ssrl/semantics.py`)
+- [x] Every hypothesis labeled, with confidence and evidence (`confidence.calibrate`)
+- [x] Facts and hypotheses kept strictly separate in all surfaces (listings, Q&A, narrative)
+- [ ] LLM proposals as proponent only (RN-4 / ADR-007) — deferred, MVP is fully deterministic
 
-### Success Criteria
-
-A developer can understand a project faster using the graph than using raw files.
-
----
-
-# Phase 4 — Semantic Layer v1
-
-## Goal
-
-Introduce semantic understanding.
+**Success criteria:** semantic labels are useful and their uncertainty is visible → **Verified**: flows (doc_rag 10), intents (174 jgpredictor), service/domain concepts (24 jgpredictor), all `confidence < 1.0`, exposed via `ask flows|intents`, `audit`, `why`.
 
 ---
 
-### Inputs
+## Phase 6 — Confidence & Evidence Engine
 
-* Node names
-* Comments
-* Documentation
-* Structural patterns
+**Goal:** explicit, calibrated confidence. **✅ Complete (part of V1 MVP).**
 
----
+- [x] Weighted agreement across evidence sources (`confidence.aggregate` — noisy-OR capped by strongest source)
+- [x] "Why does SSRL believe this?" always answerable (`confidence.why` + CLI `why`)
+- [x] Calibration validation groundwork (`confidence.audit` + CLI `audit`) — full RQ-3 study deferred to Phase 9
 
-### Outputs
-
-Examples:
-
-```yaml
-Inventory System
-Purchase Flow
-Economy Service
-Player Lifecycle
-```
+**Success criteria:** a user can adjust trust based on confidence without reading code to double-check → **Verified**: `audit` lists hypothesis with calibrated conf/note; facts always 1.0 with evidence.
 
 ---
 
-### Important
+## Phase 6.5 — V1 MVP integration (implemented)
 
-Semantic output is always:
+Compressed Phases 3–6 into a minimal cohesive package shipped as the **V1 MVP**:
 
-```text
-Hypothesis
-```
+- [x] `prototype/ssrl/` package (10 modules, zero deps)
+- [x] CLI (ADR-006): `build | enrich | ask | why | narrative | audit | stats | json`
+- [x] Incremental cache (D-8): 31/31 from_cache on warm run, artifact identical
+- [x] Tests: 33 unit tests green (extract, cache, semantics, confidence, index, qa, narrative)
+- [x] Determinism verified end-to-end on both corpora (fresh + cached)
+- [x] Reports: `prototype/BUILDLOG.md`, `prototype/REPORT-V1.md`, `prototype/README.md`
 
-Never:
-
-```text
-Fact
-```
-
----
-
-### Success Criteria
-
-Semantic labels appear useful and understandable.
+**Next (post-MVP):** Phase 7 lab integration (incremental watch on a real evolving project), Phase 8 (end-to-end + MCP agent surface).
 
 ---
 
-# Phase 5 — Confidence Engine
+## Phase 7 — Lab Integration (Real-World Testbed)
 
-## Goal
+**Goal:** first real-world laboratory.
 
-Measure confidence explicitly.
+- Use the author's existing **Python** project as a production-sized testbed (e.g., a real application with multiple modules)
+- Feed real repositories; measure extraction quality and freshness (incremental sync)
 
----
-
-### Evidence Sources
-
-* Structural evidence
-* Naming evidence
-* Documentation evidence
-* Similarity evidence
+**Success criteria:** SSRL operates continuously on real, evolving projects without manual sync.
 
 ---
 
-### Example
+## Phase 8 — End-to-End & Agent/AI Surface
 
-```yaml
-Intent:
-  Purchase Validation
+**Goal:** complete pipeline + AI consumer.
 
-Confidence:
-  0.84
-```
+- Full flow: code → facts → hypotheses → primary projection, incrementally
+- AI-agent consumption (grounded context with evidence, e.g., via an agent protocol like MCP)
+- CI impact reports ("what does this PR affect?") as a supporting surface
 
----
-
-### Success Criteria
-
-Every semantic conclusion becomes explainable.
+**Success criteria:** humans and agents consume the same layer coherently.
 
 ---
 
-# Phase 6 — JG CODE Integration
+## Phase 9 — Experimental Validation
 
-## Goal
+**Goal:** measure the claim, not just build the thing.
 
-Use JG CODE as the first real SSRL laboratory.
+- Controlled experiments: Source-only vs Source+SSRL (and vs raw agent Q&A)
+- Metrics: time to understand, time to find a bug, time to onboard, answer accuracy
+- Must handle the "ask the agent" baseline (threat §11 of the paper)
 
----
-
-### Why
-
-JG CODE already:
-
-* Maps projects
-* Creates relationships
-* Maintains context
-* Understands Roblox architecture
+**Success criteria:** measurable, significant comprehension improvement.
 
 ---
 
-### Integration Targets
+## Phase 10 — SSRL v1 Publication
 
-* Graph extraction
-* Graph storage
-* Context generation
-* Semantic enrichment
+**Deliverables**
 
----
+- Position paper → published version (v1)
+- Working prototype + documentation
+- Validation dataset
+- Evaluation results and decisions made
 
-### Success Criteria
-
-SSRL successfully operates on real production projects.
+**Audience:** researchers, software architects, AI engineers, tool builders.
 
 ---
 
-# Phase 7 — Query Engine
+## Long-Term Vision
 
-## Goal
-
-Ask questions about software.
-
----
-
-### Example Questions
-
-```text
-What happens when a player joins?
-```
-
-```text
-Which systems depend on inventory?
-```
-
-```text
-What services interact with payments?
-```
-
-```text
-Explain the onboarding flow.
-```
+- Multi-language support
+- Architecture drift detection
+- AI-native analysis grounded in the layer
+- Knowledge preservation independent of specific models
+- Enterprise-scale application
 
 ---
 
-### Success Criteria
+## Success Definition
 
-SSRL becomes searchable knowledge.
-
----
-
-# Phase 8 — End-to-End Prototype
-
-## Goal
-
-Complete SSRL pipeline.
-
----
-
-### Pipeline
-
-```text
-Source Code
-    ↓
-Parser
-    ↓
-Graph Builder
-    ↓
-Vector Layer
-    ↓
-Semantic Engine
-    ↓
-Storage
-    ↓
-Query Engine
-```
-
----
-
-### Deliverables
-
-Working prototype.
-
----
-
-### Success Criteria
-
-A developer can import a repository and receive:
-
-* Architecture map
-* Dependency map
-* Semantic graph
-* Flow analysis
-* Searchable knowledge base
-
----
-
-# Phase 9 — Experimental Validation
-
-## Goal
-
-Determine whether SSRL actually improves comprehension.
-
----
-
-### Experiment A
-
-Control Group:
-
-```text
-Source Code Only
-```
-
-Test Group:
-
-```text
-Source Code + SSRL
-```
-
----
-
-### Metrics
-
-* Time to understand system
-* Time to find bugs
-* Time to onboard
-* Architecture comprehension
-
----
-
-### Success Criteria
-
-Measurable improvement.
-
----
-
-# Phase 10 — SSRL v1 Research Release
-
-## Goal
-
-Publish the first formal release.
-
----
-
-### Deliverables
-
-* SSRL Paper v1
-* Prototype
-* Documentation
-* Dataset
-* Evaluation Results
-
----
-
-### Target Audience
-
-* Researchers
-* Software Architects
-* AI Engineers
-* Tool Builders
-
----
-
-# Long-Term Vision
-
-Potential future directions:
-
-* Multi-language support
-* Architecture drift detection
-* AI-native software analysis
-* Autonomous repository understanding
-* Enterprise-scale software knowledge graphs
-* Software knowledge preservation systems
-
----
-
-# Success Definition
-
-SSRL succeeds if developers can answer:
-
-> What does this system do?
-
-faster than they could by reading code alone.
+SSRL succeeds if a developer can answer *"what does this system do?"* and *"what breaks if I change X?"* faster — and with greater confidence — than by reading code alone.
 
 SSRL succeeds if software knowledge becomes more durable than the people or models that originally created it.
 
 ---
 
-# Final Principle
+## Final Principle
 
 > AI reduces the cost of creating software.
 >

@@ -1,772 +1,125 @@
-# Related Work
-## SSRL Literature Review & Prior Art
-
-> This document surveys existing technologies, research areas, frameworks, and methodologies related to software understanding, software representation, knowledge extraction, and AI-assisted software engineering.
->
-> SSRL does not attempt to replace these systems.
->
-> Instead, SSRL aims to investigate whether a unified software knowledge representation layer can complement them.
+# Related Work — Research Leads
 
----
-
-# Introduction
-
-Any proposal for a new software representation paradigm must be evaluated against existing research and industry practices.
-
-Many of the ideas explored by SSRL already exist in partial form across different fields:
-
-- Static Analysis
-- Program Analysis
-- Knowledge Graphs
-- Software Architecture Recovery
-- Code Intelligence
-- Semantic Search
-- AI-Assisted Development
-
-The purpose of this document is to understand:
-
-1. What already exists.
-2. What problems are already solved.
-3. What problems remain unsolved.
-4. Where SSRL potentially fits.
-
----
-
-# 1. Abstract Syntax Trees (AST)
-
-## What It Is
-
-An Abstract Syntax Tree (AST) represents source code as a hierarchical tree structure.
-
-Example:
-
-```lua
-if money > 100 then
-    vip = true
-end
-```
-
-May become:
-
-```text
-IfStatement
-├── Condition
-│   └── money > 100
-└── Assignment
-    └── vip = true
-```
-
----
-
-## Strengths
-
-- Deterministic
-- Precise
-- Language-aware
-- Foundation of compilers
-
----
-
-## Limitations
-
-ASTs represent syntax.
-
-They do not represent:
-
-- Intent
-- Business meaning
-- Architecture
-- Domain concepts
-
----
-
-## SSRL Relationship
-
-ASTs are expected to be one of the primary inputs of the SSRL Structural Layer.
-
----
-
-# 2. Control Flow Graphs (CFG)
-
-## What It Is
-
-A Control Flow Graph models execution paths.
-
-Example:
-
-```text
-Start
- ↓
-Check Money
- ↓
-VIP?
- ↓
-End
-```
-
----
-
-## Strengths
-
-- Models execution
-- Useful for optimization
-- Useful for static analysis
-
----
-
-## Limitations
-
-Does not explain:
-
-- Why the flow exists
-- Business purpose
-- Architectural role
-
----
-
-## SSRL Relationship
-
-CFGs provide execution evidence for flow discovery.
-
----
-
-# 3. Program Dependence Graphs (PDG)
-
-## What It Is
-
-Program Dependence Graphs represent:
-
-- Control dependencies
-- Data dependencies
-
-within software systems.
-
----
-
-## Example
-
-```text
-Money
- ↓
-Condition
- ↓
-VIP
-```
-
----
-
-## Strengths
-
-- Precise dependency analysis
-- Powerful static analysis foundation
-
----
-
-## Limitations
-
-Still operates at implementation level.
-
-No semantic abstraction.
-
----
-
-## SSRL Relationship
-
-PDGs provide evidence for:
-
-- Rule extraction
-- Flow detection
-- Dependency modeling
-
----
-
-# 4. Code Property Graphs (CPG)
-
-## What It Is
-
-Code Property Graphs combine:
-
-```text
-AST
-+
-CFG
-+
-PDG
-```
-
-into a single graph.
-
----
-
-## Examples
-
-Tools:
-
-- Joern
-- CodeQL
-- ShiftLeft
-
----
-
-## Strengths
-
-- Extremely powerful
-- Excellent for security analysis
-- Production proven
-
----
-
-## Limitations
-
-Focus remains primarily:
-
-- Structural
-- Security-oriented
-
-rather than:
-
-- Semantic
-- Knowledge-oriented
-
----
-
-## SSRL Relationship
-
-CPGs are arguably the closest existing structural relative to SSRL.
-
-However:
-
-```text
-CPG = Code Structure
-
-SSRL = Software Knowledge
-```
-
----
-
-# 5. CodeQL
-
-## What It Is
-
-:contentReference[oaicite:0]{index=0}
-
-CodeQL is GitHub's semantic code analysis engine.
-
-It converts source code into a queryable database.
-
-Developers can run queries such as:
-
-```text
-Find SQL injections
-Find unsafe data flows
-Find insecure API usage
-```
-
----
-
-## Strengths
-
-- Mature ecosystem
-- Strong security tooling
-- Query-based analysis
-- Large-scale adoption
-
----
-
-## Limitations
-
-Primarily focused on:
-
-- Vulnerability discovery
-- Static analysis
-
-rather than:
-
-- Knowledge representation
-- Architectural understanding
-
----
-
-## SSRL Relationship
-
-CodeQL demonstrates the value of turning software into a queryable representation.
-
-SSRL extends this concept toward software knowledge.
-
----
-
-# 6. Software Architecture Recovery
-
-## What It Is
-
-Research field focused on reconstructing architecture from source code.
-
----
-
-## Goals
-
-Discover:
-
-- Layers
-- Components
-- Services
-- Boundaries
-
-without documentation.
-
----
-
-## Strengths
-
-Useful for legacy systems.
-
----
-
-## Limitations
-
-Often stops at architecture diagrams.
-
-Does not preserve semantic reasoning.
-
----
-
-## SSRL Relationship
-
-Architecture recovery becomes one subsystem inside SSRL.
-
----
-
-# 7. Knowledge Graphs
-
-## What It Is
-
-Knowledge Graphs represent information through:
-
-```text
-Entities
-Relationships
-Properties
-```
-
----
-
-## Examples
-
-Knowledge graph concepts power:
-
-- Search engines
-- Recommendation systems
-- Enterprise knowledge systems
+- Version: 0.2
+- Status: Lead map — NOT a finished literature review
 
----
-
-## Strengths
-
-- Explainable
-- Navigable
-- Queryable
-
----
-
-## Limitations
-
-Require knowledge extraction.
-
-Knowledge quality depends on extraction quality.
-
----
-
-## SSRL Relationship
-
-SSRL is fundamentally built upon knowledge graph principles.
-
----
-
-# 8. Software Knowledge Graphs
-
-## What It Is
-
-Research area applying knowledge graphs directly to software systems.
-
----
-
-## Examples
-
-Represent:
-
-- Files
-- Classes
-- APIs
-- Dependencies
-
-as graph entities.
-
----
-
-## Strengths
-
-Closer to SSRL than traditional analysis.
-
----
-
-## Limitations
-
-Most implementations remain structural.
-
-Semantic intent remains limited.
-
----
-
-## SSRL Relationship
-
-Software Knowledge Graphs are likely one of the strongest academic foundations for SSRL.
-
----
-
-# 9. Semantic Code Search
-
-## What It Is
-
-Search systems that understand meaning rather than exact text.
-
----
-
-## Example
-
-Query:
-
-```text
-Load player inventory
-```
-
-May retrieve:
-
-```lua
-RestorePlayerItems()
-```
-
----
-
-## Strengths
-
-Developer productivity.
-
----
-
-## Limitations
-
-Usually retrieves code.
-
-Does not construct software knowledge.
-
----
-
-## SSRL Relationship
-
-Semantic search may operate on top of SSRL graphs.
-
----
-
-# 10. Vector Databases
-
-## What It Is
-
-Databases optimized for embeddings.
-
-Examples:
-
-- Qdrant
-- Weaviate
-- Milvus
-- pgvector
-
----
-
-## Strengths
-
-Enable:
-
-- Similarity search
-- Clustering
-- Retrieval
-
----
-
-## Limitations
-
-Poor explainability.
-
-Embeddings alone do not expose relationships.
-
----
-
-## SSRL Relationship
-
-SSRL combines vectors with graph structures.
-
----
-
-# 11. Retrieval-Augmented Generation (RAG)
-
-## What It Is
-
-RAG provides external context to language models.
-
----
-
-## Pipeline
-
-```text
-Question
- ↓
-Retrieve Documents
- ↓
-LLM
- ↓
-Answer
-```
-
----
-
-## Strengths
-
-Improves context quality.
-
-Reduces hallucinations.
-
----
-
-## Limitations
-
-Documents often remain unstructured.
-
-Retrieval quality varies.
-
----
-
-## SSRL Relationship
-
-SSRL can serve as a structured retrieval source.
-
----
-
-# 12. GraphRAG
-
-## What It Is
-
-GraphRAG extends RAG using graph structures.
-
----
-
-## Pipeline
-
-```text
-Question
- ↓
-Graph Retrieval
- ↓
-Context Assembly
- ↓
-LLM
- ↓
-Answer
-```
-
----
-
-## Strengths
-
-Captures relationships.
-
-Improves context quality.
-
----
-
-## Limitations
-
-Most implementations assume a graph already exists.
-
-They do not solve software understanding itself.
-
----
+> This is a research **lead map** for roadmap Phase 1. It organizes the territory SSRL must study and records preliminary positions to be confirmed or overturned with evidence in the research phase. None of these notes are final; the actual literature review lives in `research/literature/` after Phase 1.
 
-## SSRL Relationship
-
-GraphRAG is one potential consumer of SSRL.
-
-SSRL may generate the graph that GraphRAG uses.
-
----
-
-# 13. Large Language Models for Code Understanding
-
-## What It Is
-
-Modern LLMs can:
-
-- Explain code
-- Summarize repositories
-- Infer architecture
-- Suggest intent
-
----
-
-## Strengths
-
-Flexible.
-
-General-purpose.
-
----
-
-## Limitations
-
-Non-deterministic.
-
-May hallucinate.
-
-Knowledge is not persistent.
-
----
-
-## SSRL Relationship
-
-LLMs become semantic contributors rather than primary truth sources.
-
----
-
-# 14. Domain-Driven Design (DDD)
-
-## What It Is
-
-Introduced by :contentReference[oaicite:1]{index=1}.
-
-Focuses on modeling software around business domains.
-
 ---
 
-## Concepts
+## How to use this document
 
-- Entity
-- Value Object
-- Domain Event
-- Aggregate
-- Ubiquitous Language
+Each area lists: why it is relevant, what to investigate, candidate references, and the question SSRL must answer about it.
 
 ---
-
-## Strengths
 
-Strong semantic modeling.
+## 1. Program analysis & intermediate representations
 
----
-
-## Limitations
+**Why:** The deterministic foundation of any extraction layer.
+**Investigate:** AST, CFG, PDG, Code Property Graphs (CPG) — how Joern, CodeQL build them; tree-sitter's incremental parsing.
+**Candidate refs:** *A Survey of Software Architectural Reconstruction*; Yamaguchi et al. on Code Property Graphs; tree-sitter docs.
+**SSRL question:** What fractal facts are cheap and reliable, without committing to a heavyweight analysis stack?
 
-Requires human effort.
+## 2. Static analysis platforms
 
-Not automatically extracted.
+**Why:** Mature precedent for "code as queryable data."
+**Investigate:** CodeQL, Semgrep, SonarQube — capabilities, query models, and their limits (structure-first, semantics-light).
+**SSRL question:** What are these tools *not* answering that SSRL targets (why/exists/intent)?
 
----
+## 3. Code search & navigation
 
-## SSRL Relationship
+**Why:** Baseline UX for "exploring a codebase fast."
+**Investigate:** Sourcegraph, OpenGrok, grok — search, symbol navigation, usage graphs.
+**SSRL question:** Where does symbol search stop being enough (comprehension, not just retrieval)?
 
-Many SSRL abstractions resemble DDD concepts.
+## 4. Software architecture recovery
 
-However, SSRL attempts automatic discovery.
+**Why:** Directly about reconstructing structure+intent from code.
+**Investigate:** Clustering/clustering-based module recovery, architecture conformance checking, reflexion models.
+**Candidate refs:** Murphy & Notkin on reflexion models; Duck et al. surveys.
+**SSRL question:** Does recovery without explicit confidence create false confidence in developers?
 
----
+## 5. Knowledge graphs, semantic web & ontologies
 
-# 15. Repository Intelligence
+**Why:** Formalisms (RDF, OWL) for "knowledge about a domain," including software domains.
+**Investigate:** Ontologies for program comprehension, semantic code graphs.
+**SSRL question:** Which formal representation ideas transfer, without the schema rigidity that kills dev adoption?
 
-## What It Is
+## 6. Software knowledge graphs (research)
 
-Emerging field focused on understanding repositories holistically.
+**Why:** Closest academic neighbor.
+**Investigate:** Sourcetrail (UI-driven comprehension), research on code knowledge graphs.
+**SSRL question:** Why haven't these gone mainstream? Adoption friction? Staleness? Value-per-effort?
 
-Includes:
+## 7. Semantic code search & embeddings
 
-- Architecture extraction
-- Dependency analysis
-- Knowledge extraction
-- AI-assisted navigation
+**Why:** "Meaning-aware" retrieval.
+**Investigate:** CodeBERT, CodeT5, embedding-based code search, faiss.
+**SSRL question:** Do embeddings give comprehension or just similarity? (Hypothesis: retrieval ≠ understanding.)
 
----
+## 8. RAG / GraphRAG for code
 
-## Examples
+**Why:** Current mainstream approach to "AI understands my repo."
+**Investigate:** Naive RAG vs GraphRAG on code; context-window limits; grounding and hallucination.
+**SSRL question:** Does vector retrieval over source files substitute for structural/semantic representation? (Our thesis: no — it is retrieval, not a layer.)
 
-Used by:
+## 9. LLMs for code understanding
 
-- GitHub Copilot Workspace
-- Sourcegraph
-- Cursor
-- Repository analysis systems
+**Why:** The tool every AI DEV already uses.
+**Investigate:** Copilot, Cursor, Claude Code, Codex, Cline/Aider — how they claim "repo understanding," where they drift or hallucinate.
+**SSRL question:** Can a semantic layer *ground* these tools and reduce unwarranted trust? (RQ-3)
 
----
+## 10. Program comprehension research (psychology of SE)
 
-## SSRL Relationship
+**Why:** Comprehension has been measured in SE research for decades; SSRL's claims must use that evidence.
+**Investigate:** Cognitive models (bottom-up/top-down comprehension), comprehension time metrics, eye-tracking studies of code reading.
+**SSRL question:** How is "comprehension" actually measured, so SSRL's validation (Phase 9) is credible?
 
-Repository intelligence is one of the primary application domains of SSRL.
+## 11. Repository intelligence / AI-native tooling
 
----
+**Why:** Emerging product space (Glean, Sourcegraph Cody, GitHub Copilot Workspace, etc.).
+**Investigate:** What "repo intelligence" products promise and how much is marketing vs grounded land.
+**SSRL question:** Is there a real, unserved need — or is "ask the agent" already good enough for users?
 
-# Comparative Summary
-
-| System | Structure | Semantics | Intent | Queryable | AI Ready |
-|----------|----------|----------|----------|----------|----------|
-| AST | ✅ | ❌ | ❌ | ❌ | ⚠️ |
-| CFG | ✅ | ❌ | ❌ | ⚠️ | ⚠️ |
-| PDG | ✅ | ❌ | ❌ | ⚠️ | ⚠️ |
-| CPG | ✅ | ⚠️ | ❌ | ✅ | ⚠️ |
-| CodeQL | ✅ | ⚠️ | ❌ | ✅ | ⚠️ |
-| Knowledge Graphs | ⚠️ | ✅ | ⚠️ | ✅ | ✅ |
-| Software Knowledge Graphs | ✅ | ⚠️ | ⚠️ | ✅ | ✅ |
-| RAG | ❌ | ⚠️ | ❌ | ⚠️ | ✅ |
-| GraphRAG | ⚠️ | ⚠️ | ❌ | ✅ | ✅ |
-| LLMs | ⚠️ | ✅ | ⚠️ | ❌ | ✅ |
-| SSRL (Proposed) | ✅ | ✅ | ✅ | ✅ | ✅ |
+## 12. Docs-as-code / living documentation
 
----
+**Why:** Every "auto-doc" tool before SSRL died from staleness or low value.
+**Investigate:** DocGen, Obsidian-style vaults, architecture decision records (ADRs), mkdocs.
+**SSRL question:** What made previous auto-doc attempts fail, and does derived+synced representation avoid those failure modes?
 
-# Positioning of SSRL
+## 13. Domain-driven design (DDD)
 
-SSRL does not attempt to replace:
+**Why:** A vocabulary (entities, events, aggregates, ubiquitous language) that already models domain meaning.
+**Investigate:** Eric Evans' DDD; domain event modeling practices.
+**SSRL question:** Can SSRL *auto-discover* the DDD-shaped structure that humans once hand-built?
 
-- CodeQL
-- Knowledge Graphs
-- GraphRAG
-- LLMs
-- Software Analysis Tools
+## 14. Agent protocols (MCP and similar)
 
-Instead, SSRL investigates whether software can be represented as structured, explainable knowledge that bridges:
+**Why:** AI agents are the most likely first real consumer.
+**Investigate:** MCP spec, how Copilot/Claude tools consume context, tool/context limits.
+**SSRL question:** What shape of context helps an agent most — and what evidence prevents over-trust?
 
-```text
-Code
-+
-Architecture
-+
-Semantics
-+
-Intent
-+
-AI Context
-```
+## 15. Software knowledge preservation / archaeology
 
-into a unified representation layer.
+**Why:** "Understanding survives the original author/model."
+**Investigate:** Software archaeology, knowledge retention in orgs, model-obsolescence risks.
+**SSRL question:** Does a language-model-independent representation preserve knowledge where agents/models fail?
 
 ---
-
-# Final Observation
-
-Most existing systems answer:
-
-> How does the software work?
 
-SSRL investigates whether we can also answer:
+## Preliminary positioning
 
-> What knowledge does the software contain?
+| System | Structure | Semantics | Trust/Evidence | Versioned | Dev-friendly |
+| --- | --- | --- | --- | --- | --- |
+| CodeQL | Yes | No | Partial | No | Medium |
+| Semantic search | Partial | Partial | No | No | High |
+| RAG/GraphRAG | No | Yes | No | No | Medium |
+| Copilot/Cursor/Cody | Partial | Yes | Weak | No | High |
+| Sourcetrail | Yes | No | No | No | High |
+| **SSRL (target)** | Yes | Yes | Yes | Yes | **High** |
 
-and
+> These cells are *claims to test in Phase 1*, not conclusions — especially the **dev-friendly** column, which is the crux (NFR-1).
 
-> Why does this software exist?
+## Where SSRL sits
 
-at scale.
+Complement, not replacement. Most existing systems answer *how the software works* or *where the code is*. SSRL's contested territory is **why it exists, what it means, with what confidence** — and doing it with so little friction that developers actually keep it.

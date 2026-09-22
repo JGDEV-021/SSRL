@@ -1,255 +1,115 @@
 # SSRL — Semantic Software Representation Layer
 
-> **The semantic layer between software and understanding.**
+> Making software understandable — to humans and to AI.
 
-[![Status](https://img.shields.io/badge/status-research%20%2F%20pre--implementation-orange)]()
-[![Version](https://img.shields.io/badge/version-1.0-blue)]()
-[![License](https://img.shields.io/badge/license-TBD-lightgrey)]()
+[![Status](https://img.shields.io/badge/status-research%20%2F%20docs--phase-orange)]()
+[![Version](https://img.shields.io/badge/docs-v0.2-blue)]()
+[![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
-We solved code generation.
+AI made writing code cheap. SSRL asks the next question: **how do we make code easy to understand?**
 
-**SSRL asks the next question: how do we preserve understanding?**
-
----
-
-## TL;DR
-
-SSRL (Semantic Software Representation Layer) é uma camada semântica construída sobre código-fonte que transforma software em um **grafo de conhecimento consultável, versionado e auditável**.
-
-**Objetivo:**
-- Preservar conhecimento arquitetural
-- Melhorar compreensão de sistemas grandes
-- Permitir raciocínio por IA com rastreabilidade
-- Reduzir dependência de conhecimento tribal
-
-**Input:** Código-fonte
-**Output:** Grafo semântico versionado e auditável, com confiança explícita em cada hipótese
-
-```
-Code
- │
- ▼
-AST / CFG / Call Graph
- │
- ▼
-Software Graph
- │
- ▼
-Semantic Enrichment
- │
- ▼
-Knowledge Layer
- │
- ▼
-Humans + AI Agents
-```
+SSRL is a research initiative for a *semantic representation layer* — an abstraction built on top of source code that makes the structure, behavior, and intent of a software system explicit, navigable, and answerable. For developers, for teams, and for the AI agents that increasingly write the code.
 
 ---
 
-## O problema em uma frase
+## The problem
 
 ```
-Custo de Produção de Código  <<  Custo de Compreensão de Código
+Cost of producing code  <<  Cost of understanding code
 ```
 
-LLMs geram software mais rápido do que qualquer equipe consegue compreendê-lo, auditá-lo ou confiar nele. O SSRL é a camada de abstração proposta para resolver isso — não mais documentação manual, não mais código, mas uma representação semântica derivada e contínua.
+Generating code with AI is fast and easy. Understanding it — what it does, why it exists, what it breaks, whether it is correct — is still slow, hard, and usually locked in someone's head.
 
-```
-Era Tradicional              Era da IA
+### The comprehension gap
 
-Code                         Code
- ↓                            ↓
-Human                        SSRL
-                               ↓
-                              Human
-                               ↓
-                              Agent
-```
+| Mode | What they do | What they can do |
+| --- | --- | --- |
+| **AI SLOP** | Generate code without understanding it | Cannot judge, fix, explain, or trust it |
+| **AI DEV** | Generate code, understand what they produce | Can judge and maintain the result |
+| **DEV** | Builds structure and logic with full control | Deepest understanding of the system |
 
-Veja a especificação completa, motivação detalhada e fundamentação teórica no **[paper de pesquisa](paper/SSRL-v0.1.md)**.
+SSRL exists to compress the distance between the first two and the third — and to make that understanding survive the people and models that created it.
 
 ---
 
-## Exemplo real
+## What SSRL is
 
-Antes (código sem contexto):
+A semantic layer over software, grounded and honest:
 
-```python
-def purchase_item(player, item):
-    inventory.add(player, item)
-    currency.deduct(player, item.price)
-    ledger.record(player, item)
-```
+- **Facts first.** Deterministic structure (modules, functions, calls, imports, events) extracted from code — verifiable, not invented.
+- **Hypotheses marked as hypotheses.** Semantic interpretation (intent, flows, domain concepts) is always probabilistic, never dressed as fact.
+- **Confidence and evidence.** Every hypothesis carries a confidence score and the evidence behind it. You can always ask "why does SSRL believe this?"
+- **Continuously derived.** The layer regenerates incrementally as code changes. It never goes stale by design.
+- **Dev-friendly.** Adoption must be low-friction. If it costs more than a quick `git grep`, it has already failed the developer bar.
 
-Depois (nó SSRL gerado a partir desse código):
+### Projections, not the product
 
-```json
-{
-  "id": "PurchaseService",
-  "type": "Function",
-  "hypotheses": [
-    { "concept": "Commerce", "confidence": 0.95 },
-    { "concept": "Billing", "confidence": 0.81 }
-  ],
-  "dependencies": ["InventoryService", "CurrencyService", "LedgerService"],
-  "risk": ["Financial"]
-}
-```
+A semantic layer can be experienced through many **projections**:
 
-Uma única função deixa de ser apenas texto e passa a ser um **nó consultável**, com conceito de negócio, dependências e risco explícitos — rastreável até a linha de código que o originou.
+- Graph exploration
+- Question & answer over the codebase
+- Progressive zoom: system → subsystem → module → line
+- Live narrative / self-explaining documentation
+- Agent context supply
+
+The graph is *one* projection. The product is the layer. Which projection becomes the **primary** interaction is an open research question — the first deliverable of the research phase.
 
 ---
 
-## Como funciona (resumo)
+## Status
 
-1. **Parse code** — extração estrutural determinística (AST, CFG, call graph)
-2. **Build structural graph** — unificação dos fatos em um grafo único
-3. **Generate semantic hypotheses** — inferência probabilística de conceitos
-4. **Calculate confidence** — consenso ponderado entre fontes de evidência
-5. **Store semantic knowledge** — consolidação versionada
-6. **Query** — humanos e agentes consultam o grafo, não o código bruto
+| Stage | State |
+| --- | --- |
+| Vision & Principles | Done |
+| Spec-driven Requirements | Draft |
+| Position Paper | Draft (v0.2) |
+| Research Plan | Draft |
+| Research & Analysis | **Not started — next** |
+| Prototype | No code yet (gated by research) |
 
-Detalhamento completo de cada etapa em [`docs/architecture.md`](docs/architecture.md).
-
----
-
-## Quando você precisa do SSRL
-
-Se a resposta para qualquer uma destas perguntas hoje é **"pergunta para o agente"** ou **"ninguém sabe, vamos ler o código"**, existe uma lacuna de representação de conhecimento que o SSRL foi desenhado para preencher:
-
-- Esse fluxo faz sentido?
-- Que sistema depende disso?
-- Isso quebra conformidade?
-- Isso afeta faturamento?
-- Isso cria risco de segurança?
-- Isso está alinhado com a arquitetura?
-
-## Query examples
-
-```
-FIND services
-WHERE concept = "Billing"
-```
-
-```
-What systems are affected if UserService fails?
-
-↓
-
-Billing
-Inventory
-Notifications
-```
+> Code is intentionally deferred. The design space is still under investigation; writing a parser now would be guessing.
 
 ---
 
-## Comparação com soluções existentes
+## Repository structure
 
-| Sistema | Entende estrutura | Entende semântica | Versionado | Auditável |
-|---|---|---|---|---|
-| CodeQL / Semgrep | ✓ | ✗ | ✗ | Parcial |
-| Sourcegraph / OpenGrok | ✓ | ✗ | ✗ | ✗ |
-| Neo4j / Knowledge Graphs tradicionais | Parcial | ✗ | Parcial | ✗ |
-| RAG para código | Parcial | Parcial | ✗ | ✗ |
-| MCPs / Cursor / Claude Code / Codex | Parcial | Parcial | ✗ | ✗ |
-| **SSRL** | ✓ | ✓ | ✓ | ✓ |
-
-Análise detalhada de cada comparação em [`docs/related-work.md`](docs/related-work.md).
-
-## Why SSRL is not just another Software Knowledge Graph
-
-A objeção mais óbvia que um pesquisador faria é: *"isso é só um Knowledge Graph para código."*
-
-Não é, por três razões estruturais:
-
-1. **Separação explícita entre fato e hipótese.** Knowledge Graphs tradicionais tratam tudo como verdade estabelecida. O SSRL trata fatos estruturais (determinísticos) e hipóteses semânticas (probabilísticas) como categorias epistemológicas diferentes, nunca misturadas sem rótulo.
-2. **Confiança como cidadã de primeira classe.** Toda hipótese carrega confiança, origem, método de extração e evidência. Não existe afirmação semântica "nua" no grafo.
-3. **Regeneração incremental como requisito de design, não otimização posterior.** O grafo é projetado desde o início para sincronizar continuamente com um código-fonte em mudança constante — não para ser construído uma vez e ficar obsoleto, como a maioria dos KGs de código existentes.
-
-Um Knowledge Graph responde "o que existe". O SSRL responde "o que existe, o que isso provavelmente significa, com que confiança, e por quê" — e nunca confunde as duas coisas.
-
----
-
-## Non-goals
-
-SSRL will not:
-
-- Replace source code
-- Replace static analyzers (CodeQL, Semgrep, etc.)
-- Guarantee semantic correctness
-- Eliminate human review
-- Become a programming language
-
----
-
-## Research Questions
-
-- **RQ1:** Can semantic knowledge improve software comprehension?
-- **RQ2:** Can confidence scoring reduce hallucinations in AI-assisted code reasoning?
-- **RQ3:** Can SSRL reduce onboarding time for new engineers?
-
-Hipóteses, metodologia de avaliação e métricas detalhadas em [`paper/SSRL-v0.1.md`](paper/SSRL-v0.1.md#metodologia-de-avaliação).
-
----
-
-## Estrutura do repositório
-
-```
+```text
 SSRL/
 ├── README.md
-├── LICENSE
 ├── roadmap.md
+├── LICENSE
 ├── docs/
-│   ├── architecture.md
-│   ├── graph-schema.md
-│   ├── related-work.md
+│   ├── vision.md              # Mentality, objectives, non-goals, principles
+│   ├── concepts.md            # The semantic model (facts, hypotheses, confidence)
+│   ├── requirements.md        # Spec-driven requirements
+│   ├── architecture.md        # Design concerns + resolved decisions (ADR-backed)
+│   ├── related-work.md        # Research leads / prior art
+│   └── projections/
+│       └── graph.md           # Graph projection — a candidate, not the product
 ├── paper/
-│   └── SSRL-v0.1.md
-├── prototype/
-└── research/
+│   └── SSRL-v0.2.md           # Position paper
+├── research/
+│   ├── plan.md                # Research questions, hypotheses, methods, sources
+│   ├── literature/            # W1 — papers
+│   ├── prior-art/             # W2 — tools
+│   ├── discourse/             # W3 — practitioner pain points
+│   ├── probes/                # W4 — throwaway experiments (not the prototype)
+│   └── decisions/             # W5 — ADR-001…007
+└── prototype/                 # Intentionally empty until research concludes
 ```
 
 ---
 
-## Roadmap
+## Getting involved
 
-Veja o roadmap completo em [`roadmap.md`](roadmap.md).
+SSRL is currently a research project. The most valuable contributions today:
 
----
-
-## Contributing
-
-Ainda não há código para contribuir — este é um projeto em estágio de pesquisa. Áreas onde discussão e crítica são bem-vindas:
-
-- Static Analysis
-- Knowledge Graphs
-- Program Analysis
-- Graph Databases
-- LLM Evaluation
+- Criticism of the vision and principles ([`docs/vision.md`](docs/vision.md))
+- Pointers to related work ([`docs/related-work.md`](docs/related-work.md))
+- Real-world comprehension pain points
 
 ---
 
-## Related Work
+## License
 
-- CodeQL
-- Program Dependence Graphs
-- Knowledge Graphs
-- RAG Systems
-- GraphRAG
-- Semantic Code Search
-- Software Knowledge Graphs
-
-Lista completa com contexto em [`docs/related-work.md`](docs/related-work.md).
-
----
-
-## Leia mais
-
-- 📄 **[Paper completo (SSRL v0.1)](paper/SSRL-v0.1.md)** — especificação arquitetural completa, princípios de design, modelo de confiança, ameaças à validade
-- 🏗️ **[Arquitetura física](docs/architecture.md)** — pipeline técnico (parser → graph builder → vector layer → semantic engine → storage → query engine)
-- 🧬 **[Schema do grafo](docs/graph-schema.md)** — definição formal e JSON schema dos nós e arestas
-- 🗺️ **[Roadmap](roadmap.md)** — de paper de pesquisa a protótipo end-to-end
-
----
-
-*SSRL não é uma linguagem de programação, nem um compilador, nem documentação. É uma tentativa de estabelecer uma camada de compreensão semântica acima dos sistemas de software — porque o próximo gargalo da engenharia não é gerar código, é entendê-lo.*
+[MIT](LICENSE) — © 2026 JGDEV

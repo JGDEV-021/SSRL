@@ -1,695 +1,86 @@
-# SSRL Architecture
-## Technical Architecture Specification (v0.1)
+# SSRL Architecture — Design Concerns & Decisions
 
-> This document describes the physical architecture of SSRL and the complete lifecycle of software knowledge extraction, enrichment, storage, and retrieval.
+- Version: **1.0 (frozen — Gate G1 passed)**
+- Status: D-1…D-7 resolved and **accepted** (ADR-001…007). D-8 has a working assumption (file-level hash+mtime) pending prototype data.
+
+> This document records the invariants the architecture must respect and the decisions the research phase resolved (ADR-001…007). D-1 is resolved by ADR-005; D-8 retains a working assumption (file-level hash+mtime cache) until prototype data indicates otherwise.
 
 ---
 
-# 1. Overview
+## 1. Architectural invariants (will not change)
 
-SSRL is designed as a multi-stage knowledge extraction pipeline.
+Derived from [`vision.md`](vision.md) and [`requirements.md`](requirements.md):
 
-The system transforms source code into structured software knowledge through a sequence of deterministic and probabilistic processing layers.
+1. **Derived, never authoritative.** The layer is always regenerated from code and never overrides it.
+2. **Facts and hypotheses are distinct.** Two epistemic classes, one storage-aware separation.
+3. **Traceability.** Every claim resolves to a code location.
+4. **Incremental sync.** Partial re-derivation is the default; full rebuild is the fallback.
+5. **Dual consumers.** Humans and AI agents are first-class.
+6. **Dev-friendly.** Friction above value does not ship (NFR-1).
 
-High-level flow:
+---
+
+## 2. Design drivers
+
+- **D1 — Cold start.** A new repository produces first value in minutes, zero config (NFR-1).
+- **D2 — Continuous truth.** Freshness bounded, incremental updates (NFR-3, FR-5).
+- **D3 — Honest uncertainty.** Hypothesis ≠ fact; confidence + evidence always present (P2, P3).
+- **D4 — Projection-agnostic core.** The model is stable no matter which projection is primary (P6).
+
+---
+
+## 3. Processing concerns
+
+Any implementation must address these stages; the ordering and technology are open:
 
 ```text
-Source Code
-    ↓
-Parser Layer
-    ↓
-Structural Graph Builder
-    ↓
-Vector Layer
-    ↓
-Semantic Engine
-    ↓
-Knowledge Storage
-    ↓
-Query Engine
-    ↓
-Humans / AI / Tools
+extraction    →  structural facts from source code (parser)
+modeling      →  facts + hypotheses in a stable, auditable model
+enrichment    →  hypotheses, confidence, evidence
+projection    →  interfaces for humans and AI (view layer)
+sync          →  incremental re-derivation on change
 ```
 
 ---
 
-# 2. Design Goals
+## 4. Decisions (resolved by ADR-001…007)
 
-The architecture must:
+| ID | Decision | Status |
+| --- | --- | --- |
+| **D-1** | Primary projection: **H1 grounded Q&A** (primary), H3 living narrative (co-primary, on-demand), H2/H4 supporting | **Resolved — ADR-005 (accepted)** |
+| **D-2** | First target language: **Python** | **Resolved — ADR-001** |
+| **D-3** | Storage: **derived `{nodes, edges}` artifact**, regenerated from code; SQLite as pre-declared escalation; no DB service in v1 | **Resolved — ADR-003** |
+| **D-4** | Parser: **stdlib `ast` first**; tree-sitter deferred (multi-language or incremental-scale fallback) | **Resolved — ADR-002** |
+| **D-5** | Hypothesis sources: **structure/naming first, LLM last (as proposer only)** | **Resolved — ADR-007** |
+| **D-6** | Embeddings/vector DB: **none** in fact layer or first projection | **Resolved — ADR-004** |
+| **D-7** | Integration: **CLI first, MCP second**; LSP/CI deferred | **Resolved — ADR-006** |
+| **D-8** | Incremental change granularity | **Working assumption (v1.0): file-level** via hash+mtime cache, per W4; revisit node-level only if freshness binds (NFR-3) |
 
-- Remain language-agnostic.
-- Support incremental updates.
-- Scale to large repositories.
-- Separate facts from hypotheses.
-- Support both humans and AI systems.
-- Preserve traceability.
-- Allow confidence-based reasoning.
+Decision records: [`/research/decisions/`](../research/decisions/ADR-index.md).
 
 ---
 
-# 3. Core Pipeline
+## 5. Reference flow (binding at v0.3, revisable by evidence)
 
 ```text
-Repository
-    ↓
-Parser
-    ↓
-Structural Extraction
-    ↓
-Graph Builder
-    ↓
-Knowledge Graph
-    ↓
-Vector Layer
-    ↓
-Semantic Engine
-    ↓
-Semantic Graph
-    ↓
-Storage Layer
-    ↓
-Query Engine
-    ↓
-Consumers
+Source code (Python)              storage: derived {nodes, edges} artifact
+    ↓  (extraction, stdlib ast)   (JSON; SQLite escalation; no DB service)
+Structural facts ──► stable model (facts + hypotheses)
+    ↓  (enrichment, w/ confidence + evidence)
+Semantic hypotheses
+    ↓                                projections
+Sync on change (hash+mtime)      ├── primary: grounded Q&A (H1, ADR-005)
+                                 ├── co-primary: living narrative (H3, on-demand)
+                                 └── supporting: graph, zoom (H2/H4), CI
 ```
 
----
-
-# 4. Parser Layer
-
-## Purpose
-
-Convert source code into deterministic structural representations.
-
-This layer performs no semantic inference.
-
-It only extracts facts.
+Graph and vector layer are **not** required components. Facts are derived structurally with zero vectors and zero probabilistic inference (ADR-002, ADR-004); hypotheses may use an LLM **as proposer only** (ADR-007).
 
 ---
 
-## Inputs
-
-Examples:
-
-```text
-Lua
-Python
-JavaScript
-TypeScript
-Go
-Java
-C#
-Rust
-```
-
----
-
-## Outputs
-
-Examples:
-
-```json
-{
-  "type": "function",
-  "name": "LoadInventory",
-  "file": "InventoryService.lua"
-}
-```
-
----
-
-## Responsibilities
-
-Extract:
-
-- Files
-- Modules
-- Classes
-- Functions
-- Interfaces
-- Imports
-- Exports
-- Events
-- Variables
-- Constants
-
----
-
-## Future
-
-Each language may have its own parser adapter:
-
-```text
-ParserAdapter
-├── LuaAdapter
-├── PythonAdapter
-├── JavaAdapter
-├── RustAdapter
-└── ...
-```
-
----
-
-# 5. Structural Graph Builder
-
-## Purpose
-
-Transform parser output into a deterministic software graph.
-
----
-
-## Input
-
-```json
-{
-  "function": "LoadInventory",
-  "calls": [
-    "GetProfile",
-    "LoadItems"
-  ]
-}
-```
-
----
-
-## Output
-
-```text
-LoadInventory
-    ↓
-GetProfile
-
-LoadInventory
-    ↓
-LoadItems
-```
-
----
-
-## Generated Relationships
-
-### Calls
-
-```text
-Function A
-    ↓
-calls
-    ↓
-Function B
-```
-
----
-
-### Imports
-
-```text
-Module A
-    ↓
-imports
-    ↓
-Module B
-```
-
----
-
-### Event Triggers
-
-```text
-Event
-    ↓
-triggers
-    ↓
-Handler
-```
-
----
-
-### Dependencies
-
-```text
-Service A
-    ↓
-depends_on
-    ↓
-Service B
-```
-
----
-
-## Result
-
-Structural Knowledge Graph.
-
-This graph contains only verifiable facts.
-
----
-
-# 6. Vector Layer
-
-## Purpose
-
-Create semantic representations of graph elements.
-
----
-
-## Why?
-
-Graphs are excellent for relationships.
-
-Vectors are excellent for meaning.
-
-SSRL combines both.
-
----
-
-## Input
-
-Graph nodes:
-
-```text
-InventoryService
-PurchaseHandler
-PlayerProfile
-SaveProfile
-```
-
----
-
-## Embedding Generation
-
-Possible sources:
-
-- Node names
-- Comments
-- Documentation
-- Function signatures
-- Structural context
-- Call patterns
-
----
-
-## Output
-
-```json
-{
-  "node": "InventoryService",
-  "embedding": [0.13, -0.22, ...]
-}
-```
-
----
-
-## Benefits
-
-Supports:
-
-- Semantic similarity
-- Clustering
-- Search
-- Retrieval
-- AI context generation
-
----
-
-# 7. Semantic Engine
-
-## Purpose
-
-Generate semantic hypotheses from structural evidence.
-
----
-
-## Inputs
-
-### Graph
-
-```text
-Player
-Inventory
-Purchase
-Currency
-```
-
-### Vectors
-
-Embeddings generated previously.
-
----
-
-## Semantic Sources
-
-### Structural Patterns
-
-Example:
-
-```text
-Purchase
-    ↓
-Currency
-    ↓
-Inventory
-```
-
-May indicate:
-
-```text
-Purchase System
-```
-
----
-
-### Naming Patterns
-
-Example:
-
-```text
-InventoryService
-InventoryManager
-InventoryController
-```
-
----
-
-### Documentation
-
-Example:
-
-```text
-Handles player inventory persistence.
-```
-
----
-
-### LLM Analysis
-
-The LLM never becomes the source of truth.
-
-It only proposes hypotheses.
-
----
-
-## Outputs
-
-```yaml
-Hypothesis:
-  Inventory Management System
-
-Confidence:
-  0.87
-```
-
----
-
-## Important Principle
-
-Facts and hypotheses remain separate.
-
-Never:
-
-```text
-Hypothesis → Fact
-```
-
-Always:
-
-```text
-Fact → Hypothesis
-```
-
----
-
-# 8. Knowledge Storage Layer
-
-## Purpose
-
-Persist SSRL knowledge.
-
----
-
-## Storage Types
-
-### Graph Database
-
-Stores:
-
-- Nodes
-- Edges
-- Relationships
-
-Examples:
-
-```text
-Neo4j
-Memgraph
-ArangoDB
-```
-
----
-
-### Vector Database
-
-Stores:
-
-- Embeddings
-- Similarity indexes
-
-Examples:
-
-```text
-Qdrant
-Weaviate
-Milvus
-pgvector
-```
-
----
-
-### Metadata Store
-
-Stores:
-
-- Confidence
-- Versions
-- Statistics
-- Analysis metadata
-
-Examples:
-
-```text
-PostgreSQL
-SQLite
-```
-
----
-
-# 9. Query Engine
-
-## Purpose
-
-Provide a unified interface for knowledge retrieval.
-
----
-
-## Example Questions
-
-### Human Questions
-
-```text
-What happens when a player joins?
-```
-
-```text
-Which systems depend on Inventory?
-```
-
-```text
-Which components interact with payments?
-```
-
----
-
-### AI Questions
-
-```text
-Generate architecture summary.
-```
-
-```text
-Explain the onboarding flow.
-```
-
-```text
-Find potential architectural bottlenecks.
-```
-
----
-
-## Query Pipeline
-
-```text
-Question
-    ↓
-Intent Detection
-    ↓
-Graph Retrieval
-    ↓
-Vector Retrieval
-    ↓
-Semantic Context
-    ↓
-Response
-```
-
----
-
-# 10. Incremental Update Engine
-
-## Problem
-
-Rebuilding everything after every change does not scale.
-
----
-
-## Proposed Flow
-
-```text
-Code Change
-    ↓
-Affected Nodes
-    ↓
-Affected Edges
-    ↓
-Affected Semantic Region
-    ↓
-Partial Regeneration
-```
-
----
-
-## Example
-
-```text
-InventoryService.lua modified
-```
-
-Only reprocess:
-
-```text
-InventoryService
-
-LoadInventory
-
-SaveInventory
-
-Related Flows
-```
-
-Not the entire repository.
-
----
-
-# 11. Consumers
-
-## Human Developers
-
-Use SSRL to:
-
-- Understand systems
-- Navigate architecture
-- Onboard faster
-- Audit dependencies
-
----
-
-## AI Systems
-
-Use SSRL to:
-
-- Retrieve context
-- Understand architecture
-- Generate summaries
-- Explain behavior
-
----
-
-## IDE Plugins
-
-Potential integrations:
-
-- VSCode
-- Roblox Studio
-- JetBrains
-- Neovim
-
----
-
-## CI/CD
-
-Potential usage:
-
-```text
-Pull Request
-    ↓
-SSRL Analysis
-    ↓
-Architecture Impact Report
-```
-
----
-
-# 12. Reference Architecture
-
-```text
-                    ┌───────────────┐
-                    │ Source Code   │
-                    └───────┬───────┘
-                            │
-                            ▼
-                    ┌───────────────┐
-                    │ Parser Layer  │
-                    └───────┬───────┘
-                            │
-                            ▼
-               ┌────────────────────────┐
-               │ Structural Graph Builder│
-               └───────────┬────────────┘
-                           │
-                           ▼
-                ┌─────────────────────┐
-                │ Knowledge Graph     │
-                └───────┬─────────────┘
-                        │
-                        ▼
-                ┌─────────────────────┐
-                │ Vector Layer        │
-                └───────┬─────────────┘
-                        │
-                        ▼
-                ┌─────────────────────┐
-                │ Semantic Engine     │
-                └───────┬─────────────┘
-                        │
-                        ▼
-                ┌─────────────────────┐
-                │ Storage Layer       │
-                └───────┬─────────────┘
-                        │
-                        ▼
-                ┌─────────────────────┐
-                │ Query Engine        │
-                └───────┬─────────────┘
-                        │
-        ┌───────────────┼───────────────┐
-        ▼               ▼               ▼
-    Humans            AI            Tooling
-```
-
----
-
-# Architecture Philosophy
-
-> Source code stores implementation.
->
-> SSRL stores knowledge.
->
-> Knowledge must remain derivable, traceable, and explainable.
+## 6. Integration surfaces (resolved by ADR-006)
+
+- **CLI** (`ssrl <repo>`) — dev-friendly cold start; the v1 surface
+- **MCP** — grounded context for AI agents (FR-7); the v1.5 surface
+- ~~IDE extension (via LSP or editor API)~~ — deferred
+- ~~CI report~~ — deferred; candidate for a supporting projection

@@ -1,0 +1,5110 @@
+{
+ "stats": {
+  "files": 31,
+  "parse_ok": 31,
+  "parse_errors": [],
+  "nodes": 235,
+  "edges": 569,
+  "functions": 203,
+  "imports": 227,
+  "elapsed_s": 0.558,
+  "calls_total": 1895,
+  "calls_resolved_local": 220,
+  "calls_unresolved": 1675,
+  "top_unresolved": [
+   [
+    "get",
+    143
+   ],
+   [
+    "len",
+    114
+   ],
+   [
+    "print",
+    83
+   ],
+   [
+    "append",
+    82
+   ],
+   [
+    "str",
+    69
+   ],
+   [
+    "execute",
+    59
+   ],
+   [
+    "strip",
+    47
+   ],
+   [
+    "join",
+    40
+   ],
+   [
+    "round",
+    27
+   ],
+   [
+    "replace",
+    26
+   ],
+   [
+    "Path",
+    24
+   ],
+   [
+    "group",
+    23
+   ],
+   [
+    "open",
+    23
+   ],
+   [
+    "add_argument",
+    21
+   ],
+   [
+    "int",
+    21
+   ]
+  ],
+  "parse_error_count": 0
+ },
+ "nodes": [
+  {
+   "id": "module::benchmark",
+   "type": "Module",
+   "name": "benchmark",
+   "path": "benchmark.py"
+  },
+  {
+   "id": "func::benchmark::_expected_hit",
+   "type": "Function",
+   "name": "_expected_hit",
+   "module": "benchmark",
+   "line": 54
+  },
+  {
+   "id": "func::benchmark::_run_db",
+   "type": "Function",
+   "name": "_run_db",
+   "module": "benchmark",
+   "line": 66
+  },
+  {
+   "id": "func::benchmark::bench",
+   "type": "Function",
+   "name": "bench",
+   "module": "benchmark",
+   "line": 116
+  },
+  {
+   "id": "func::benchmark::_render",
+   "type": "Function",
+   "name": "_render",
+   "module": "benchmark",
+   "line": 157
+  },
+  {
+   "id": "func::benchmark::main",
+   "type": "Function",
+   "name": "main",
+   "module": "benchmark",
+   "line": 185
+  },
+  {
+   "id": "module::chunker",
+   "type": "Module",
+   "name": "chunker",
+   "path": "chunker.py"
+  },
+  {
+   "id": "func::chunker::_member_metadata",
+   "type": "Function",
+   "name": "_member_metadata",
+   "module": "chunker",
+   "line": 56
+  },
+  {
+   "id": "func::chunker::yaml_to_markdown",
+   "type": "Function",
+   "name": "yaml_to_markdown",
+   "module": "chunker",
+   "line": 98
+  },
+  {
+   "id": "func::chunker::__post_init__",
+   "type": "Method",
+   "name": "__post_init__",
+   "module": "chunker",
+   "line": 159
+  },
+  {
+   "id": "func::chunker::strip_markdown_links",
+   "type": "Function",
+   "name": "strip_markdown_links",
+   "module": "chunker",
+   "line": 163
+  },
+  {
+   "id": "func::chunker::extract_title",
+   "type": "Function",
+   "name": "extract_title",
+   "module": "chunker",
+   "line": 170
+  },
+  {
+   "id": "func::chunker::_normalize_html_headings",
+   "type": "Function",
+   "name": "_normalize_html_headings",
+   "module": "chunker",
+   "line": 182
+  },
+  {
+   "id": "func::chunker::_repl",
+   "type": "Function",
+   "name": "_repl",
+   "module": "chunker",
+   "line": 186
+  },
+  {
+   "id": "func::chunker::split_sections",
+   "type": "Function",
+   "name": "split_sections",
+   "module": "chunker",
+   "line": 198
+  },
+  {
+   "id": "func::chunker::_finish_code",
+   "type": "Function",
+   "name": "_finish_code",
+   "module": "chunker",
+   "line": 213
+  },
+  {
+   "id": "func::chunker::_section_text",
+   "type": "Function",
+   "name": "_section_text",
+   "module": "chunker",
+   "line": 256
+  },
+  {
+   "id": "func::chunker::_is_reference",
+   "type": "Function",
+   "name": "_is_reference",
+   "module": "chunker",
+   "line": 268
+  },
+  {
+   "id": "func::chunker::_chunk_member",
+   "type": "Function",
+   "name": "_chunk_member",
+   "module": "chunker",
+   "line": 274
+  },
+  {
+   "id": "func::chunker::chunk_reference",
+   "type": "Function",
+   "name": "chunk_reference",
+   "module": "chunker",
+   "line": 288
+  },
+  {
+   "id": "func::chunker::_flush_members",
+   "type": "Function",
+   "name": "_flush_members",
+   "module": "chunker",
+   "line": 305
+  },
+  {
+   "id": "func::chunker::_split_long_text",
+   "type": "Function",
+   "name": "_split_long_text",
+   "module": "chunker",
+   "line": 342
+  },
+  {
+   "id": "func::chunker::_flush",
+   "type": "Function",
+   "name": "_flush",
+   "module": "chunker",
+   "line": 349
+  },
+  {
+   "id": "func::chunker::chunk_article",
+   "type": "Function",
+   "name": "chunk_article",
+   "module": "chunker",
+   "line": 369
+  },
+  {
+   "id": "func::chunker::_flush",
+   "type": "Function",
+   "name": "_flush",
+   "module": "chunker",
+   "line": 376
+  },
+  {
+   "id": "func::chunker::_word_count",
+   "type": "Function",
+   "name": "_word_count",
+   "module": "chunker",
+   "line": 431
+  },
+  {
+   "id": "func::chunker::extract_frontmatter_description",
+   "type": "Function",
+   "name": "extract_frontmatter_description",
+   "module": "chunker",
+   "line": 439
+  },
+  {
+   "id": "func::chunker::chunk_markdown",
+   "type": "Function",
+   "name": "chunk_markdown",
+   "module": "chunker",
+   "line": 445
+  },
+  {
+   "id": "func::chunker::iter_page_chunks",
+   "type": "Function",
+   "name": "iter_page_chunks",
+   "module": "chunker",
+   "line": 482
+  },
+  {
+   "id": "module::cli",
+   "type": "Module",
+   "name": "cli",
+   "path": "cli.py"
+  },
+  {
+   "id": "func::cli::_print_json",
+   "type": "Function",
+   "name": "_print_json",
+   "module": "cli",
+   "line": 30
+  },
+  {
+   "id": "func::cli::_cmd_build",
+   "type": "Function",
+   "name": "_cmd_build",
+   "module": "cli",
+   "line": 34
+  },
+  {
+   "id": "func::cli::_cmd_status",
+   "type": "Function",
+   "name": "_cmd_status",
+   "module": "cli",
+   "line": 42
+  },
+  {
+   "id": "func::cli::_cmd_search",
+   "type": "Function",
+   "name": "_cmd_search",
+   "module": "cli",
+   "line": 47
+  },
+  {
+   "id": "func::cli::_cmd_context",
+   "type": "Function",
+   "name": "_cmd_context",
+   "module": "cli",
+   "line": 67
+  },
+  {
+   "id": "func::cli::_cmd_purge",
+   "type": "Function",
+   "name": "_cmd_purge",
+   "module": "cli",
+   "line": 73
+  },
+  {
+   "id": "func::cli::_cmd_embed",
+   "type": "Function",
+   "name": "_cmd_embed",
+   "module": "cli",
+   "line": 78
+  },
+  {
+   "id": "func::cli::_cmd_quality",
+   "type": "Function",
+   "name": "_cmd_quality",
+   "module": "cli",
+   "line": 84
+  },
+  {
+   "id": "func::cli::_cmd_bench",
+   "type": "Function",
+   "name": "_cmd_bench",
+   "module": "cli",
+   "line": 94
+  },
+  {
+   "id": "func::cli::main",
+   "type": "Function",
+   "name": "main",
+   "module": "cli",
+   "line": 107
+  },
+  {
+   "id": "module::config",
+   "type": "Module",
+   "name": "config",
+   "path": "config.py"
+  },
+  {
+   "id": "func::config::ensure_dirs",
+   "type": "Function",
+   "name": "ensure_dirs",
+   "module": "config",
+   "line": 66
+  },
+  {
+   "id": "module::context",
+   "type": "Module",
+   "name": "context",
+   "path": "context.py"
+  },
+  {
+   "id": "func::context::_result_line",
+   "type": "Function",
+   "name": "_result_line",
+   "module": "context",
+   "line": 16
+  },
+  {
+   "id": "func::context::search_for_context",
+   "type": "Function",
+   "name": "search_for_context",
+   "module": "context",
+   "line": 33
+  },
+  {
+   "id": "func::context::build_context",
+   "type": "Function",
+   "name": "build_context",
+   "module": "context",
+   "line": 52
+  },
+  {
+   "id": "module::db",
+   "type": "Module",
+   "name": "db",
+   "path": "db.py"
+  },
+  {
+   "id": "func::db::connect",
+   "type": "Function",
+   "name": "connect",
+   "module": "db",
+   "line": 73
+  },
+  {
+   "id": "func::db::init_db",
+   "type": "Function",
+   "name": "init_db",
+   "module": "db",
+   "line": 92
+  },
+  {
+   "id": "func::db::_migrate",
+   "type": "Function",
+   "name": "_migrate",
+   "module": "db",
+   "line": 100
+  },
+  {
+   "id": "func::db::set_meta",
+   "type": "Function",
+   "name": "set_meta",
+   "module": "db",
+   "line": 119
+  },
+  {
+   "id": "func::db::get_meta",
+   "type": "Function",
+   "name": "get_meta",
+   "module": "db",
+   "line": 129
+  },
+  {
+   "id": "func::db::get_meta_int",
+   "type": "Function",
+   "name": "get_meta_int",
+   "module": "db",
+   "line": 135
+  },
+  {
+   "id": "func::db::purge",
+   "type": "Function",
+   "name": "purge",
+   "module": "db",
+   "line": 143
+  },
+  {
+   "id": "func::db::close",
+   "type": "Function",
+   "name": "close",
+   "module": "db",
+   "line": 153
+  },
+  {
+   "id": "module::embedder",
+   "type": "Module",
+   "name": "embedder",
+   "path": "embedder.py"
+  },
+  {
+   "id": "func::embedder::__init__",
+   "type": "Method",
+   "name": "__init__",
+   "module": "embedder",
+   "line": 26
+  },
+  {
+   "id": "func::embedder::available",
+   "type": "Method",
+   "name": "available",
+   "module": "embedder",
+   "line": 34
+  },
+  {
+   "id": "func::embedder::load",
+   "type": "Method",
+   "name": "load",
+   "module": "embedder",
+   "line": 39
+  },
+  {
+   "id": "func::embedder::_detect_dim",
+   "type": "Method",
+   "name": "_detect_dim",
+   "module": "embedder",
+   "line": 61
+  },
+  {
+   "id": "func::embedder::dim",
+   "type": "Method",
+   "name": "dim",
+   "module": "embedder",
+   "line": 84
+  },
+  {
+   "id": "func::embedder::embed",
+   "type": "Method",
+   "name": "embed",
+   "module": "embedder",
+   "line": 88
+  },
+  {
+   "id": "func::embedder::get_embedder",
+   "type": "Function",
+   "name": "get_embedder",
+   "module": "embedder",
+   "line": 104
+  },
+  {
+   "id": "func::embedder::encode",
+   "type": "Function",
+   "name": "encode",
+   "module": "embedder",
+   "line": 123
+  },
+  {
+   "id": "module::evidence",
+   "type": "Module",
+   "name": "evidence",
+   "path": "evidence.py"
+  },
+  {
+   "id": "func::evidence::_token_overlap",
+   "type": "Function",
+   "name": "_token_overlap",
+   "module": "evidence",
+   "line": 36
+  },
+  {
+   "id": "func::evidence::_rag_coverage",
+   "type": "Function",
+   "name": "_rag_coverage",
+   "module": "evidence",
+   "line": 45
+  },
+  {
+   "id": "func::evidence::_external_coverage",
+   "type": "Function",
+   "name": "_external_coverage",
+   "module": "evidence",
+   "line": 72
+  },
+  {
+   "id": "func::evidence::assess_requirement",
+   "type": "Function",
+   "name": "assess_requirement",
+   "module": "evidence",
+   "line": 99
+  },
+  {
+   "id": "module::expand",
+   "type": "Module",
+   "name": "expand",
+   "path": "expand.py"
+  },
+  {
+   "id": "func::expand::_terms",
+   "type": "Function",
+   "name": "_terms",
+   "module": "expand",
+   "line": 123
+  },
+  {
+   "id": "func::expand::_lookup_terms",
+   "type": "Function",
+   "name": "_lookup_terms",
+   "module": "expand",
+   "line": 133
+  },
+  {
+   "id": "func::expand::expand_tokens",
+   "type": "Function",
+   "name": "expand_tokens",
+   "module": "expand",
+   "line": 149
+  },
+  {
+   "id": "func::expand::build_expanded_match",
+   "type": "Function",
+   "name": "build_expanded_match",
+   "module": "expand",
+   "line": 157
+  },
+  {
+   "id": "func::expand::expand_query",
+   "type": "Function",
+   "name": "expand_query",
+   "module": "expand",
+   "line": 173
+  },
+  {
+   "id": "func::expand::query_groups",
+   "type": "Function",
+   "name": "query_groups",
+   "module": "expand",
+   "line": 193
+  },
+  {
+   "id": "module::indexer",
+   "type": "Module",
+   "name": "indexer",
+   "path": "indexer.py"
+  },
+  {
+   "id": "func::indexer::_sha",
+   "type": "Function",
+   "name": "_sha",
+   "module": "indexer",
+   "line": 32
+  },
+  {
+   "id": "func::indexer::_pack_vector",
+   "type": "Function",
+   "name": "_pack_vector",
+   "module": "indexer",
+   "line": 36
+  },
+  {
+   "id": "func::indexer::_upsert_source",
+   "type": "Function",
+   "name": "_upsert_source",
+   "module": "indexer",
+   "line": 45
+  },
+  {
+   "id": "func::indexer::_insert_chunks",
+   "type": "Function",
+   "name": "_insert_chunks",
+   "module": "indexer",
+   "line": 77
+  },
+  {
+   "id": "func::indexer::_page_chunks",
+   "type": "Function",
+   "name": "_page_chunks",
+   "module": "indexer",
+   "line": 112
+  },
+  {
+   "id": "func::indexer::_replace_chunks",
+   "type": "Function",
+   "name": "_replace_chunks",
+   "module": "indexer",
+   "line": 127
+  },
+  {
+   "id": "func::indexer::_chunk_key",
+   "type": "Function",
+   "name": "_chunk_key",
+   "module": "indexer",
+   "line": 140
+  },
+  {
+   "id": "func::indexer::_dedup_chunks",
+   "type": "Function",
+   "name": "_dedup_chunks",
+   "module": "indexer",
+   "line": 144
+  },
+  {
+   "id": "func::indexer::_sweep_duplicates",
+   "type": "Function",
+   "name": "_sweep_duplicates",
+   "module": "indexer",
+   "line": 160
+  },
+  {
+   "id": "func::indexer::_ensure_source_chunks",
+   "type": "Function",
+   "name": "_ensure_source_chunks",
+   "module": "indexer",
+   "line": 185
+  },
+  {
+   "id": "func::indexer::_chunks_unchanged",
+   "type": "Function",
+   "name": "_chunks_unchanged",
+   "module": "indexer",
+   "line": 226
+  },
+  {
+   "id": "func::indexer::_backfill_embeddings",
+   "type": "Function",
+   "name": "_backfill_embeddings",
+   "module": "indexer",
+   "line": 240
+  },
+  {
+   "id": "func::indexer::build",
+   "type": "Function",
+   "name": "build",
+   "module": "indexer",
+   "line": 275
+  },
+  {
+   "id": "func::indexer::embed",
+   "type": "Function",
+   "name": "embed",
+   "module": "indexer",
+   "line": 414
+  },
+  {
+   "id": "func::indexer::stats",
+   "type": "Function",
+   "name": "stats",
+   "module": "indexer",
+   "line": 446
+  },
+  {
+   "id": "func::indexer::purge",
+   "type": "Function",
+   "name": "purge",
+   "module": "indexer",
+   "line": 483
+  },
+  {
+   "id": "func::indexer::_count",
+   "type": "Function",
+   "name": "_count",
+   "module": "indexer",
+   "line": 489
+  },
+  {
+   "id": "module::ingest",
+   "type": "Module",
+   "name": "ingest",
+   "path": "ingest.py"
+  },
+  {
+   "id": "func::ingest::classify_doc_type",
+   "type": "Function",
+   "name": "classify_doc_type",
+   "module": "ingest",
+   "line": 53
+  },
+  {
+   "id": "func::ingest::doc_url",
+   "type": "Function",
+   "name": "doc_url",
+   "module": "ingest",
+   "line": 89
+  },
+  {
+   "id": "func::ingest::source_path",
+   "type": "Function",
+   "name": "source_path",
+   "module": "ingest",
+   "line": 112
+  },
+  {
+   "id": "func::ingest::_run_git",
+   "type": "Function",
+   "name": "_run_git",
+   "module": "ingest",
+   "line": 129
+  },
+  {
+   "id": "func::ingest::_download_tarball",
+   "type": "Function",
+   "name": "_download_tarball",
+   "module": "ingest",
+   "line": 143
+  },
+  {
+   "id": "func::ingest::ensure_repo",
+   "type": "Function",
+   "name": "ensure_repo",
+   "module": "ingest",
+   "line": 169
+  },
+  {
+   "id": "func::ingest::ensure_llms_full",
+   "type": "Function",
+   "name": "ensure_llms_full",
+   "module": "ingest",
+   "line": 189
+  },
+  {
+   "id": "func::ingest::iter_md_files",
+   "type": "Function",
+   "name": "iter_md_files",
+   "module": "ingest",
+   "line": 199
+  },
+  {
+   "id": "func::ingest::iter_reference_yaml",
+   "type": "Function",
+   "name": "iter_reference_yaml",
+   "module": "ingest",
+   "line": 210
+  },
+  {
+   "id": "func::ingest::ensure_frameworks",
+   "type": "Function",
+   "name": "ensure_frameworks",
+   "module": "ingest",
+   "line": 224
+  },
+  {
+   "id": "func::ingest::iter_framework_files",
+   "type": "Function",
+   "name": "iter_framework_files",
+   "module": "ingest",
+   "line": 238
+  },
+  {
+   "id": "func::ingest::iter_curated_files",
+   "type": "Function",
+   "name": "iter_curated_files",
+   "module": "ingest",
+   "line": 249
+  },
+  {
+   "id": "func::ingest::iter_design_files",
+   "type": "Function",
+   "name": "iter_design_files",
+   "module": "ingest",
+   "line": 257
+  },
+  {
+   "id": "func::ingest::iter_doc_files",
+   "type": "Function",
+   "name": "iter_doc_files",
+   "module": "ingest",
+   "line": 271
+  },
+  {
+   "id": "func::ingest::read_file",
+   "type": "Function",
+   "name": "read_file",
+   "module": "ingest",
+   "line": 296
+  },
+  {
+   "id": "module::quality",
+   "type": "Module",
+   "name": "quality",
+   "path": "quality.py"
+  },
+  {
+   "id": "func::quality::rate",
+   "type": "Method",
+   "name": "rate",
+   "module": "quality",
+   "line": 65
+  },
+  {
+   "id": "func::quality::_is_nav_only",
+   "type": "Function",
+   "name": "_is_nav_only",
+   "module": "quality",
+   "line": 70
+  },
+  {
+   "id": "func::quality::analyze",
+   "type": "Function",
+   "name": "analyze",
+   "module": "quality",
+   "line": 94
+  },
+  {
+   "id": "func::quality::render_markdown",
+   "type": "Function",
+   "name": "render_markdown",
+   "module": "quality",
+   "line": 249
+  },
+  {
+   "id": "func::quality::write_report",
+   "type": "Function",
+   "name": "write_report",
+   "module": "quality",
+   "line": 319
+  },
+  {
+   "id": "module::refapi",
+   "type": "Module",
+   "name": "refapi",
+   "path": "refapi.py"
+  },
+  {
+   "id": "func::refapi::clear_cache",
+   "type": "Function",
+   "name": "clear_cache",
+   "module": "refapi",
+   "line": 53
+  },
+  {
+   "id": "func::refapi::_classes_dir",
+   "type": "Function",
+   "name": "_classes_dir",
+   "module": "refapi",
+   "line": 61
+  },
+  {
+   "id": "func::refapi::_class_file",
+   "type": "Function",
+   "name": "_class_file",
+   "module": "refapi",
+   "line": 76
+  },
+  {
+   "id": "func::refapi::load_class",
+   "type": "Function",
+   "name": "load_class",
+   "module": "refapi",
+   "line": 86
+  },
+  {
+   "id": "func::refapi::class_ancestors",
+   "type": "Function",
+   "name": "class_ancestors",
+   "module": "refapi",
+   "line": 101
+  },
+  {
+   "id": "func::refapi::class_exists",
+   "type": "Function",
+   "name": "class_exists",
+   "module": "refapi",
+   "line": 119
+  },
+  {
+   "id": "func::refapi::_security",
+   "type": "Function",
+   "name": "_security",
+   "module": "refapi",
+   "line": 126
+  },
+  {
+   "id": "func::refapi::_ser",
+   "type": "Function",
+   "name": "_ser",
+   "module": "refapi",
+   "line": 136
+  },
+  {
+   "id": "func::refapi::normalize_property",
+   "type": "Function",
+   "name": "normalize_property",
+   "module": "refapi",
+   "line": 145
+  },
+  {
+   "id": "func::refapi::property_profile",
+   "type": "Function",
+   "name": "property_profile",
+   "module": "refapi",
+   "line": 182
+  },
+  {
+   "id": "func::refapi::_build_index",
+   "type": "Function",
+   "name": "_build_index",
+   "module": "refapi",
+   "line": 257
+  },
+  {
+   "id": "func::refapi::_match_score",
+   "type": "Function",
+   "name": "_match_score",
+   "module": "refapi",
+   "line": 282
+  },
+  {
+   "id": "func::refapi::search_properties",
+   "type": "Function",
+   "name": "search_properties",
+   "module": "refapi",
+   "line": 305
+  },
+  {
+   "id": "module::retriever",
+   "type": "Module",
+   "name": "retriever",
+   "path": "retriever.py"
+  },
+  {
+   "id": "func::retriever::_project_filter",
+   "type": "Function",
+   "name": "_project_filter",
+   "module": "retriever",
+   "line": 58
+  },
+  {
+   "id": "func::retriever::_index_exists",
+   "type": "Function",
+   "name": "_index_exists",
+   "module": "retriever",
+   "line": 64
+  },
+  {
+   "id": "func::retriever::_candidates",
+   "type": "Function",
+   "name": "_candidates",
+   "module": "retriever",
+   "line": 68
+  },
+  {
+   "id": "func::retriever::_candidates_or_fallback",
+   "type": "Function",
+   "name": "_candidates_or_fallback",
+   "module": "retriever",
+   "line": 86
+  },
+  {
+   "id": "func::retriever::_api_query",
+   "type": "Function",
+   "name": "_api_query",
+   "module": "retriever",
+   "line": 140
+  },
+  {
+   "id": "func::retriever::_unpack_vector",
+   "type": "Function",
+   "name": "_unpack_vector",
+   "module": "retriever",
+   "line": 150
+  },
+  {
+   "id": "func::retriever::_minmax",
+   "type": "Function",
+   "name": "_minmax",
+   "module": "retriever",
+   "line": 155
+  },
+  {
+   "id": "func::retriever::_cosine_scores",
+   "type": "Function",
+   "name": "_cosine_scores",
+   "module": "retriever",
+   "line": 165
+  },
+  {
+   "id": "func::retriever::search",
+   "type": "Function",
+   "name": "search",
+   "module": "retriever",
+   "line": 197
+  },
+  {
+   "id": "module::scripts",
+   "type": "Module",
+   "name": "scripts",
+   "path": "scripts.py"
+  },
+  {
+   "id": "func::scripts::split_script_code",
+   "type": "Function",
+   "name": "split_script_code",
+   "module": "scripts",
+   "line": 41
+  },
+  {
+   "id": "func::scripts::index_scripts",
+   "type": "Function",
+   "name": "index_scripts",
+   "module": "scripts",
+   "line": 92
+  },
+  {
+   "id": "func::scripts::_replace_source_chunks",
+   "type": "Function",
+   "name": "_replace_source_chunks",
+   "module": "scripts",
+   "line": 171
+  },
+  {
+   "id": "func::scripts::remove_project_scripts",
+   "type": "Function",
+   "name": "remove_project_scripts",
+   "module": "scripts",
+   "line": 180
+  },
+  {
+   "id": "module::textutil",
+   "type": "Module",
+   "name": "textutil",
+   "path": "textutil.py"
+  },
+  {
+   "id": "func::textutil::split_identifiers",
+   "type": "Function",
+   "name": "split_identifiers",
+   "module": "textutil",
+   "line": 25
+  },
+  {
+   "id": "func::textutil::tokenize",
+   "type": "Function",
+   "name": "tokenize",
+   "module": "textutil",
+   "line": 33
+  },
+  {
+   "id": "func::textutil::fts_query",
+   "type": "Function",
+   "name": "fts_query",
+   "module": "textutil",
+   "line": 38
+  },
+  {
+   "id": "func::textutil::clean_snippet",
+   "type": "Function",
+   "name": "clean_snippet",
+   "module": "textutil",
+   "line": 47
+  },
+  {
+   "id": "module::trust",
+   "type": "Module",
+   "name": "trust",
+   "path": "trust.py"
+  },
+  {
+   "id": "func::trust::authority",
+   "type": "Function",
+   "name": "authority",
+   "module": "trust",
+   "line": 73
+  },
+  {
+   "id": "func::trust::source_trust",
+   "type": "Function",
+   "name": "source_trust",
+   "module": "trust",
+   "line": 80
+  },
+  {
+   "id": "func::trust::implementation_quality",
+   "type": "Function",
+   "name": "implementation_quality",
+   "module": "trust",
+   "line": 87
+  },
+  {
+   "id": "func::trust::devforum_quality_boost",
+   "type": "Function",
+   "name": "devforum_quality_boost",
+   "module": "trust",
+   "line": 129
+  },
+  {
+   "id": "func::trust::reddit_quality_boost",
+   "type": "Function",
+   "name": "reddit_quality_boost",
+   "module": "trust",
+   "line": 144
+  },
+  {
+   "id": "func::trust::final_score",
+   "type": "Function",
+   "name": "final_score",
+   "module": "trust",
+   "line": 164
+  },
+  {
+   "id": "module::__init__",
+   "type": "Module",
+   "name": "__init__",
+   "path": "__init__.py"
+  },
+  {
+   "id": "module::__main__",
+   "type": "Module",
+   "name": "__main__",
+   "path": "__main__.py"
+  },
+  {
+   "id": "module::data._dryrun",
+   "type": "Module",
+   "name": "data/_dryrun",
+   "path": "data/_dryrun.py"
+  },
+  {
+   "id": "module::data._simulate_queries",
+   "type": "Module",
+   "name": "data/_simulate_queries",
+   "path": "data/_simulate_queries.py"
+  },
+  {
+   "id": "module::data.frameworks.knit.last_changelog",
+   "type": "Module",
+   "name": "data/frameworks/knit/last_changelog",
+   "path": "data/frameworks/knit/last_changelog.py"
+  },
+  {
+   "id": "func::data.frameworks.knit.last_changelog::get_last_changelog_entry",
+   "type": "Function",
+   "name": "get_last_changelog_entry",
+   "module": "data.frameworks.knit.last_changelog",
+   "line": 3
+  },
+  {
+   "id": "module::data.frameworks.rbxutil.build_list",
+   "type": "Module",
+   "name": "data/frameworks/rbxutil/build_list",
+   "path": "data/frameworks/rbxutil/build_list.py"
+  },
+  {
+   "id": "func::data.frameworks.rbxutil.build_list::pretty_display_name",
+   "type": "Function",
+   "name": "pretty_display_name",
+   "module": "data.frameworks.rbxutil.build_list",
+   "line": 20
+  },
+  {
+   "id": "func::data.frameworks.rbxutil.build_list::get_wally_info",
+   "type": "Function",
+   "name": "get_wally_info",
+   "module": "data.frameworks.rbxutil.build_list",
+   "line": 28
+  },
+  {
+   "id": "func::data.frameworks.rbxutil.build_list::build",
+   "type": "Function",
+   "name": "build",
+   "module": "data.frameworks.rbxutil.build_list",
+   "line": 45
+  },
+  {
+   "id": "module::data.frameworks.rbxutil.build_readme",
+   "type": "Module",
+   "name": "data/frameworks/rbxutil/build_readme",
+   "path": "data/frameworks/rbxutil/build_readme.py"
+  },
+  {
+   "id": "func::data.frameworks.rbxutil.build_readme::pretty_display_name",
+   "type": "Function",
+   "name": "pretty_display_name",
+   "module": "data.frameworks.rbxutil.build_readme",
+   "line": 10
+  },
+  {
+   "id": "func::data.frameworks.rbxutil.build_readme::build",
+   "type": "Function",
+   "name": "build",
+   "module": "data.frameworks.rbxutil.build_readme",
+   "line": 18
+  },
+  {
+   "id": "module::data.frameworks.rbxutil.build_tests",
+   "type": "Module",
+   "name": "data/frameworks/rbxutil/build_tests",
+   "path": "data/frameworks/rbxutil/build_tests.py"
+  },
+  {
+   "id": "func::data.frameworks.rbxutil.build_tests::update_test_file",
+   "type": "Function",
+   "name": "update_test_file",
+   "module": "data.frameworks.rbxutil.build_tests",
+   "line": 17
+  },
+  {
+   "id": "func::data.frameworks.rbxutil.build_tests::__init__",
+   "type": "Method",
+   "name": "__init__",
+   "module": "data.frameworks.rbxutil.build_tests",
+   "line": 26
+  },
+  {
+   "id": "func::data.frameworks.rbxutil.build_tests::on_modified",
+   "type": "Method",
+   "name": "on_modified",
+   "module": "data.frameworks.rbxutil.build_tests",
+   "line": 28
+  },
+  {
+   "id": "func::data.frameworks.rbxutil.build_tests::pretty_display_name",
+   "type": "Function",
+   "name": "pretty_display_name",
+   "module": "data.frameworks.rbxutil.build_tests",
+   "line": 39
+  },
+  {
+   "id": "func::data.frameworks.rbxutil.build_tests::build_tests",
+   "type": "Function",
+   "name": "build_tests",
+   "module": "data.frameworks.rbxutil.build_tests",
+   "line": 46
+  },
+  {
+   "id": "module::data.frameworks.rbxutil.run_tests",
+   "type": "Module",
+   "name": "data/frameworks/rbxutil/run_tests",
+   "path": "data/frameworks/rbxutil/run_tests.py"
+  },
+  {
+   "id": "func::data.frameworks.rbxutil.run_tests::run_script",
+   "type": "Function",
+   "name": "run_script",
+   "module": "data.frameworks.rbxutil.run_tests",
+   "line": 15
+  },
+  {
+   "id": "func::data.frameworks.rbxutil.run_tests::get_script_status",
+   "type": "Function",
+   "name": "get_script_status",
+   "module": "data.frameworks.rbxutil.run_tests",
+   "line": 38
+  },
+  {
+   "id": "func::data.frameworks.rbxutil.run_tests::await_script_completion",
+   "type": "Function",
+   "name": "await_script_completion",
+   "module": "data.frameworks.rbxutil.run_tests",
+   "line": 46
+  },
+  {
+   "id": "func::data.frameworks.rbxutil.run_tests::run_tests",
+   "type": "Function",
+   "name": "run_tests",
+   "module": "data.frameworks.rbxutil.run_tests",
+   "line": 74
+  },
+  {
+   "id": "module::data.frameworks.react-lua.bin.compare-benchmarks",
+   "type": "Module",
+   "name": "data/frameworks/react-lua/bin/compare-benchmarks",
+   "path": "data/frameworks/react-lua/bin/compare-benchmarks.py"
+  },
+  {
+   "id": "func::data.frameworks.react-lua.bin.compare-benchmarks::percentChange",
+   "type": "Function",
+   "name": "percentChange",
+   "module": "data.frameworks.react-lua.bin.compare-benchmarks",
+   "line": 11
+  },
+  {
+   "id": "module::data.frameworks.react-lua.bin.run-benchmarks",
+   "type": "Module",
+   "name": "data/frameworks/react-lua/bin/run-benchmarks",
+   "path": "data/frameworks/react-lua/bin/run-benchmarks.py"
+  },
+  {
+   "id": "func::data.frameworks.react-lua.bin.run-benchmarks::__init__",
+   "type": "Method",
+   "name": "__init__",
+   "module": "data.frameworks.react-lua.bin.run-benchmarks",
+   "line": 26
+  },
+  {
+   "id": "func::data.frameworks.react-lua.bin.run-benchmarks::text",
+   "type": "Method",
+   "name": "text",
+   "module": "data.frameworks.react-lua.bin.run-benchmarks",
+   "line": 33
+  },
+  {
+   "id": "func::data.frameworks.react-lua.bin.run-benchmarks::title",
+   "type": "Method",
+   "name": "title",
+   "module": "data.frameworks.react-lua.bin.run-benchmarks",
+   "line": 36
+  },
+  {
+   "id": "func::data.frameworks.react-lua.bin.run-benchmarks::details",
+   "type": "Method",
+   "name": "details",
+   "module": "data.frameworks.react-lua.bin.run-benchmarks",
+   "line": 42
+  },
+  {
+   "id": "module::data.frameworks.react-lua.bin.svg",
+   "type": "Module",
+   "name": "data/frameworks/react-lua/bin/svg",
+   "path": "data/frameworks/react-lua/bin/svg.py"
+  },
+  {
+   "id": "func::data.frameworks.react-lua.bin.svg::__init__",
+   "type": "Method",
+   "name": "__init__",
+   "module": "data.frameworks.react-lua.bin.svg",
+   "line": 2
+  },
+  {
+   "id": "func::data.frameworks.react-lua.bin.svg::child",
+   "type": "Method",
+   "name": "child",
+   "module": "data.frameworks.react-lua.bin.svg",
+   "line": 10
+  },
+  {
+   "id": "func::data.frameworks.react-lua.bin.svg::subtree",
+   "type": "Method",
+   "name": "subtree",
+   "module": "data.frameworks.react-lua.bin.svg",
+   "line": 18
+  },
+  {
+   "id": "func::data.frameworks.react-lua.bin.svg::escape",
+   "type": "Function",
+   "name": "escape",
+   "module": "data.frameworks.react-lua.bin.svg",
+   "line": 30
+  },
+  {
+   "id": "func::data.frameworks.react-lua.bin.svg::layout",
+   "type": "Function",
+   "name": "layout",
+   "module": "data.frameworks.react-lua.bin.svg",
+   "line": 33
+  },
+  {
+   "id": "func::data.frameworks.react-lua.bin.svg::namehash",
+   "type": "Function",
+   "name": "namehash",
+   "module": "data.frameworks.react-lua.bin.svg",
+   "line": 404
+  },
+  {
+   "id": "func::data.frameworks.react-lua.bin.svg::display",
+   "type": "Function",
+   "name": "display",
+   "module": "data.frameworks.react-lua.bin.svg",
+   "line": 413
+  },
+  {
+   "id": "func::data.frameworks.react-lua.bin.svg::pixels",
+   "type": "Function",
+   "name": "pixels",
+   "module": "data.frameworks.react-lua.bin.svg",
+   "line": 438
+  },
+  {
+   "id": "module::data.frameworks.selene.misc.prepare-release",
+   "type": "Module",
+   "name": "data/frameworks/selene/misc/prepare-release",
+   "path": "data/frameworks/selene/misc/prepare-release.py"
+  },
+  {
+   "id": "module::tests.test_smoke",
+   "type": "Module",
+   "name": "tests/test_smoke",
+   "path": "tests/test_smoke.py"
+  },
+  {
+   "id": "func::tests.test_smoke::_run_all",
+   "type": "Function",
+   "name": "_run_all",
+   "module": "tests.test_smoke",
+   "line": 46
+  },
+  {
+   "id": "func::tests.test_smoke::test_yaml_to_markdown_structure",
+   "type": "Function",
+   "name": "test_yaml_to_markdown_structure",
+   "module": "tests.test_smoke",
+   "line": 68
+  },
+  {
+   "id": "func::tests.test_smoke::test_yaml_to_markdown_embeds_metadata",
+   "type": "Function",
+   "name": "test_yaml_to_markdown_embeds_metadata",
+   "module": "tests.test_smoke",
+   "line": 85
+  },
+  {
+   "id": "func::tests.test_smoke::test_split_sections_heading_levels",
+   "type": "Function",
+   "name": "test_split_sections_heading_levels",
+   "module": "tests.test_smoke",
+   "line": 111
+  },
+  {
+   "id": "func::tests.test_smoke::test_split_sections_keeps_code_blocks",
+   "type": "Function",
+   "name": "test_split_sections_keeps_code_blocks",
+   "module": "tests.test_smoke",
+   "line": 119
+  },
+  {
+   "id": "func::tests.test_smoke::test_chunk_markdown_reference_member_per_chunk",
+   "type": "Function",
+   "name": "test_chunk_markdown_reference_member_per_chunk",
+   "module": "tests.test_smoke",
+   "line": 125
+  },
+  {
+   "id": "func::tests.test_smoke::test_chunk_markdown_article_no_headings",
+   "type": "Function",
+   "name": "test_chunk_markdown_article_no_headings",
+   "module": "tests.test_smoke",
+   "line": 136
+  },
+  {
+   "id": "func::tests.test_smoke::test_chunk_markdown_article_splits_big_content",
+   "type": "Function",
+   "name": "test_chunk_markdown_article_splits_big_content",
+   "module": "tests.test_smoke",
+   "line": 144
+  },
+  {
+   "id": "func::tests.test_smoke::test_chunk_reference_bodyless_has_context",
+   "type": "Function",
+   "name": "test_chunk_reference_bodyless_has_context",
+   "module": "tests.test_smoke",
+   "line": 150
+  },
+  {
+   "id": "func::tests.test_smoke::test_chunk_member_cap",
+   "type": "Function",
+   "name": "test_chunk_member_cap",
+   "module": "tests.test_smoke",
+   "line": 166
+  },
+  {
+   "id": "func::tests.test_smoke::test_split_identifiers_camel_case",
+   "type": "Function",
+   "name": "test_split_identifiers_camel_case",
+   "module": "tests.test_smoke",
+   "line": 176
+  },
+  {
+   "id": "func::tests.test_smoke::test_split_identifiers_empty",
+   "type": "Function",
+   "name": "test_split_identifiers_empty",
+   "module": "tests.test_smoke",
+   "line": 184
+  },
+  {
+   "id": "func::tests.test_smoke::test_classify_doc_type",
+   "type": "Function",
+   "name": "test_classify_doc_type",
+   "module": "tests.test_smoke",
+   "line": 191
+  },
+  {
+   "id": "func::tests.test_smoke::test_doc_url_variants",
+   "type": "Function",
+   "name": "test_doc_url_variants",
+   "module": "tests.test_smoke",
+   "line": 199
+  },
+  {
+   "id": "func::tests.test_smoke::test_source_path_rooted",
+   "type": "Function",
+   "name": "test_source_path_rooted",
+   "module": "tests.test_smoke",
+   "line": 206
+  },
+  {
+   "id": "func::tests.test_smoke::test_design_source_mapping",
+   "type": "Function",
+   "name": "test_design_source_mapping",
+   "module": "tests.test_smoke",
+   "line": 212
+  },
+  {
+   "id": "func::tests.test_smoke::test_sha_deterministic",
+   "type": "Function",
+   "name": "test_sha_deterministic",
+   "module": "tests.test_smoke",
+   "line": 227
+  },
+  {
+   "id": "func::tests.test_smoke::test_pack_vector_roundtrip",
+   "type": "Function",
+   "name": "test_pack_vector_roundtrip",
+   "module": "tests.test_smoke",
+   "line": 232
+  },
+  {
+   "id": "func::tests.test_smoke::test_page_chunks_yaml_vs_md",
+   "type": "Function",
+   "name": "test_page_chunks_yaml_vs_md",
+   "module": "tests.test_smoke",
+   "line": 242
+  },
+  {
+   "id": "func::tests.test_smoke::test_is_nav_only",
+   "type": "Function",
+   "name": "test_is_nav_only",
+   "module": "tests.test_smoke",
+   "line": 255
+  },
+  {
+   "id": "func::tests.test_smoke::test_db_meta_roundtrip",
+   "type": "Function",
+   "name": "test_db_meta_roundtrip",
+   "module": "tests.test_smoke",
+   "line": 266
+  },
+  {
+   "id": "func::tests.test_smoke::_index_ready",
+   "type": "Function",
+   "name": "_index_ready",
+   "module": "tests.test_smoke",
+   "line": 279
+  },
+  {
+   "id": "func::tests.test_smoke::test_integration_search",
+   "type": "Function",
+   "name": "test_integration_search",
+   "module": "tests.test_smoke",
+   "line": 283
+  },
+  {
+   "id": "func::tests.test_smoke::test_integration_context_block",
+   "type": "Function",
+   "name": "test_integration_context_block",
+   "module": "tests.test_smoke",
+   "line": 295
+  },
+  {
+   "id": "func::tests.test_smoke::test_retriever_api_query_detection",
+   "type": "Function",
+   "name": "test_retriever_api_query_detection",
+   "module": "tests.test_smoke",
+   "line": 305
+  },
+  {
+   "id": "func::tests.test_smoke::test_integration_hybrid_ranks_relevant_first",
+   "type": "Function",
+   "name": "test_integration_hybrid_ranks_relevant_first",
+   "module": "tests.test_smoke",
+   "line": 316
+  },
+  {
+   "id": "func::tests.test_smoke::test_integration_mcp_search_docs",
+   "type": "Function",
+   "name": "test_integration_mcp_search_docs",
+   "module": "tests.test_smoke",
+   "line": 336
+  },
+  {
+   "id": "func::tests.test_smoke::test_dedup_chunks_prefix_400",
+   "type": "Function",
+   "name": "test_dedup_chunks_prefix_400",
+   "module": "tests.test_smoke",
+   "line": 363
+  },
+  {
+   "id": "func::tests.test_smoke::test_ensure_source_chunks_stubs_empty_source",
+   "type": "Function",
+   "name": "test_ensure_source_chunks_stubs_empty_source",
+   "module": "tests.test_smoke",
+   "line": 379
+  },
+  {
+   "id": "func::tests.test_smoke::test_devforum_build_query",
+   "type": "Function",
+   "name": "test_devforum_build_query",
+   "module": "tests.test_smoke",
+   "line": 402
+  },
+  {
+   "id": "func::tests.test_smoke::test_integration_devforum_search",
+   "type": "Function",
+   "name": "test_integration_devforum_search",
+   "module": "tests.test_smoke",
+   "line": 421
+  },
+  {
+   "id": "func::tests.test_smoke::test_expand_parry_terms",
+   "type": "Function",
+   "name": "test_expand_parry_terms",
+   "module": "tests.test_smoke",
+   "line": 444
+  },
+  {
+   "id": "func::tests.test_smoke::test_trust_final_score_hierarchy",
+   "type": "Function",
+   "name": "test_trust_final_score_hierarchy",
+   "module": "tests.test_smoke",
+   "line": 456
+  },
+  {
+   "id": "func::tests.test_smoke::test_evidence_parry_low_confidence",
+   "type": "Function",
+   "name": "test_evidence_parry_low_confidence",
+   "module": "tests.test_smoke",
+   "line": 483
+  },
+  {
+   "id": "func::tests.test_smoke::rag",
+   "type": "Function",
+   "name": "rag",
+   "module": "tests.test_smoke",
+   "line": 487
+  },
+  {
+   "id": "func::tests.test_smoke::test_scripts_split_and_index",
+   "type": "Function",
+   "name": "test_scripts_split_and_index",
+   "module": "tests.test_smoke",
+   "line": 501
+  }
+ ],
+ "edges": [
+  {
+   "source": "module::benchmark",
+   "target": "func::benchmark::_expected_hit",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::benchmark",
+   "target": "func::benchmark::_run_db",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::benchmark",
+   "target": "func::benchmark::bench",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::benchmark",
+   "target": "func::benchmark::_render",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::benchmark",
+   "target": "func::benchmark::main",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::benchmark",
+   "target": "import::__future__.annotations",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::benchmark",
+   "target": "import::argparse",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::benchmark",
+   "target": "import::json",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::benchmark",
+   "target": "import::time",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::benchmark",
+   "target": "import::pathlib.Path",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::benchmark",
+   "target": "import::typing.Any",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::benchmark",
+   "target": "import::config",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::benchmark",
+   "target": "import::retriever.search",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::chunker",
+   "target": "func::chunker::_member_metadata",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::chunker",
+   "target": "func::chunker::yaml_to_markdown",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::chunker",
+   "target": "func::chunker::__post_init__",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::chunker",
+   "target": "func::chunker::strip_markdown_links",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::chunker",
+   "target": "func::chunker::extract_title",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::chunker",
+   "target": "func::chunker::_normalize_html_headings",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::chunker",
+   "target": "func::chunker::_repl",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::chunker",
+   "target": "func::chunker::split_sections",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::chunker",
+   "target": "func::chunker::_finish_code",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::chunker",
+   "target": "func::chunker::_section_text",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::chunker",
+   "target": "func::chunker::_is_reference",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::chunker",
+   "target": "func::chunker::_chunk_member",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::chunker",
+   "target": "func::chunker::chunk_reference",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::chunker",
+   "target": "func::chunker::_flush_members",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::chunker",
+   "target": "func::chunker::_split_long_text",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::chunker",
+   "target": "func::chunker::_flush",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::chunker",
+   "target": "func::chunker::chunk_article",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::chunker",
+   "target": "func::chunker::_flush",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::chunker",
+   "target": "func::chunker::_word_count",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::chunker",
+   "target": "func::chunker::extract_frontmatter_description",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::chunker",
+   "target": "func::chunker::chunk_markdown",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::chunker",
+   "target": "func::chunker::iter_page_chunks",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::chunker",
+   "target": "import::__future__.annotations",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::chunker",
+   "target": "import::re",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::chunker",
+   "target": "import::dataclasses.dataclass",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::chunker",
+   "target": "import::dataclasses.field",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::chunker",
+   "target": "import::typing.Iterable",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::chunker",
+   "target": "import::config",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::cli",
+   "target": "func::cli::_print_json",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::cli",
+   "target": "func::cli::_cmd_build",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::cli",
+   "target": "func::cli::_cmd_status",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::cli",
+   "target": "func::cli::_cmd_search",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::cli",
+   "target": "func::cli::_cmd_context",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::cli",
+   "target": "func::cli::_cmd_purge",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::cli",
+   "target": "func::cli::_cmd_embed",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::cli",
+   "target": "func::cli::_cmd_quality",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::cli",
+   "target": "func::cli::_cmd_bench",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::cli",
+   "target": "func::cli::main",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::cli",
+   "target": "import::__future__.annotations",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::cli",
+   "target": "import::argparse",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::cli",
+   "target": "import::json",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::cli",
+   "target": "import::logging",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::cli",
+   "target": "import::sys",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::cli",
+   "target": "import::pathlib.Path",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::cli",
+   "target": "import::config",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::cli",
+   "target": "import::context.build_context",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::cli",
+   "target": "import::context.search_for_context",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::cli",
+   "target": "import::indexer.build",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::cli",
+   "target": "import::indexer.embed",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::cli",
+   "target": "import::indexer.purge",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::cli",
+   "target": "import::indexer.stats",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::cli",
+   "target": "import::quality.analyze",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::cli",
+   "target": "import::quality.render_markdown",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::cli",
+   "target": "import::quality.write_report",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::cli",
+   "target": "import::retriever.search",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::cli",
+   "target": "import::benchmark.bench",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::config",
+   "target": "func::config::ensure_dirs",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::config",
+   "target": "import::__future__.annotations",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::config",
+   "target": "import::os",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::config",
+   "target": "import::pathlib.Path",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::context",
+   "target": "func::context::_result_line",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::context",
+   "target": "func::context::search_for_context",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::context",
+   "target": "func::context::build_context",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::context",
+   "target": "import::__future__.annotations",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::context",
+   "target": "import::typing.Any",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::context",
+   "target": "import::config",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::context",
+   "target": "import::retriever.search",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::db",
+   "target": "func::db::connect",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::db",
+   "target": "func::db::init_db",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::db",
+   "target": "func::db::_migrate",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::db",
+   "target": "func::db::set_meta",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::db",
+   "target": "func::db::get_meta",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::db",
+   "target": "func::db::get_meta_int",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::db",
+   "target": "func::db::purge",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::db",
+   "target": "func::db::close",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::db",
+   "target": "import::__future__.annotations",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::db",
+   "target": "import::sqlite3",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::db",
+   "target": "import::threading",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::db",
+   "target": "import::pathlib.Path",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::db",
+   "target": "import::typing.Any",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::db",
+   "target": "import::config",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::embedder",
+   "target": "func::embedder::__init__",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::embedder",
+   "target": "func::embedder::available",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::embedder",
+   "target": "func::embedder::load",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::embedder",
+   "target": "func::embedder::_detect_dim",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::embedder",
+   "target": "func::embedder::dim",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::embedder",
+   "target": "func::embedder::embed",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::embedder",
+   "target": "func::embedder::get_embedder",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::embedder",
+   "target": "func::embedder::encode",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::embedder",
+   "target": "import::__future__.annotations",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::embedder",
+   "target": "import::logging",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::embedder",
+   "target": "import::threading",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::embedder",
+   "target": "import::typing.Any",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::embedder",
+   "target": "import::config",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::embedder",
+   "target": "import::fastembed.TextEmbedding",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::evidence",
+   "target": "func::evidence::_token_overlap",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::evidence",
+   "target": "func::evidence::_rag_coverage",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::evidence",
+   "target": "func::evidence::_external_coverage",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::evidence",
+   "target": "func::evidence::assess_requirement",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::evidence",
+   "target": "import::__future__.annotations",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::evidence",
+   "target": "import::typing.Any",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::evidence",
+   "target": "import::typing.Callable",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::evidence",
+   "target": "import::trust",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::evidence",
+   "target": "import::expand.query_groups",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::evidence",
+   "target": "import::expand.expand_tokens",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::expand",
+   "target": "func::expand::_terms",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::expand",
+   "target": "func::expand::_lookup_terms",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::expand",
+   "target": "func::expand::expand_tokens",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::expand",
+   "target": "func::expand::build_expanded_match",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::expand",
+   "target": "func::expand::expand_query",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::expand",
+   "target": "func::expand::query_groups",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::expand",
+   "target": "import::__future__.annotations",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::expand",
+   "target": "import::re",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::expand",
+   "target": "import::textutil.split_identifiers",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::indexer",
+   "target": "func::indexer::_sha",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::indexer",
+   "target": "func::indexer::_pack_vector",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::indexer",
+   "target": "func::indexer::_upsert_source",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::indexer",
+   "target": "func::indexer::_insert_chunks",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::indexer",
+   "target": "func::indexer::_page_chunks",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::indexer",
+   "target": "func::indexer::_replace_chunks",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::indexer",
+   "target": "func::indexer::_chunk_key",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::indexer",
+   "target": "func::indexer::_dedup_chunks",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::indexer",
+   "target": "func::indexer::_sweep_duplicates",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::indexer",
+   "target": "func::indexer::_ensure_source_chunks",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::indexer",
+   "target": "func::indexer::_chunks_unchanged",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::indexer",
+   "target": "func::indexer::_backfill_embeddings",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::indexer",
+   "target": "func::indexer::build",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::indexer",
+   "target": "func::indexer::embed",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::indexer",
+   "target": "func::indexer::stats",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::indexer",
+   "target": "func::indexer::purge",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::indexer",
+   "target": "func::indexer::_count",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::indexer",
+   "target": "import::__future__.annotations",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::indexer",
+   "target": "import::hashlib",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::indexer",
+   "target": "import::logging",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::indexer",
+   "target": "import::struct",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::indexer",
+   "target": "import::time",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::indexer",
+   "target": "import::datetime.datetime",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::indexer",
+   "target": "import::datetime.timezone",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::indexer",
+   "target": "import::pathlib.Path",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::indexer",
+   "target": "import::typing.Any",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::indexer",
+   "target": "import::config",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::indexer",
+   "target": "import::db",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::indexer",
+   "target": "import::ingest",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::indexer",
+   "target": "import::chunker.chunk_markdown",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::indexer",
+   "target": "import::chunker.yaml_to_markdown",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::indexer",
+   "target": "import::embedder.get_embedder",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::indexer",
+   "target": "import::textutil.split_identifiers",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::indexer",
+   "target": "import::yaml",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::indexer",
+   "target": "import::yaml",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::ingest",
+   "target": "func::ingest::classify_doc_type",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::ingest",
+   "target": "func::ingest::doc_url",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::ingest",
+   "target": "func::ingest::source_path",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::ingest",
+   "target": "func::ingest::_run_git",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::ingest",
+   "target": "func::ingest::_download_tarball",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::ingest",
+   "target": "func::ingest::ensure_repo",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::ingest",
+   "target": "func::ingest::ensure_llms_full",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::ingest",
+   "target": "func::ingest::iter_md_files",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::ingest",
+   "target": "func::ingest::iter_reference_yaml",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::ingest",
+   "target": "func::ingest::ensure_frameworks",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::ingest",
+   "target": "func::ingest::iter_framework_files",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::ingest",
+   "target": "func::ingest::iter_curated_files",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::ingest",
+   "target": "func::ingest::iter_design_files",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::ingest",
+   "target": "func::ingest::iter_doc_files",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::ingest",
+   "target": "func::ingest::read_file",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::ingest",
+   "target": "import::__future__.annotations",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::ingest",
+   "target": "import::logging",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::ingest",
+   "target": "import::shutil",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::ingest",
+   "target": "import::subprocess",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::ingest",
+   "target": "import::tarfile",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::ingest",
+   "target": "import::urllib.request",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::ingest",
+   "target": "import::pathlib.Path",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::ingest",
+   "target": "import::typing.Iterator",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::ingest",
+   "target": "import::config",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::quality",
+   "target": "func::quality::rate",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::quality",
+   "target": "func::quality::_is_nav_only",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::quality",
+   "target": "func::quality::analyze",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::quality",
+   "target": "func::quality::render_markdown",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::quality",
+   "target": "func::quality::write_report",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::quality",
+   "target": "import::__future__.annotations",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::quality",
+   "target": "import::re",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::quality",
+   "target": "import::collections.Counter",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::quality",
+   "target": "import::dataclasses.dataclass",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::quality",
+   "target": "import::datetime.datetime",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::quality",
+   "target": "import::datetime.timezone",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::quality",
+   "target": "import::pathlib.Path",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::quality",
+   "target": "import::typing.Any",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::quality",
+   "target": "import::config",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::quality",
+   "target": "import::db",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::quality",
+   "target": "import::textutil.split_identifiers",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::refapi",
+   "target": "func::refapi::clear_cache",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::refapi",
+   "target": "func::refapi::_classes_dir",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::refapi",
+   "target": "func::refapi::_class_file",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::refapi",
+   "target": "func::refapi::load_class",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::refapi",
+   "target": "func::refapi::class_ancestors",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::refapi",
+   "target": "func::refapi::class_exists",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::refapi",
+   "target": "func::refapi::_security",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::refapi",
+   "target": "func::refapi::_ser",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::refapi",
+   "target": "func::refapi::normalize_property",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::refapi",
+   "target": "func::refapi::property_profile",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::refapi",
+   "target": "func::refapi::_build_index",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::refapi",
+   "target": "func::refapi::_match_score",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::refapi",
+   "target": "func::refapi::search_properties",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::refapi",
+   "target": "import::__future__.annotations",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::refapi",
+   "target": "import::sys",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::refapi",
+   "target": "import::threading",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::refapi",
+   "target": "import::pathlib.Path",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::refapi",
+   "target": "import::typing.Any",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::refapi",
+   "target": "import::config",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::refapi",
+   "target": "import::yaml",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::retriever",
+   "target": "func::retriever::_project_filter",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::retriever",
+   "target": "func::retriever::_index_exists",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::retriever",
+   "target": "func::retriever::_candidates",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::retriever",
+   "target": "func::retriever::_candidates_or_fallback",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::retriever",
+   "target": "func::retriever::_api_query",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::retriever",
+   "target": "func::retriever::_unpack_vector",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::retriever",
+   "target": "func::retriever::_minmax",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::retriever",
+   "target": "func::retriever::_cosine_scores",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::retriever",
+   "target": "func::retriever::search",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::retriever",
+   "target": "import::__future__.annotations",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::retriever",
+   "target": "import::logging",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::retriever",
+   "target": "import::struct",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::retriever",
+   "target": "import::pathlib.Path",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::retriever",
+   "target": "import::typing.Any",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::retriever",
+   "target": "import::config",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::retriever",
+   "target": "import::db",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::retriever",
+   "target": "import::embedder.get_embedder",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::retriever",
+   "target": "import::expand.build_expanded_match",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::retriever",
+   "target": "import::expand.expand_tokens",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::retriever",
+   "target": "import::textutil.clean_snippet",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::retriever",
+   "target": "import::textutil.fts_query",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::retriever",
+   "target": "import::trust",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::retriever",
+   "target": "import::numpy",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::scripts",
+   "target": "func::scripts::split_script_code",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::scripts",
+   "target": "func::scripts::index_scripts",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::scripts",
+   "target": "func::scripts::_replace_source_chunks",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::scripts",
+   "target": "func::scripts::remove_project_scripts",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::scripts",
+   "target": "import::__future__.annotations",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::scripts",
+   "target": "import::hashlib",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::scripts",
+   "target": "import::logging",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::scripts",
+   "target": "import::re",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::scripts",
+   "target": "import::datetime.datetime",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::scripts",
+   "target": "import::datetime.timezone",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::scripts",
+   "target": "import::typing.Any",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::scripts",
+   "target": "import::typing.Iterable",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::scripts",
+   "target": "import::db",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::scripts",
+   "target": "import::chunker.Chunk",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::scripts",
+   "target": "import::embedder.get_embedder",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::scripts",
+   "target": "import::indexer._pack_vector",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::scripts",
+   "target": "import::indexer._sha",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::scripts",
+   "target": "import::indexer._upsert_source",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::scripts",
+   "target": "import::indexer._insert_chunks",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::scripts",
+   "target": "import::textutil.split_identifiers",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::textutil",
+   "target": "func::textutil::split_identifiers",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::textutil",
+   "target": "func::textutil::tokenize",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::textutil",
+   "target": "func::textutil::fts_query",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::textutil",
+   "target": "func::textutil::clean_snippet",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::textutil",
+   "target": "import::__future__.annotations",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::textutil",
+   "target": "import::re",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::trust",
+   "target": "func::trust::authority",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::trust",
+   "target": "func::trust::source_trust",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::trust",
+   "target": "func::trust::implementation_quality",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::trust",
+   "target": "func::trust::devforum_quality_boost",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::trust",
+   "target": "func::trust::reddit_quality_boost",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::trust",
+   "target": "func::trust::final_score",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::trust",
+   "target": "import::__future__.annotations",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::trust",
+   "target": "import::typing.Any",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::__main__",
+   "target": "import::cli.main",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data._dryrun",
+   "target": "import::sys",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data._dryrun",
+   "target": "import::time",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data._dryrun",
+   "target": "import::doc_rag.ingest",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data._dryrun",
+   "target": "import::doc_rag.db",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data._dryrun",
+   "target": "import::doc_rag.indexer._page_chunks",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data._dryrun",
+   "target": "import::doc_rag.indexer._dedup_chunks",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data._dryrun",
+   "target": "import::doc_rag.indexer._sha",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data._dryrun",
+   "target": "import::doc_rag.retriever._candidates",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data._simulate_queries",
+   "target": "import::sys",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data._simulate_queries",
+   "target": "import::doc_rag.retriever.search",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.knit.last_changelog",
+   "target": "func::data.frameworks.knit.last_changelog::get_last_changelog_entry",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.knit.last_changelog",
+   "target": "import::sys",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.rbxutil.build_list",
+   "target": "func::data.frameworks.rbxutil.build_list::pretty_display_name",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.rbxutil.build_list",
+   "target": "func::data.frameworks.rbxutil.build_list::get_wally_info",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.rbxutil.build_list",
+   "target": "func::data.frameworks.rbxutil.build_list::build",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.rbxutil.build_list",
+   "target": "import::pathlib.Path",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.rbxutil.build_list",
+   "target": "import::json",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.rbxutil.build_list",
+   "target": "import::re",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.rbxutil.build_readme",
+   "target": "func::data.frameworks.rbxutil.build_readme::pretty_display_name",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.rbxutil.build_readme",
+   "target": "func::data.frameworks.rbxutil.build_readme::build",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.rbxutil.build_readme",
+   "target": "import::pathlib.Path",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.rbxutil.build_readme",
+   "target": "import::re",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.rbxutil.build_tests",
+   "target": "func::data.frameworks.rbxutil.build_tests::update_test_file",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.rbxutil.build_tests",
+   "target": "func::data.frameworks.rbxutil.build_tests::__init__",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.rbxutil.build_tests",
+   "target": "func::data.frameworks.rbxutil.build_tests::on_modified",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.rbxutil.build_tests",
+   "target": "func::data.frameworks.rbxutil.build_tests::pretty_display_name",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.rbxutil.build_tests",
+   "target": "func::data.frameworks.rbxutil.build_tests::build_tests",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.rbxutil.build_tests",
+   "target": "import::subprocess",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.rbxutil.build_tests",
+   "target": "import::pathlib.Path",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.rbxutil.build_tests",
+   "target": "import::shutil.copytree",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.rbxutil.build_tests",
+   "target": "import::shutil.rmtree",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.rbxutil.build_tests",
+   "target": "import::shutil.move",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.rbxutil.build_tests",
+   "target": "import::os",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.rbxutil.build_tests",
+   "target": "import::sys",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.rbxutil.build_tests",
+   "target": "import::time",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.rbxutil.build_tests",
+   "target": "import::watchdog.observers.Observer",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.rbxutil.build_tests",
+   "target": "import::watchdog.events.PatternMatchingEventHandler",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.rbxutil.build_tests",
+   "target": "import::threading.Timer",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.rbxutil.run_tests",
+   "target": "func::data.frameworks.rbxutil.run_tests::run_script",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.rbxutil.run_tests",
+   "target": "func::data.frameworks.rbxutil.run_tests::get_script_status",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.rbxutil.run_tests",
+   "target": "func::data.frameworks.rbxutil.run_tests::await_script_completion",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.rbxutil.run_tests",
+   "target": "func::data.frameworks.rbxutil.run_tests::run_tests",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.rbxutil.run_tests",
+   "target": "import::argparse",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.rbxutil.run_tests",
+   "target": "import::requests",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.rbxutil.run_tests",
+   "target": "import::json",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.rbxutil.run_tests",
+   "target": "import::os",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.rbxutil.run_tests",
+   "target": "import::time",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.react-lua.bin.compare-benchmarks",
+   "target": "func::data.frameworks.react-lua.bin.compare-benchmarks::percentChange",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.react-lua.bin.compare-benchmarks",
+   "target": "import::os",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.react-lua.bin.compare-benchmarks",
+   "target": "import::sys",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.react-lua.bin.compare-benchmarks",
+   "target": "import::re",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.react-lua.bin.run-benchmarks",
+   "target": "func::data.frameworks.react-lua.bin.run-benchmarks::__init__",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.react-lua.bin.run-benchmarks",
+   "target": "func::data.frameworks.react-lua.bin.run-benchmarks::text",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.react-lua.bin.run-benchmarks",
+   "target": "func::data.frameworks.react-lua.bin.run-benchmarks::title",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.react-lua.bin.run-benchmarks",
+   "target": "func::data.frameworks.react-lua.bin.run-benchmarks::details",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.react-lua.bin.run-benchmarks",
+   "target": "import::os",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.react-lua.bin.run-benchmarks",
+   "target": "import::sys",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.react-lua.bin.run-benchmarks",
+   "target": "import::re",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.react-lua.bin.run-benchmarks",
+   "target": "import::subprocess",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.react-lua.bin.run-benchmarks",
+   "target": "import::glob",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.react-lua.bin.run-benchmarks",
+   "target": "import::svg",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.react-lua.bin.svg",
+   "target": "func::data.frameworks.react-lua.bin.svg::__init__",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.react-lua.bin.svg",
+   "target": "func::data.frameworks.react-lua.bin.svg::child",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.react-lua.bin.svg",
+   "target": "func::data.frameworks.react-lua.bin.svg::subtree",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.react-lua.bin.svg",
+   "target": "func::data.frameworks.react-lua.bin.svg::escape",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.react-lua.bin.svg",
+   "target": "func::data.frameworks.react-lua.bin.svg::layout",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.react-lua.bin.svg",
+   "target": "func::data.frameworks.react-lua.bin.svg::namehash",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.react-lua.bin.svg",
+   "target": "func::data.frameworks.react-lua.bin.svg::display",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.react-lua.bin.svg",
+   "target": "func::data.frameworks.react-lua.bin.svg::pixels",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.selene.misc.prepare-release",
+   "target": "import::datetime.datetime",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.selene.misc.prepare-release",
+   "target": "import::os",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.selene.misc.prepare-release",
+   "target": "import::re",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.selene.misc.prepare-release",
+   "target": "import::sys",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::tests.test_smoke",
+   "target": "func::tests.test_smoke::_run_all",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::tests.test_smoke",
+   "target": "func::tests.test_smoke::test_yaml_to_markdown_structure",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::tests.test_smoke",
+   "target": "func::tests.test_smoke::test_yaml_to_markdown_embeds_metadata",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::tests.test_smoke",
+   "target": "func::tests.test_smoke::test_split_sections_heading_levels",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::tests.test_smoke",
+   "target": "func::tests.test_smoke::test_split_sections_keeps_code_blocks",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::tests.test_smoke",
+   "target": "func::tests.test_smoke::test_chunk_markdown_reference_member_per_chunk",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::tests.test_smoke",
+   "target": "func::tests.test_smoke::test_chunk_markdown_article_no_headings",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::tests.test_smoke",
+   "target": "func::tests.test_smoke::test_chunk_markdown_article_splits_big_content",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::tests.test_smoke",
+   "target": "func::tests.test_smoke::test_chunk_reference_bodyless_has_context",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::tests.test_smoke",
+   "target": "func::tests.test_smoke::test_chunk_member_cap",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::tests.test_smoke",
+   "target": "func::tests.test_smoke::test_split_identifiers_camel_case",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::tests.test_smoke",
+   "target": "func::tests.test_smoke::test_split_identifiers_empty",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::tests.test_smoke",
+   "target": "func::tests.test_smoke::test_classify_doc_type",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::tests.test_smoke",
+   "target": "func::tests.test_smoke::test_doc_url_variants",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::tests.test_smoke",
+   "target": "func::tests.test_smoke::test_source_path_rooted",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::tests.test_smoke",
+   "target": "func::tests.test_smoke::test_design_source_mapping",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::tests.test_smoke",
+   "target": "func::tests.test_smoke::test_sha_deterministic",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::tests.test_smoke",
+   "target": "func::tests.test_smoke::test_pack_vector_roundtrip",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::tests.test_smoke",
+   "target": "func::tests.test_smoke::test_page_chunks_yaml_vs_md",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::tests.test_smoke",
+   "target": "func::tests.test_smoke::test_is_nav_only",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::tests.test_smoke",
+   "target": "func::tests.test_smoke::test_db_meta_roundtrip",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::tests.test_smoke",
+   "target": "func::tests.test_smoke::_index_ready",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::tests.test_smoke",
+   "target": "func::tests.test_smoke::test_integration_search",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::tests.test_smoke",
+   "target": "func::tests.test_smoke::test_integration_context_block",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::tests.test_smoke",
+   "target": "func::tests.test_smoke::test_retriever_api_query_detection",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::tests.test_smoke",
+   "target": "func::tests.test_smoke::test_integration_hybrid_ranks_relevant_first",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::tests.test_smoke",
+   "target": "func::tests.test_smoke::test_integration_mcp_search_docs",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::tests.test_smoke",
+   "target": "func::tests.test_smoke::test_dedup_chunks_prefix_400",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::tests.test_smoke",
+   "target": "func::tests.test_smoke::test_ensure_source_chunks_stubs_empty_source",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::tests.test_smoke",
+   "target": "func::tests.test_smoke::test_devforum_build_query",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::tests.test_smoke",
+   "target": "func::tests.test_smoke::test_integration_devforum_search",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::tests.test_smoke",
+   "target": "func::tests.test_smoke::test_expand_parry_terms",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::tests.test_smoke",
+   "target": "func::tests.test_smoke::test_trust_final_score_hierarchy",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::tests.test_smoke",
+   "target": "func::tests.test_smoke::test_evidence_parry_low_confidence",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::tests.test_smoke",
+   "target": "func::tests.test_smoke::rag",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::tests.test_smoke",
+   "target": "func::tests.test_smoke::test_scripts_split_and_index",
+   "relationship": "CONTAINS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::tests.test_smoke",
+   "target": "import::__future__.annotations",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::tests.test_smoke",
+   "target": "import::os",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::tests.test_smoke",
+   "target": "import::sys",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::tests.test_smoke",
+   "target": "import::traceback",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::tests.test_smoke",
+   "target": "import::pathlib.Path",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::tests.test_smoke",
+   "target": "import::doc_rag.config",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::tests.test_smoke",
+   "target": "import::doc_rag.ingest",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::tests.test_smoke",
+   "target": "import::doc_rag.textutil",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::tests.test_smoke",
+   "target": "import::doc_rag.chunker.Chunk",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::tests.test_smoke",
+   "target": "import::doc_rag.chunker.chunk_article",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::tests.test_smoke",
+   "target": "import::doc_rag.chunker.chunk_markdown",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::tests.test_smoke",
+   "target": "import::doc_rag.chunker.chunk_reference",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::tests.test_smoke",
+   "target": "import::doc_rag.chunker.split_sections",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::tests.test_smoke",
+   "target": "import::doc_rag.chunker.yaml_to_markdown",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::tests.test_smoke",
+   "target": "import::doc_rag.indexer._chunk_key",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::tests.test_smoke",
+   "target": "import::doc_rag.indexer._chunks_unchanged",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::tests.test_smoke",
+   "target": "import::doc_rag.indexer._dedup_chunks",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::tests.test_smoke",
+   "target": "import::doc_rag.indexer._ensure_source_chunks",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::tests.test_smoke",
+   "target": "import::doc_rag.indexer._pack_vector",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::tests.test_smoke",
+   "target": "import::doc_rag.indexer._page_chunks",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::tests.test_smoke",
+   "target": "import::doc_rag.indexer._sha",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::tests.test_smoke",
+   "target": "import::doc_rag.quality._is_nav_only",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::tests.test_smoke",
+   "target": "import::struct",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::tests.test_smoke",
+   "target": "import::doc_rag.db",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::tests.test_smoke",
+   "target": "import::doc_rag.retriever.search",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::tests.test_smoke",
+   "target": "import::doc_rag.context.build_context",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::tests.test_smoke",
+   "target": "import::doc_rag.retriever._api_query",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::tests.test_smoke",
+   "target": "import::doc_rag.retriever.search",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::tests.test_smoke",
+   "target": "import::importlib",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::tests.test_smoke",
+   "target": "import::doc_rag.chunker.Chunk",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::tests.test_smoke",
+   "target": "import::doc_rag.db",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::tests.test_smoke",
+   "target": "import::devforum.build_query",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::tests.test_smoke",
+   "target": "import::devforum._clean",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::tests.test_smoke",
+   "target": "import::devforum.search",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::tests.test_smoke",
+   "target": "import::doc_rag.expand",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::tests.test_smoke",
+   "target": "import::doc_rag.trust",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::tests.test_smoke",
+   "target": "import::doc_rag.evidence",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::tests.test_smoke",
+   "target": "import::doc_rag.trust",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::tests.test_smoke",
+   "target": "import::doc_rag.db",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::tests.test_smoke",
+   "target": "import::doc_rag.scripts.index_scripts",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::tests.test_smoke",
+   "target": "import::doc_rag.scripts.remove_project_scripts",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::tests.test_smoke",
+   "target": "import::doc_rag.scripts.split_script_code",
+   "relationship": "IMPORTS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::benchmark",
+   "target": "func::retriever::search",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::benchmark",
+   "target": "func::benchmark::_expected_hit",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::benchmark",
+   "target": "func::benchmark::_run_db",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::benchmark",
+   "target": "func::benchmark::_render",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::benchmark",
+   "target": "func::benchmark::bench",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::chunker",
+   "target": "func::chunker::_flush",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::chunker",
+   "target": "func::chunker::_section_text",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::chunker",
+   "target": "func::chunker::_finish_code",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::chunker",
+   "target": "func::chunker::_split_long_text",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::chunker",
+   "target": "func::chunker::_normalize_html_headings",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::chunker",
+   "target": "func::chunker::_flush_members",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::chunker",
+   "target": "func::chunker::extract_title",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::chunker",
+   "target": "func::chunker::_member_metadata",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::chunker",
+   "target": "func::chunker::_chunk_member",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::chunker",
+   "target": "func::chunker::split_sections",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::chunker",
+   "target": "func::chunker::_is_reference",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::chunker",
+   "target": "func::chunker::chunk_reference",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::chunker",
+   "target": "func::chunker::chunk_article",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::chunker",
+   "target": "func::chunker::_word_count",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::chunker",
+   "target": "func::chunker::extract_frontmatter_description",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::chunker",
+   "target": "func::chunker::chunk_markdown",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::cli",
+   "target": "func::cli::_print_json",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::cli",
+   "target": "func::indexer::build",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::cli",
+   "target": "func::indexer::stats",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::cli",
+   "target": "func::retriever::search",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::cli",
+   "target": "func::context::build_context",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::cli",
+   "target": "func::indexer::purge",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::cli",
+   "target": "func::indexer::embed",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::cli",
+   "target": "func::quality::analyze",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::cli",
+   "target": "func::quality::write_report",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::cli",
+   "target": "func::quality::render_markdown",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::cli",
+   "target": "func::benchmark::bench",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::cli",
+   "target": "func::cli::main",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::config",
+   "target": "func::config::ensure_dirs",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::context",
+   "target": "func::retriever::search",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::context",
+   "target": "func::context::_result_line",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::db",
+   "target": "func::db::connect",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::db",
+   "target": "func::db::_migrate",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::db",
+   "target": "func::db::get_meta",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::db",
+   "target": "func::db::close",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::embedder",
+   "target": "func::embedder::embed",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::embedder",
+   "target": "func::embedder::load",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::embedder",
+   "target": "func::embedder::_detect_dim",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::embedder",
+   "target": "func::embedder::get_embedder",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::evidence",
+   "target": "func::evidence::_token_overlap",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::evidence",
+   "target": "func::evidence::_external_coverage",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::evidence",
+   "target": "func::expand::expand_tokens",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::evidence",
+   "target": "func::evidence::_rag_coverage",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::expand",
+   "target": "func::expand::_lookup_terms",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::expand",
+   "target": "func::expand::_terms",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::indexer",
+   "target": "func::textutil::split_identifiers",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::indexer",
+   "target": "func::indexer::_count",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::indexer",
+   "target": "func::indexer::_pack_vector",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::indexer",
+   "target": "func::chunker::chunk_markdown",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::indexer",
+   "target": "func::indexer::_insert_chunks",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::indexer",
+   "target": "func::embedder::get_embedder",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::indexer",
+   "target": "func::indexer::_backfill_embeddings",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::indexer",
+   "target": "func::chunker::yaml_to_markdown",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::indexer",
+   "target": "func::indexer::_chunk_key",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::indexer",
+   "target": "func::indexer::embed",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::indexer",
+   "target": "func::indexer::_sha",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::indexer",
+   "target": "func::indexer::_upsert_source",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::indexer",
+   "target": "func::indexer::_page_chunks",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::indexer",
+   "target": "func::indexer::_dedup_chunks",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::indexer",
+   "target": "func::indexer::_chunks_unchanged",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::indexer",
+   "target": "func::indexer::_replace_chunks",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::indexer",
+   "target": "func::indexer::_sweep_duplicates",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::indexer",
+   "target": "func::indexer::_ensure_source_chunks",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::indexer",
+   "target": "func::indexer::purge",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::ingest",
+   "target": "func::ingest::_run_git",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::ingest",
+   "target": "func::ingest::ensure_repo",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::ingest",
+   "target": "func::ingest::_download_tarball",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::ingest",
+   "target": "func::ingest::iter_md_files",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::ingest",
+   "target": "func::ingest::iter_reference_yaml",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::ingest",
+   "target": "func::ingest::iter_curated_files",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::ingest",
+   "target": "func::ingest::iter_design_files",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::ingest",
+   "target": "func::ingest::iter_framework_files",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::ingest",
+   "target": "func::ingest::source_path",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::quality",
+   "target": "func::quality::rate",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::quality",
+   "target": "func::quality::_is_nav_only",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::quality",
+   "target": "func::quality::analyze",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::quality",
+   "target": "func::quality::render_markdown",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::refapi",
+   "target": "func::refapi::load_class",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::refapi",
+   "target": "func::refapi::_classes_dir",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::refapi",
+   "target": "func::refapi::_class_file",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::refapi",
+   "target": "func::refapi::normalize_property",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::refapi",
+   "target": "func::refapi::property_profile",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::refapi",
+   "target": "func::refapi::_security",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::refapi",
+   "target": "func::refapi::_ser",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::refapi",
+   "target": "func::refapi::class_ancestors",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::refapi",
+   "target": "func::refapi::_build_index",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::refapi",
+   "target": "func::refapi::_match_score",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::retriever",
+   "target": "func::retriever::_candidates",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::retriever",
+   "target": "func::retriever::_project_filter",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::retriever",
+   "target": "func::textutil::fts_query",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::retriever",
+   "target": "func::retriever::_minmax",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::retriever",
+   "target": "func::expand::expand_tokens",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::retriever",
+   "target": "func::expand::build_expanded_match",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::retriever",
+   "target": "func::retriever::_unpack_vector",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::retriever",
+   "target": "func::retriever::_index_exists",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::retriever",
+   "target": "func::retriever::_candidates_or_fallback",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::retriever",
+   "target": "func::embedder::get_embedder",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::retriever",
+   "target": "func::retriever::_cosine_scores",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::retriever",
+   "target": "func::retriever::_api_query",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::retriever",
+   "target": "func::textutil::clean_snippet",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::scripts",
+   "target": "func::embedder::get_embedder",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::scripts",
+   "target": "func::indexer::_sha",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::scripts",
+   "target": "func::indexer::_upsert_source",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::scripts",
+   "target": "func::scripts::split_script_code",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::scripts",
+   "target": "func::scripts::_replace_source_chunks",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::scripts",
+   "target": "func::indexer::_insert_chunks",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::textutil",
+   "target": "func::textutil::split_identifiers",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::textutil",
+   "target": "func::textutil::tokenize",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::trust",
+   "target": "func::trust::authority",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::trust",
+   "target": "func::trust::implementation_quality",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::trust",
+   "target": "func::trust::source_trust",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::__main__",
+   "target": "func::cli::main",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.knit.last_changelog",
+   "target": "func::data.frameworks.knit.last_changelog::get_last_changelog_entry",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.rbxutil.build_list",
+   "target": "func::data.frameworks.rbxutil.build_list::get_wally_info",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.rbxutil.build_list",
+   "target": "func::data.frameworks.rbxutil.build_list::pretty_display_name",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.rbxutil.build_list",
+   "target": "func::data.frameworks.rbxutil.build_list::build",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.rbxutil.build_readme",
+   "target": "func::data.frameworks.rbxutil.build_readme::pretty_display_name",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.rbxutil.build_readme",
+   "target": "func::data.frameworks.rbxutil.build_readme::build",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.rbxutil.build_tests",
+   "target": "func::data.frameworks.rbxutil.build_tests::__init__",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.rbxutil.build_tests",
+   "target": "func::data.frameworks.rbxutil.build_tests::pretty_display_name",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.rbxutil.build_tests",
+   "target": "func::data.frameworks.rbxutil.build_tests::build_tests",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.rbxutil.run_tests",
+   "target": "func::data.frameworks.rbxutil.run_tests::get_script_status",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.rbxutil.run_tests",
+   "target": "func::data.frameworks.rbxutil.run_tests::run_script",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.rbxutil.run_tests",
+   "target": "func::data.frameworks.rbxutil.run_tests::await_script_completion",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.rbxutil.run_tests",
+   "target": "func::data.frameworks.rbxutil.run_tests::run_tests",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.react-lua.bin.compare-benchmarks",
+   "target": "func::data.frameworks.react-lua.bin.compare-benchmarks::percentChange",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.react-lua.bin.run-benchmarks",
+   "target": "func::data.frameworks.react-lua.bin.run-benchmarks::__init__",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.react-lua.bin.svg",
+   "target": "func::data.frameworks.react-lua.bin.svg::namehash",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.react-lua.bin.svg",
+   "target": "func::data.frameworks.react-lua.bin.svg::subtree",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.react-lua.bin.svg",
+   "target": "func::data.frameworks.react-lua.bin.svg::escape",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::data.frameworks.react-lua.bin.svg",
+   "target": "func::data.frameworks.react-lua.bin.svg::pixels",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::tests.test_smoke",
+   "target": "func::tests.test_smoke::_index_ready",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  },
+  {
+   "source": "module::tests.test_smoke",
+   "target": "func::tests.test_smoke::_run_all",
+   "relationship": "CALLS",
+   "confidence": 1.0
+  }
+ ]
+}
