@@ -34,7 +34,7 @@ DEFAULT_CORPUS = r"C:\Users\joaog\Downloads\JG-CODE\doc_rag"
 
 SEED_QUESTIONS = [
     "who calls init_db",
-    "where is save",
+    "where is embed",
     "which modules import db",
     "list the entry points",
     "what does the flow from search do",
@@ -132,10 +132,12 @@ def extract_evidence(idx, art, question):
             out.append({"question": q, "target": h["id"], "callers": sorted(
                 {c["id"] for c in idx.callers_of(h["id"])})[:15]})
     elif "import" in q:
+        target = q.rsplit(" ", 1)[-1].lower()
         for mid in sorted(n["id"] for n in art["nodes"] if n["type"] == "Module"):
-            imp = [e["target"] for e in idx.children(mid, "IMPORTS")]
-            out.append({"question": q, "module": mid,
-                        "imports": sorted(i for i in imp if i.startswith("module::"))})
+            imp = sorted(i for i in (e["target"] for e in idx.children(mid, "IMPORTS"))
+                         if i.startswith("module::"))
+            if any(t.split("::")[-1].lower() == target for t in imp):
+                out.append({"question": q, "module": mid, "imports": imp})
     elif "entry" in q:
         out.append({"question": q, "entry_points": sorted(n["id"] for n in idx.entry_points())})
     elif "flow" in q:
