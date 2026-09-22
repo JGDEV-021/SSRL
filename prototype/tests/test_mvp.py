@@ -6,7 +6,7 @@ FIXTURES = os.path.join(os.path.dirname(os.path.abspath(__file__)), "fixtures", 
 SRC = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, SRC)
 
-from ssrl import confidence, extract, index as indexmod, model, narrative as narr, qa, semantics, watch as watchmod
+from ssrl import confidence, extract, impact as impactmod, index as indexmod, mcp, model, narrative as narr, qa, semantics, watch as watchmod
 
 
 def build_artifact(enrich=False):
@@ -332,6 +332,159 @@ class TestWatch(unittest.TestCase):
         self.assertEqual(ev["nodes"], start["nodes"])
         self.assertEqual(ev["reparsed"], 1)
         self.assertEqual(ev["from_cache"], 5)
+
+
+class TestImpact(unittest.TestCase):
+    def setUp(self):
+        art = build_artifact(enrich=True)
+        self.idx = indexmod.Index(art)
+        self.art = art
+
+    def test_changed_db_module(self):
+        r = impactmod.impact_changed(self.art, ["db.py"], index=self.idx)
+        self.assertEqual(r["counts"], {"files": 1, "modules": 1, "importers": 1,
+                                       "callers": 1, "entries": 1, "flows": 1,
+                                       "missing": 0})
+        self.assertEqual(set(r["affected_modules"]), {"db"})
+        self.assertEqual(r["affected_modules"]["db"]["symbols"],
+                         ["func::db::init_db", "func::db::save"])
+        self.assertEqual(r["importers"]["db"], ["module::services.store"])
+        self.assertEqual(r["callers_of_changed"],
+                         {"func::db::save": ["func::services.store::store"]})
+        self.assertEqual(r["entry_points_touched"], ["func::db::init_db"])
+        self.assertEqual(r["flows_affected"], ["flow::func::services.store::store"])
+        self.assertIn("module::services.store", r["reverse_dependent_modules"])
+
+    def test_changed_entry_point_module(self):
+        r = impactmod.impact_changed(self.art, ["services/store.py"], index=self.idx)
+        self.assertEqual(r["counts"]["modules"], 1)
+        self.assertEqual(r["affected_modules"]["services.store"]["symbols"],
+                         ["func::services.store::store"])
+        self.assertEqual(r["importers"], {})
+        self.assertEqual(r["callers_of_changed"], {})
+        self.assertEqual(r["entry_points_touched"], ["func::services.store::store"])
+        self.assertEqual(r["flows_affected"], ["flow::func::services.store::store"])
+
+    def test_ignores_non_py_and_missing(self):
+        r = impactmod.impact_changed(self.art, ["db.py", "README.md", "gone.py"],
+                                     index=self.idx)
+        self.assertEqual(r["ignored"], ["README.md"])
+        self.assertEqual(r["missing_modules"], ["gone.py"])
+        self.assertEqual(set(r["affected_modules"]), {"db"})
+
+    def test_deterministic(self):
+        a = impactmod.impact_changed(self.art, ["db.py", "services/store.py"], index=self.idx)
+        b = impactmod.impact_changed(self.art, ["services/store.py", "db.py"], index=self.idx)
+        self.assertEqual(a, b)
+        self.assertEqual(a["changed_files"], ["db.py", "services/store.py"])
+
+    def test_render_impact_readable(self):
+        r = impactmod.impact_changed(self.art, ["db.py"], index=self.idx)
+        text = impactmod.render_impact(r)
+        self.assertIn("module::db", text)
+        self.assertIn("callers of func::db::save", text)
+        self.assertIn("flow affected: flow::func::services.store::store", text)
+
+
+class TestMCPServer(unittest.TestCase):
+    def setUp(self):
+        self.srv = mcp.MCPServer(FIXTURES, enrich=True, cache_dir=None)
+
+    def call(self, rid, method, params=None):
+        msg = {"jsonrpc": "2.0", "id": rid, "method": method}
+        if params is not None:
+            msg["params"] = params
+        return self.srv.handle(msg)
+
+    def _tool(self, name, args):
+        return self.call(7, "tools/call", {"name": name, "arguments": args})
+
+    def test_initialize_handshake(self):
+        r = self.call(1, "initialize", {})
+        self.assertEqual(r["id"], 1)
+        self.assertEqual(r["result"]["protocolVersion"], mcp.PROTOCOL_VERSION)
+        self.assertEqual(r["result"]["serverInfo"]["name"], "ssrl-mcp")
+        self.assertIn("tools", r["result"]["capabilities"])
+
+    def test_notification_gives_no_response(self):
+        self.assertIsNone(self.srv.handle({"jsonrpc": "2.0", "method": "notifications/initialized"}))
+
+    def test_ping(self):
+        r = self.call(2, "ping")
+        self.assertEqual(r["result"], {})
+
+    def test_tools_list(self):
+        r = self.call(3, "tools/list")
+        names = [t["name"] for t in r["result"]["tools"]]
+        self.assertEqual(names, ["ask", "why", "narrative", "stats", "audit", "impact"])
+        ask = next(t for t in r["result"]["tools"] if t["name"] == "ask")
+        self.assertEqual(ask["inputSchema"]["required"], ["question"])
+
+    def test_tools_call_ask_grounded(self):
+        r = self._tool("ask", {"question": "who calls save"})
+        self.assertFalse(r["result"].get("isError"))
+        text = r["result"]["content"][0]["text"]
+        self.assertIn("Callers of `save`", text)
+        self.assertIn("Function `store`", text)
+        self.assertIn("services/store.py:5", text)
+        self.assertIn("FACTS", text)
+
+    def test_tools_call_ask_missing_arg_errors(self):
+        r = self._tool("ask", {})
+        self.assertTrue(r["result"].get("isError"))
+        self.assertIn("question", r["result"]["content"][0]["text"])
+
+    def test_unknown_tool_is_error(self):
+        r = self.call(8, "tools/call", {"name": "nope", "arguments": {}})
+        self.assertEqual(r["error"]["code"], -32602)
+
+    def test_why_resolves_name(self):
+        r = self._tool("why", {"node": "save"})
+        self.assertFalse(r["result"].get("isError"))
+        self.assertIn("func::db::save", r["result"]["content"][0]["text"])
+
+    def test_stats_tool(self):
+        r = self._tool("stats", {})
+        self.assertIn("files=6", r["result"]["content"][0]["text"])
+
+    def test_audit_tool(self):
+        r = self._tool("audit", {})
+        self.assertIn("conf=", r["result"]["content"][0]["text"])
+
+    def test_narrative_tool(self):
+        r = self._tool("narrative", {})
+        self.assertIn("Living Narrative", r["result"]["content"][0]["text"])
+
+    def test_impact_tool(self):
+        r = self._tool("impact", {"changed_files": ["db.py"]})
+        text = r["result"]["content"][0]["text"]
+        self.assertIn("module::db", text)
+        self.assertIn("1 changed file(s)", text)
+
+    def test_resources_empty(self):
+        r = self.call(9, "resources/list")
+        self.assertEqual(r["result"]["resources"], [])
+
+    def test_unknown_method(self):
+        r = self.call(10, "nope")
+        self.assertEqual(r["error"]["code"], -32601)
+
+    def test_serve_stdio_round_trip(self):
+        import io, json as _json
+        stream = (_json.dumps({"jsonrpc": "2.0", "id": 1, "method": "initialize", "params": {}})
+                  + "\n" + _json.dumps({"jsonrpc": "2.0", "method": "notifications/initialized"})
+                  + "\n" + _json.dumps({"jsonrpc": "2.0", "id": 2, "method": "tools/call",
+                                        "params": {"name": "stats", "arguments": {}}})
+                  + "\nnot json\n")
+        out = io.StringIO()
+        self.srv.serve_stdio(io.StringIO(stream), stdout=out)
+        responses = [l for l in out.getvalue().splitlines() if l.strip()]
+        self.assertEqual(len(responses), 3)  # initialize, stats, parse error
+        parsed = [_json.loads(l) for l in responses]
+        self.assertEqual(parsed[0]["id"], 1)
+        self.assertEqual(parsed[1]["result"]["content"][0]["text"].split("\n")[0].split(" ")[0],
+                         "files=6")
+        self.assertEqual(parsed[2]["error"]["code"], -32700)
 
 
 if __name__ == "__main__":

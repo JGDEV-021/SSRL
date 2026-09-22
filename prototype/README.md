@@ -1,4 +1,4 @@
-# SSRL Prototype — V1 MVP + Phase 7
+# SSRL Prototype — V1 MVP + Phases 7–8
 
 **SSRL = Semantic Software Representation Layer.** A deterministic, evidence-backed
 representation of Python codebases: structural *facts* (confidence 1.0) plus
@@ -12,10 +12,8 @@ dependencies — stdlib `ast` only (ADR-002).
 
 ```text
 V1 MVP complete: extract -> enrich -> calibrate -> Q&A -> narrative -> CLI
-Roadmap Phase 3 (facts), Phase 4 (Q&A projection), Phase 5 (semantic
-enrichment), Phase 6 (confidence engine) all implemented for the MVP.
-Phase 7 (lab integration) complete: `watch` — continuous regeneration on real
-evolving projects, no manual sync (v0.5.0).
+Roadmap Phase 7 (lab integration: `watch`, continuous regeneration) and
+Phase 8 (agent surface: MCP over stdio + CI impact report) complete (v0.6.0).
 ```
 
 ## Package layout (`prototype/ssrl/`)
@@ -29,8 +27,10 @@ evolving projects, no manual sync (v0.5.0).
 | `index.py` | In-memory index: find, callers/callees, imports/deps, entry points |
 | `qa.py` | Grounded, deterministic Q&A with FACTS vs HYPOTHESES separation (H1, FR-6a) |
 | `narrative.py` | Living narrative, generated at build-time (H3) |
+| `impact.py` | CI impact report: "what does this PR affect?" — modules, importers, callers, entry points, flows (Phase 8) |
 | `watch.py` | Continuous no-manual-sync regeneration (Phase 7, NFR-3): stat-poll diff + D-8 incremental rebuild |
-| `cli.py` | `build|enrich|ask|why|narrative|audit|stats|json|watch` (ADR-006) |
+| `mcp.py` | Dependency-free MCP server over stdio (Phase 8, ADR-006 v1.5): `ask/why/narrative/stats/audit/impact` tools |
+| `cli.py` | `build|enrich|ask|why|narrative|audit|stats|json|watch|impact|mcp` (ADR-006) |
 | `__main__.py` | `python -m ssrl ...` entry point |
 
 ## Quick start
@@ -45,11 +45,19 @@ python -m ssrl.cli narrative <repo>
 python -m ssrl.cli audit     <repo>            # calibration table
 python -m ssrl.cli json      <repo> --out art.json [--enrich]
 python -m ssrl.cli watch     <repo> --enrich   # continuous regen (Phase 7)
+python -m ssrl.cli impact    <repo> path.py [--git main]  # "what does this PR affect?" (Phase 8)
+python -m ssrl.mcp           --repo <repo> --enrich      # MCP agent surface over stdio (Phase 8)
 ```
 
 `watch` regenerates the layer whenever the corpus changes, re-parsing only the
 delta (D-8 cache replays the rest); cache is on by default for this command.
-See `REPORT-P7.md` for lab measurements and the live read-only demo.
+`impact` maps changed files to affected modules, importers, breaking callers,
+entry points and flows; with `--git BASE` it reads the diff from git for CI.
+`mcp` speaks JSON-RPC 2.0 (newline-delimited) over stdin/stdout so MCP-capable
+agents (Claude Code, Cline, Cursor) consume grounded answers with evidence:
+`ask`, `why`, `narrative`, `stats`, `audit`, `impact`. Cache is on by default
+(never touches the corpus).
+See `REPORT-P8.md` for the scripted agent session and coherence check.
 
 Run tests (zero deps, stdlib `unittest`):
 
@@ -68,7 +76,7 @@ python -m unittest discover -s tests -v
 | Fact confidence | Structural facts carry `confidence: 1.0`; hypotheses are `< 1.0` and labeled (FR-3/FR-4) |
 | Incremental cache (D-8) | File-level sha256 cache: cold 0 hits → warm 31/31 from_cache, artifact identical |
 | Call resolution | Same-module + cross-module (import-alias and attribute-prefix) linkage, labeled `resolution:` |
-| Test suite | `unittest`: 39 tests green (extract, cache, semantics, confidence, index, qa, narrative, watch) |
+| Test suite | `unittest`: 59 tests green (extract, cache, semantics, confidence, index, qa, narrative, watch, impact, mcp) |
 
 ## Measured stats (V1)
 
@@ -124,3 +132,5 @@ Ids are stable (`module::<id>`, `class::<mid>::<name>`, `func::<mid>::<name>`).
   file*, so reverting to a previously-seen file version re-parses it once (correct,
   just not replayed). Poll interval must be ≥ the regeneration time for back-to-back
   bursts (documented in `REPORT-P7.md`).
+- Impact granularity is whole-module; MCP is stdio-only with a single repo context
+  and a pinned protocol version (documented in `REPORT-P8.md`).

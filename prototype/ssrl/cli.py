@@ -11,6 +11,11 @@ Commands:
   watch  <repo> [--interval S] [--enrich] [--events F] [--max N]
                                         continuous no-manual-sync regeneration
                                         (Phase 7); cache enabled by default
+  impact <repo> FILES... [--git BASE]   "what does this PR affect?" — modules,
+       [--json] [--no-enrich]           importers, callers, entry points, flows
+                                        (Phase 8, ADR-006 supporting surface)
+  mcp    <repo> [--enrich]              MCP server over stdio for AI agents
+                                        (Phase 8, ADR-006 v1.5)
 
 Zero dependencies. Deterministic. Every claim carries evidence.
 """
@@ -22,7 +27,7 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from ssrl import confidence, extract, index as indexmod, narrative as narr, qa, semantics, watch as watchmod
+from ssrl import confidence, extract, index as indexmod, impact as impactmod, narrative as narr, qa, semantics, watch as watchmod
 
 
 DEFAULT_CACHE = os.path.join(os.path.expanduser("~"), ".ssrl", "cache")
@@ -117,6 +122,35 @@ def cmd_json(args):
         print(payload)
 
 
+def cmd_impact(args):
+    art, idx = load_artifact(args.repo, args.cache, enrich_ok=not args.no_enrich)
+    files = list(args.files or [])
+    if args.git:
+        try:
+            out = __import__("subprocess").check_output(
+                ["git", "diff", "--name-only", args.git],
+                cwd=os.path.abspath(args.repo), stderr=__import__("subprocess").DEVNULL,
+                text=True, encoding="utf-8", errors="replace")
+            files += [f for f in out.splitlines() if f.strip()]
+        except __import__("subprocess").CalledProcessError as ex:
+            print(f"error: git diff failed ({ex})", file=sys.stderr)
+            return 1
+    report = impactmod.impact_changed(art, files, index=idx)
+    if args.json:
+        print(json.dumps(report, ensure_ascii=False, indent=2))
+    else:
+        print(impactmod.render_impact(report))
+    return 0
+
+
+def cmd_mcp(args):
+    from ssrl import mcp
+    cache_dir = None if args.no_cache else _cache_dir_for(args.repo)
+    server = mcp.MCPServer(args.repo, enrich=args.enrich, cache_dir=cache_dir)
+    server.serve_stdio()
+    return 0
+
+
 def cmd_watch(args):
     cache_dir = None if args.no_cache else _cache_dir_for(args.repo)
     w = watchmod.Watch(args.repo, cache_dir=cache_dir, enrich_ok=args.enrich,
@@ -143,6 +177,8 @@ def main(argv=None):
     st = sub.add_parser("stats"); st.add_argument("repo"); st.add_argument("--cache", action="store_true"); st.set_defaults(fn=cmd_stats)
     j = sub.add_parser("json"); j.add_argument("repo"); j.add_argument("--out"); j.add_argument("--cache", action="store_true"); j.add_argument("--enrich", action="store_true"); j.set_defaults(fn=cmd_json)
     wt = sub.add_parser("watch"); wt.add_argument("repo"); wt.add_argument("--interval", type=float, default=2.0); wt.add_argument("--enrich", action="store_true"); wt.add_argument("--events"); wt.add_argument("--max", type=int); wt.add_argument("--no-cache", action="store_true"); wt.set_defaults(fn=cmd_watch)
+    imp = sub.add_parser("impact"); imp.add_argument("repo"); imp.add_argument("files", nargs="*"); imp.add_argument("--git"); imp.add_argument("--json", action="store_true"); imp.add_argument("--no-enrich", action="store_true"); imp.add_argument("--cache", action="store_true"); imp.set_defaults(fn=cmd_impact)
+    mc = sub.add_parser("mcp"); mc.add_argument("repo"); mc.add_argument("--enrich", action="store_true"); mc.add_argument("--no-cache", action="store_true"); mc.set_defaults(fn=cmd_mcp)
 
     args = p.parse_args(argv)
     if not getattr(args, "fn", None):

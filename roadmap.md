@@ -30,9 +30,9 @@ Completed:
 - [x] W4 probe (stdlib `ast`: 100% parse, 3.3 s / 1058 nodes, 0 deps)
 - [x] W5 ADRs (ADR-001…007) — **all accepted**
 - [x] **Gate G1 PASSED** — ADR-005 signed off (2026); requirements/architecture frozen to v1.0
-- [x] **V1 MVP** — `prototype/ssrl/` package (extract → enrich → calibrate → Q&A → narrative → CLI), 39 unit tests green, validated on both corpora with determinism
+- [x] **V1 MVP** — `prototype/ssrl/` package (extract → enrich → calibrate → Q&A → narrative → CLI), 59 unit tests green, validated on both corpora with determinism
 - [x] **Phase 7: lab integration** — `watch` (continuous no-manual-sync regeneration, delta-only re-parse via D-8); success criteria verified on real repos read-only (see `prototype/REPORT-P7.md`)
-- [ ] Phase 8: end-to-end + agent surface (MCP)
+- [x] **Phase 8: end-to-end + agent surface** — MCP server over stdio (zero-dep, evidence-preserving tools `ask/why/narrative/stats/audit/impact`) + CI impact report `impact [--git]`; CLI and MCP answer the same layer coherently (see `prototype/REPORT-P8.md`)
 
 ---
 
@@ -164,11 +164,11 @@ Compressed Phases 3–6 into a minimal cohesive package shipped as the **V1 MVP*
 - [x] `prototype/ssrl/` package (10 modules, zero deps)
 - [x] CLI (ADR-006): `build | enrich | ask | why | narrative | audit | stats | json`
 - [x] Incremental cache (D-8): 31/31 from_cache on warm run, artifact identical
-- [x] Tests: 39 unit tests green (extract, cache, semantics, confidence, index, qa, narrative, watch)
+- [x] Tests: 59 unit tests green (extract, cache, semantics, confidence, index, qa, narrative, watch, impact, mcp)
 - [x] Determinism verified end-to-end on both corpora (fresh + cached)
 - [x] Reports: `prototype/BUILDLOG.md`, `prototype/REPORT-V1.md`, `prototype/README.md`
 
-**Next (post-Phase 7):** Phase 8 (end-to-end + MCP agent surface).
+**Next (post-Phase 8):** Phase 9 (RQ-3 comprehension study + full calibration, LLM-as-proponent per ADR-007).
 
 ---
 

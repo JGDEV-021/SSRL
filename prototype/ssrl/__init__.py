@@ -1,5 +1,5 @@
-from . import extract, model, watch
+from . import extract, impact, model, watch
 
-__all__ = ["extract", "model", "watch"]
+__all__ = ["extract", "impact", "model", "watch"]
 
-__version__ = "0.5.0"
+__version__ = "0.6.0"

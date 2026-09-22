@@ -117,8 +117,9 @@ Coverage surface (33 green):
 - `prototype/BUILDLOG.md` — this log.
 - `prototype/REPORT-V1.md` — V1 MVP report (status, verification matrix, metrics, honest limits).
 - `prototype/REPORT-P7.md` — Phase 7 lab report (watch design, lab measurements, live demo).
+- `prototype/REPORT-P8.md` — Phase 8 report (MCP agent surface, impact report, coherence check).
 - `prototype/README.md` — quick-start, package map, verified properties, measured stats.
-- `roadmap.md` — Phase 3–6.5 + Phase 7 close-out marks; Phase 8 next.
+- `roadmap.md` — Phase 3–6.5 + Phases 7–8 close-out marks; Phase 9 next.
 - `paper/SSRL-v0.2.md` → **v0.3** — position paper updated with prototype findings (see `paper/SSRL-v0.3.md`).
 
 ---
@@ -157,10 +158,40 @@ CLI command `watch` and lab driver `prototype/lab/p7_lab.py`.
 
 ---
 
-## 8. Remaining (post-V1 MVP + Phase 7)
+## 8. Phase 8 — End-to-End & Agent/AI Surface
 
-- Phase 7 lab: incremental watch/regenerate-on-change on a real evolving project. **DONE — see section 7 and `prototype/REPORT-P7.md`.**
-- Phase 8: end-to-end agent surface (MCP server over `narrative`/Q&A).
+Per roadmap.md:186. New modules `ssrl/impact.py` + `ssrl/mcp.py` (v0.6.0), CLI
+subcommands `impact` and `mcp`, lab driver `lab/p8_lab.py`, report
+`prototype/REPORT-P8.md`.
+
+- **Impact report (ADR-006 supporting surface):** `impact_changed(artifact,
+  changed_files)` maps changed files → affected modules, importers, breaking
+  callers, entry points touched, flows affected, reverse dependencies.
+  Deterministic (sorted lists, stable ids). CLI `impact <repo> FILES...
+  [--git BASE]` — `--git BASE` feeds `git diff --name-only BASE` (CI drop-in).
+  Regression locked during development: duplicate importer rows when a module
+  had multiple IMPORTS edges (dedupe in `_node_ids`).
+- **MCP server (ADR-006 v1.5), zero-dep:** JSON-RPC 2.0 over stdio with
+  newline-delimited JSON (MCP stdio transport, no Content-Length framing).
+  Handshake `initialize` → `notifications/initialized`; tools `ask`, `why`,
+  `narrative`, `stats`, `audit`, `impact`. Every tool output is grounded and
+  evidence-preserving (RQ-3; facts vs calibrated hypotheses). Build is lazy and
+  cache-on by default (D-8, corpus never touched — NFR-5).
+- **Lab (doc_rag, enrich, warm cache):** handshake ~0 s, first tool answer in
+  **0.37 s** (`from_cache=31`, 306/741). `ask "who calls init_db"` → 7 callers
+  with file:line evidence (indexer.py:275…, retriever.py:197…).
+  `impact ['context.py','db.py']` → 2 modules, 6 importers, 28 callers may
+  break, 3 entry points, 3 flows. **Coherence (success criterion)**: CLI and
+  MCP answers to the same question are identical.
+- **CI smoke on SSRL itself:** `impact .. --git main` → 3 files, 3 modules,
+  36 callers, 11 entry points, 9 flows.
+- **Tests:** `TestImpact` (5) + `TestMCPServer` (13) → suite **59 green**.
+
+---
+
+## 9. Remaining (post-Phase 8)
+
+- Phase 9: RQ-3 comprehension study + full calibration; LLM as hypothesis
+  *proponent* with structural re-scoring (RN-4 / ADR-007).
 - H2 progressive-zoom drill-down and H4 graph navigation (supporting projections).
-- Full RQ-3 calibration study (Phase 9): controlled comprehension experiments.
-- LLM as hypothesis *proponent* only, with structural re-scoring (RN-4 / ADR-007).
+- Line-level/intra-file impact (whole-module today) and MCP resources/streaming.

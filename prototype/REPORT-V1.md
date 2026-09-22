@@ -649,10 +649,10 @@ Module: `cli.py` (139 lines) + `__main__.py`. ADR-006 (CLI first); everything re
 
 ## 14. Unit test suite
 
-File: `tests/test_mvp.py` (268 lines), fixture `tests/fixtures/pkgapp/`, runner:
+File: `tests/test_mvp.py`, fixture `tests/fixtures/pkgapp/`, runner:
 `python -m unittest discover -s tests -v`. **33 tests, all green, ~0.2 s.**
-*(Phase 7 later added a `TestWatch` class — current suite: **39** tests; see
-`REPORT-P7.md`.)*
+*(Phases 7–8 later added `TestWatch`, `TestImpact`, `TestMCPServer` — current
+suite: **59** tests; see `REPORT-P7.md` / `REPORT-P8.md`.)*
 
 ### 14.1 Fixture (`pkgapp/` — 6 files, deliberately small and deterministic)
 
@@ -1068,5 +1068,6 @@ source says so — sample excerpt for shape, not a literal slice.)
 The V1 MVP is a **compressed vertical slice** of every executable roadmap phase: a working,
 tested, deterministic, dependency-free layer from raw Python to grounded answers and living
 narrative — with every semantic claim visibly uncertain and every fact traced to a line.
-None of it is committed to git (standing instruction); the next recommended steps are
-Phase 7 (watch loop + lab ingestion) and Phase 8 (MCP server) when the author says go.
+It was committed to git as `8d24440`; Phase 7 (`cdba65b`) and Phase 8 added the watch loop and
+the MCP agent surface (see `REPORT-P7.md` / `REPORT-P8.md`). The next recommended step is
+Phase 9 (controlled comprehension experiments + LLM-as-proponent) when the author says go.
