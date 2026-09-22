@@ -1,11 +1,13 @@
 # SSRL Architecture — Design Concerns & Decisions
 
-- Version: **1.0 (frozen — Gate G1 passed; D-8 and ADR-008 implemented since)**
+- Version: **1.0 (frozen — Gate G1 passed; D-8, ADR-008 and ADR-009 implemented since)**
 - Status: D-1…D-7 resolved and **accepted** (ADR-001…007); **ADR-008 (Phase 9)**
-  adds the optional micro-LLM proponent stage. D-8 (file-level hash+mtime cache) is
-  **implemented and measured** (REPORT-V1 §7.2), not merely assumed.
+  adds the optional micro-LLM proponent stage; **ADR-009 (Phase 9.5)** extends the
+  MCP/CLI agent surface with the Explainable-AI axis (`explain` +
+  `verify_explanation`). D-8 (file-level hash+mtime cache) is **implemented and
+  measured** (REPORT-V1 §7.2), not merely assumed.
 
-> This document records the invariants the architecture must respect and the decisions the research phase resolved (ADR-001…007). D-1 is resolved by ADR-005; D-8 (file-level hash+mtime cache) is implemented in the prototype. Phase 9 added ADR-008 (micro-LLM proposer, one optional stage between enrichment and projection); see `research/decisions/ADR-008-micro-llm-proponent.md`.
+> This document records the invariants the architecture must respect and the decisions the research phase resolved (ADR-001…007). D-1 is resolved by ADR-005; D-8 (file-level hash+mtime cache) is implemented in the prototype. Phase 9 added ADR-008 (micro-LLM proposer, one optional stage between enrichment and projection); Phase 9.5 added ADR-009 (grounded self-explanation + explanation auditor for external coding agents). See `research/decisions/ADR-008-micro-llm-proponent.md` and `research/decisions/ADR-009-explainable-ai-external-agents.md`.
 
 ---
 

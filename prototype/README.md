@@ -1,11 +1,11 @@
-# SSRL Prototype — V1 MVP + Phases 7–9
+# SSRL Prototype — V1 MVP + Phases 7–9.5
 
 **SSRL = Semantic Software Representation Layer.** A deterministic, evidence-backed
 representation of Python codebases: structural *facts* (confidence 1.0) plus
 labeled semantic *hypotheses* (calibrated confidence), surfaced through a
 grounded Q&A (H1) and a living narrative (H3).
 
-Chosen directions locked in ADR-001…008 (Gate G1 + Phase 9 additions). Zero
+Chosen directions locked in ADR-001…009 (Gate G1 + Phase 9/9.5 additions). Zero
 runtime dependencies — stdlib `ast` only (ADR-002).
 
 ## Status
@@ -19,6 +19,12 @@ draft automated study (`lab/p9_study.py`) plus a refusal probe battery
 (`lab/p9_probe.py`) that proved the micro-model refusals were a prompt artifact;
 the resulting context-system improvement (CLI contract + evidence filtering)
 lifted the grounded condition's F1 0.34 → 0.61 (REPORT-P9 §6.1–§6.2).
+
+Phase 9.5 (ADR-009, Explainable AI for external coding agents) adds the grounded
+self-explanation axis: `ssrl/explain.py` with `explain` (WHAT/WHY/HOW) and the
+`verify_explanation` auditor (MCP + CLI). Battery (`lab/p10_eai.py`) using an
+opencode big-pickle subagent as the synthetic coding AI: faithful narrations
+3/3 PASS (ceiling), fabricated reference 1/1 caught (REPORT-P10).
 ```
 
 ## Package layout (`prototype/ssrl/`)
@@ -34,9 +40,10 @@ lifted the grounded condition's F1 0.34 → 0.61 (REPORT-P9 §6.1–§6.2).
 | `narrative.py` | Living narrative, generated at build-time (H3) |
 | `impact.py` | CI impact report: "what does this PR affect?" — modules, importers, callers, entry points, flows (Phase 8) |
 | `watch.py` | Continuous no-manual-sync regeneration (Phase 7, NFR-3): stat-poll diff + D-8 incremental rebuild |
-| `mcp.py` | Dependency-free MCP server over stdio (Phase 8, ADR-006 v1.5): `ask/why/narrative/stats/audit/impact` tools |
+| `mcp.py` | Dependency-free MCP server over stdio (Phase 8, ADR-006 v1.5): `ask/why/narrative/stats/audit/impact` tools (+`explain`/`verify_explanation` Phase 9.5) |
 | `llm.py` | Micro-LLM hypothesis proposer (Phase 9, ADR-008): Ollama/OpenAICompat/Mock providers, closed tasks, `LLMProposal` evidence (cap 0.5) |
-| `cli.py` | `build|enrich|ask|why|narrative|audit|stats|json|watch|impact|mcp|propose` (ADR-006) |
+| `explain.py` | Phase 9.5 (ADR-009): grounded WHAT/WHY/HOW (`explain_node`/`explain_changed`) + explanation auditor `verify_explanation` — quoted citations (present/external/invented), unsupported claims, structural consistency, groundedness + verdict; deterministic, no model |
+| `cli.py` | `build|enrich|ask|why|narrative|audit|stats|json|watch|impact|explain|verify|mcp|propose` (ADR-006) |
 | `__main__.py` | `python -m ssrl ...` entry point |
 
 ## Quick start
@@ -52,6 +59,9 @@ python -m ssrl.cli audit     <repo>            # calibration table
 python -m ssrl.cli json      <repo> --out art.json [--enrich]
 python -m ssrl.cli watch     <repo> --enrich   # continuous regen (Phase 7)
 python -m ssrl.cli impact    <repo> path.py [--git main]  # "what does this PR affect?" (Phase 8)
+python -m ssrl.cli explain   <repo> --node func::x::y       # grounded WHAT/WHY/HOW (Phase 9.5)
+python -m ssrl.cli explain   <repo> path.py [--git main]   # change-mode grounded WHAT/WHY/HOW
+python -m ssrl.cli verify    <repo> path.py --explanation "I changed \`x.py\`: \`save\` now calls \`validate\`"
 python -m ssrl.cli mcp      <repo> [--enrich]   # MCP agent server over stdio (Phase 8)
 python -m ssrl.mcp          --repo <repo> --enrich      # same MCP surface (Phase 8)
 python -m ssrl.cli propose  <repo> --mock                # micro-LLM proposals (Phase 9)
@@ -63,16 +73,23 @@ delta (D-8 cache replays the rest); cache is on by default for this command.
 entry points and flows; with `--git BASE` it reads the diff from git for CI.
 `mcp` speaks JSON-RPC 2.0 (newline-delimited) over stdin/stdout so MCP-capable
 agents (Claude Code, Cline, Cursor) consume grounded answers with evidence:
-`ask`, `why`, `narrative`, `stats`, `audit`, `impact`. Cache is on by default
-(never touches the corpus).
+`ask`, `why`, `narrative`, `stats`, `audit`, `impact`, plus the Phase 9.5
+`explain` (WHAT/WHY/HOW for a node or a change set) and `verify_explanation`
+(explanation auditor). Cache is on by default (never touches the corpus).
+`explain`/`verify` implement ADR-009: an external coding AI's self-explanation
+is cross-checked against the artifact — quoted identifiers are citations
+(fabricated refs flagged *invented*), asserted relations are consistency-checked,
+and the verdict is a deterministic PASS/REVIEW with a groundedness score. Narrate
+on stdin or with `--explanation-file`; `--git BASE` pulls the change set from git.
 `propose` runs the Phase 9 micro-LLM proposer (ADR-008): it names Flows and
 labels unit roles from tiny facts-only bundles against a local model
 (`qwen3:0.6b` via Ollama by default). Output is hypotheses only —
 `LLMProposal` evidence, confidence capped at 0.5, never facts; the
 deterministic pipeline never calls the model. Offline? Use `--mock`
 (deterministic) or check the provider. Requires the artifact (enrich).
-See `REPORT-P8.md` for the scripted agent session and coherence check, and
-`REPORT-P9.md` for the micro-LLM proposer and experiment seed.
+See `REPORT-P8.md` for the scripted agent session and coherence check,
+`REPORT-P9.md` for the micro-LLM proposer and experiment seed, and
+`REPORT-P10.md` for the Explainable-AI battery (ADR-009).
 
 Run tests (zero deps, stdlib `unittest`):
 
@@ -91,7 +108,7 @@ python -m unittest discover -s tests -v
 | Fact confidence | Structural facts carry `confidence: 1.0`; hypotheses are `< 1.0` and labeled (FR-3/FR-4) |
 | Incremental cache (D-8) | File-level sha256 cache: cold 0 hits → warm 31/31 from_cache, artifact identical |
 | Call resolution | Same-module + cross-module (import-alias and attribute-prefix) linkage, labeled `resolution:` |
-| Test suite | `unittest`: 67 tests green (extract, cache, semantics, confidence, index, qa, narrative, watch, impact, mcp, llm) |
+| Test suite | `unittest`: 88 tests green (extract, cache, semantics, confidence, index, qa, narrative, watch, impact, mcp, llm, explain) |
 
 ## Measured stats (V1)
 
@@ -158,3 +175,10 @@ Ids are stable (`module::<id>`, `class::<mid>::<name>`, `func::<mid>::<name>`).
   the micro model and that it stays format-fragile on open extraction — the
   human-graded multi-arm study is the remaining validation step
   (documented in `REPORT-P9.md` §6.1).
+- The Explainable-AI surface (Phase 9.5, ADR-009) audits **grounding and
+  structural consistency, not semantics**: a narration can cite only real
+  symbols and still state the wrong reason — the auditor won't judge intent
+  (documented in `REPORT-P10.md`). Identifier extraction is heuristic
+  (unquoted CamelCase/snake tokens resolve as hits; explicitly quoted
+  identifiers are the only thing that can be flagged *invented*). Both are
+  by-design ceilings, not bugs.

@@ -26,6 +26,7 @@ import os
 import sys
 
 from . import confidence, extract, index as indexmod, narrative as narr, qa
+from . import explain as ex
 from . import impact as impactmod
 from . import semantics
 
@@ -76,6 +77,33 @@ TOOLS = [
         "inputSchema": {"type": "object",
                         "properties": {"changed_files": {"type": "array", "items": {"type": "string"}}},
                         "required": ["changed_files"]},
+    },
+    {
+        "name": "explain",
+        "description": ("Grounded self-explanation (ADR-009): WHAT/WHY/HOW for one artifact node "
+                        "('node') or for a change set ('files'). Facts only; the coding AI uses it "
+                        "to ground its own story. Provide exactly one of 'node' or 'files'."),
+        "inputSchema": {"type": "object",
+                        "properties": {
+                            "node": {"type": "string",
+                                     "description": "node id (e.g. func::db::save) or a name to find"},
+                            "files": {"type": "array", "items": {"type": "string"},
+                                      "description": "changed repo-relative paths"}}},
+    },
+    {
+        "name": "verify_explanation",
+        "description": ("Explanation auditor (ADR-009): cross-check a coding AI's free-text "
+                        "narration (what/why/how) against the artifact. Quoted identifiers are "
+                        "citations; fabricated references are flagged 'invented'. Reports quoted "
+                        "citation hits, invented count, unsupported claims, structural consistency "
+                        "failures, groundedness and verdict PASS/REVIEW."),
+        "inputSchema": {"type": "object",
+                        "properties": {
+                            "files": {"type": "array", "items": {"type": "string"},
+                                      "description": "changed repo-relative paths"},
+                            "narration": {"type": "string",
+                                          "description": "the coding AI's natural-language self-explanation"}},
+                        "required": ["files", "narration"]},
     },
 ]
 
@@ -200,6 +228,33 @@ class MCPServer:
                 raise ValueError("'changed_files' must be a non-empty list of file paths")
             report = impactmod.impact_changed(self.artifact, files, index=self.index)
             return impactmod.render_impact(report)
+        if name == "explain":
+            node = args.get("node")
+            files = args.get("files")
+            if node is not None and files is not None:
+                raise ValueError("provide either 'node' (node mode) or 'files' (change mode), not both")
+            if node is not None:
+                if not isinstance(node, str) or not node.strip():
+                    raise ValueError("'node' must be a non-empty string")
+                n = self.index.node(node) or next(iter(self.index.find(node) or []), None)
+                if n is None:
+                    raise ValueError(f"not found: {node}")
+                return ex.render_explain_node(ex.explain_node(self.index, n))
+            if files is not None:
+                if not isinstance(files, list) or not all(isinstance(f, str) for f in files):
+                    raise ValueError("'files' must be a list of file paths")
+                return ex.render_explain_changed(
+                    ex.explain_changed(self.artifact, files, index=self.index))
+            raise ValueError("either 'node' or 'files' is required")
+        if name == "verify_explanation":
+            files = args.get("files")
+            narration = args.get("narration")
+            if not isinstance(files, list) or not files or not all(isinstance(f, str) for f in files):
+                raise ValueError("'files' must be a non-empty list of file paths")
+            if not isinstance(narration, str) or not narration.strip():
+                raise ValueError("'narration' is required (non-empty string)")
+            return ex.render_verify(ex.verify_explanation(
+                self.artifact, files, narration, index=self.index))
         raise ValueError(f"unhandled tool: {name}")
 
     # ---- protocol plumbing -------------------------------------------------

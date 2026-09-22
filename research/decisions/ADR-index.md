@@ -12,5 +12,6 @@
 | [ADR-006](ADR-006-integration-surface.md) | Integration: **CLI first**, then **MCP** for agents | **Accepted** | W2 (editor/agent protocol won); dev-friendly NFR-1 |
 | [ADR-007](ADR-007-hypothesis-sources.md) | Hypothesis sources: **structure/naming first, LLM last** | **Accepted** | W1 (LLM grounding), W2 (Aider repo map) |
 | [ADR-008](ADR-008-micro-llm-proponent.md) | LLM component: **micro model (Qwen3-0.6B class), proponent only** — one optional stage (`propose`) between enrichment and projection; closed tasks, tiny evidence bundles, "model proposes, structure disposes" | **Accepted** | ADR-007 RN-4; speed/small-context NFRs; Phase 9 rationale |
+| [ADR-009](ADR-009-explainable-ai-external-agents.md) | Explainable AI for **external coding agents**: grounded **self-explanation** contract (WHAT = structure/facts, WHY/HOW = AI narration as audited claim) + **explanation auditor** (`verify_explanation`), exposed via MCP/CLI; "the AI is the witness, the layer is the notary" | **Accepted** | Author directive (external process); Phase 9 probe failure modes; ADR-006/007/008 lineage; Phase 9.5 battery (`REPORT-P10`) |
 
-**Gate G1 status: PASSED.** All ADRs ratified. Requirements and architecture frozen to v1.0. Prototype coding may begin (roadmap Phase 3).
+**Gate G1 status: PASSED.** All ADRs ratified. Requirements and architecture frozen to v1.0. Prototype coding may begin (roadmap Phase 3). Post-G1 additions: ADR-008 (Phase 9) and ADR-009 (Phase 9.5) ratified by the maintainer and implemented in the prototype.

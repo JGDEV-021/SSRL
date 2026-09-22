@@ -14,7 +14,7 @@
 Stage: Prototype — V1 MVP complete (Phases 3–6 compressed into an MVP)
 
 Progress:
-█████████░ 90%
+█▓▓▓▓▓▓▓▓░ 92%
 ```
 
 Completed:
@@ -33,6 +33,8 @@ Completed:
 - [x] **V1 MVP** — `prototype/ssrl/` package (extract → enrich → calibrate → Q&A → narrative → CLI), 67 unit tests green, validated on both corpora with determinism
 - [x] **Phase 7: lab integration** — `watch` (continuous no-manual-sync regeneration, delta-only re-parse via D-8); success criteria verified on real repos read-only (see `prototype/REPORT-P7.md`)
 - [x] **Phase 8: end-to-end + agent surface** — MCP server over stdio (zero-dep, evidence-preserving tools `ask/why/narrative/stats/audit/impact`) + CI impact report `impact [--git]`; CLI and MCP answer the same layer coherently (see `prototype/REPORT-P8.md`)
+- [x] **Phase 9: experimental validation groundwork** — micro-LLM proposer (ADR-008), probe battery → prompt-contract fix, study re-run **baseline 0.15 / ssrl 0.61 / layer 0.32**, ssrl recall 1.0/6 (see `prototype/REPORT-P9.md`)
+- [x] **Phase 9.5: Explainable AI for external coding agents (ADR-009)** — grounded self-explanation axis: MCP/CLI `explain` + `verify_explanation` auditor, "the AI is the witness, the layer is the notary"; battery with an opencode big-pickle subagent as synthetic coding AI: **ceiling 3/3 PASS, fabricated reference 1/1 caught** (see `prototype/REPORT-P10.md`)
 
 ---
 
@@ -168,10 +170,11 @@ Compressed Phases 3–6 into a minimal cohesive package shipped as the **V1 MVP*
 - [x] Determinism verified end-to-end on both corpora (fresh + cached)
 - [x] Reports: `prototype/BUILDLOG.md`, `prototype/REPORT-V1.md`, `prototype/README.md`
 
-**Next (post-Phase 9):** Phase 10 publication prep. Phase 9 groundwork + the
+**Next (post-Phase 9.5):** Phase 10 publication prep. Phase 9 groundwork + the
 draft automated study pass are done (§6.1 of `prototype/REPORT-P9.md`); the
 human-graded multi-arm study and full calibration analysis remain as the
-definitive validation step.
+definitive validation step. Phase 9.5 (ADR-009) added the Explainable-AI axis
+for external coding agents — see `prototype/REPORT-P10.md`.
 
 ---
 
@@ -230,6 +233,41 @@ definitive validation step.
       raw-agent), ≥ 3 graders, mid-size model arm, accuracy + time-to-understand.
 
 **Success criteria:** measurable, significant comprehension improvement.
+
+---
+
+## Phase 9.5 — Explainable AI for External Coding Agents (ADR-009)
+
+**Goal (author directive):** developers no longer write or read code — coding AIs do.
+The missing capability is **self-explanation**: what the AI did, why, how. SSRL's
+job is to be the substrate external coding AIs (Claude, Codex, …) explain
+*against* — and the notary that audits those explanations. "The AI is the
+witness, the layer is the notary" (model proposes, structure disposes, extended
+to the *external* process).
+
+**Implemented (deterministic, stdlib-only, no model inside the layer):**
+- [x] `ssrl/explain.py` — grounded WHAT/WHY/HOW (`explain_node` / `explain_changed`,
+      deriving facts + evidence + pipeline stages off the artifact) and the
+      **auditor** `verify_explanation`: quoted identifiers are citations
+      (present / external / **invented**); unquoted identifier-like tokens resolve
+      as hits and never count invented; sentences without citations are
+      "unsupported"; asserted relations are structurally consistency-checked.
+- [x] MCP tools `explain` + `verify_explanation` (ADR-006 surface, agents speak
+      MCP natively) and CLI `explain` / `verify` (+`--git`, stdin/file narration).
+- [x] Battery (`lab/p10_eai.py`, seed `lab/p10_eai_seed.json`): narrations
+      **drafted by an opencode subagent on model `opencode/big-pickle` as the
+      synthetic coding AI** (same caliber as the frontier tools this targets).
+      Result: **3/3 faithful ground-truth narrations PASS (ceiling, groundedness
+      1.0, invented 0); 1/1 adversarial narration with a fabricated reference
+      caught → REVIEW, invented=1.** See `prototype/REPORT-P10.md`.
+- [x] Tests: 88 green (21 new EAI tests incl. MCP wiring).
+- [ ] Open items, documented in REPORT-P10: nested/ambiguous identifier
+      extraction noise, "grounded but wrong reason" (no semantic entailment) —
+      both by-design ceilings, not bugs.
+
+**Success criteria:** an external coding AI can self-explain against the layer and
+the layer can tell a grounded self-explanation from a fabricated one. **Verified
+in-battery**; real Claude/Codex-grade integration is Phase 10 outreach.
 
 ---
 

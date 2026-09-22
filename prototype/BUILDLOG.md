@@ -266,10 +266,78 @@ CLI subcommand `propose`, lab driver `lab/p9_lab.py`, report
 
 ---
 
-## 10. Remaining (post-Phase 9)
+## 9.5. Explainable AI for external coding agents (ADR-009)
+
+**Goal (author directive):** developers no longer read or write code — coding AIs
+do. The missing capability is **self-explanation** ("o que ela fez, o porquê,
+como"); and the "pulo do gato" for moving from Python/JS to whatever the AI
+produces next. Target: **external** coding AIs (Claude, Codex, …), not the
+internal micro-LLM. Design-first: `ADR-009` written and ratified ("implemente")
+before any code — **"the AI is the witness, the layer is the notary."**
+
+**Surfaces added (all deterministic, stdlib-only, no model in the layer):**
+
+| Piece | Where | What |
+| --- | --- | --- |
+| Auditor + WHAT/WHY/HOW | `ssrl/explain.py` (new) | `explain_node` / `explain_changed` (reuses `impact_changed`), `verify_explanation`, renderers. Citations: quoted identifiers → present/external/`invented`; unquoted identifier-like tokens resolve as hits and **never** count invented (non-resolving → `unresolved_tokens`); sentences citing nothing → `unsupported_claims`; asserted relations → structural consistency. Verdict PASS iff groundedness ≥ 0.8 and invented == 0, else REVIEW. No semantic entailment. |
+| MCP tools | `ssrl/mcp.py` | `explain` (node XOR files) + `verify_explanation` (files + narration) |
+| CLI verbs | `ssrl/cli.py` | `explain [--node] [--git]`, `verify [--git] [--explanation|--explanation-file]`; narration on stdin; `--json` |
+| Tests | `tests/test_explain.py` (new) | 21 tests incl. MCP wiring (5) + determinism re-verification |
+| Battery | `lab/p10_eai.py` + `p10_eai_seed.json` | 4 narrations on real change sets → `p10_eai_results.{json,md}` |
+
+**Bugs found & fixed during 9.5:**
+
+1. **`_IDENT_RE` had a capturing group** (`explain.py`): `re.findall` then
+   returned the group content, so counts matched identifiers, not spans. Switched
+   to `(?:…)` non-capturing groups.
+2. **Dotted citations didn't resolve** (`explain.py`): `models.validate` matched
+   nodes by name only. Now resolved across the token (final segment vs the
+   dotted id, e.g. → `func::models::validate` first, then module-scoped name).
+3. **CLI `call` regex was singular** (`cli.py`): `_CALL_STAGE_RE` matched
+   `call()` only, not `calls()`. Made the plural-agnostic — real narrations
+   ("it calls X") now consistency-check.
+4. **`except Exception as ex` shadowed module `ex`** (`cli.py::cmd_verify`):
+   Python binds `ex` over the module name in handler scope. Renamed to `exc`.
+5. **`--node` was a positional arg** (`cli.py::cmd_explain`): design's `--node`
+   flag also collided with argparse ambiguity. Made it an explicit flag.
+6. **Module form didn't resolve** (`explain.py`): `module::db::db` style and
+   bare `db` on module nodes missed via `idx.node`. Added module id / last-segment
+   fallbacks.
+7. **Double backticks noisy** (narration hygiene): `` ``x`` `` (markdown in
+   prose) broke the quote tokenizer. Normalized ` `` ` → `` ` `` before tokenize.
+8. **`_pair_consistent` was asymmetric** (`explain.py`): for-pair direction
+   checks were one-sided. Made symmetric so a reversed-assertion pair is an
+   inconsistency either way.
+
+**Battery — Explainable AI validation (`lab/p10_eai.py`):**
+
+Narrations authored by an **opencode subagent on model `opencode/big-pickle`**
+(the synthetic coding AI, frontier-class) over live change sets of `ssrl` itself;
+scenario `explain-fabricated-citation` is a deliberately dishonest narration
+(references a `sanitize_claims` helper that does not exist).
+
+| Scenario | Kind | Verdict | Groundedness | Present | Invented |
+| --- | --- | --- | --- | --- | --- |
+| explain-add-auditor | faithful | **PASS** | 1.0 | 3 | 0 |
+| impact-add-projection | faithful | **PASS** | 1.0 | 3 | 0 |
+| llm-provider-safety | faithful | **PASS** | 1.0 | 4 | 0 |
+| explain-fabricated-citation | adversarial | **REVIEW** | 0.67 | 2 | 1 |
+
+Ceiling **3/3** (faithful narrations reach groundedness 1.0, invented 0);
+fabricated citation **1/1 caught**. Full write-up: `REPORT-P10.md`.
+
+- **Tests:** 21 new → suite **88 green** (compileall clean; determinism
+  re-verified by double-run asserts in `test_explain.py`).
+
+---
+
+## 10. Remaining (post-Phase 9.5)
 
 - Definitive RQ-3 study: human-graded multi-arm (Source-only vs Source+SSRL vs
   raw-agent), ≥ 3 graders, a mid-size model arm in addition to qwen3:0.6b,
   accuracy + time-to-understand (draft automated pass done — REPORT-P9 §6.1).
+- Explainable-AI (ADR-009) outreach: real Claude/Codex-grade MCP integration
+  session + larger narration battery to tune the PASS threshold from data
+  (REPORT-P10 §8).
 - H2 progressive-zoom drill-down and H4 graph navigation (supporting projections).
 - Line-level/intra-file impact (whole-module today) and MCP resources/streaming.

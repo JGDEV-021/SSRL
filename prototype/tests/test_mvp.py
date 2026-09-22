@@ -416,7 +416,8 @@ class TestMCPServer(unittest.TestCase):
     def test_tools_list(self):
         r = self.call(3, "tools/list")
         names = [t["name"] for t in r["result"]["tools"]]
-        self.assertEqual(names, ["ask", "why", "narrative", "stats", "audit", "impact"])
+        self.assertEqual(names, ["ask", "why", "narrative", "stats", "audit", "impact",
+                                 "explain", "verify_explanation"])
         ask = next(t for t in r["result"]["tools"] if t["name"] == "ask")
         self.assertEqual(ask["inputSchema"]["required"], ["question"])
 

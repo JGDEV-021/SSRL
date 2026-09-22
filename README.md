@@ -63,23 +63,25 @@ The graph is *one* projection. The product is the layer. Which projection become
 | Vision & Principles | Done |
 | Spec-driven Requirements | Frozen v1.0 (Gate G1 passed) |
 | Position Paper | Draft (v0.3 — G1 resolution + prototype findings) |
-| Research Plan | Executed (G1 passed; W1–W5, ADR-001…008) |
+| Research Plan | Executed (G1 passed; W1–W5, ADR-001…009) |
 | Research & Analysis | Done |
-| Prototype (V1 MVP) | **Shipped — v0.7.0**, Phases 3–9 complete, 67 unit tests |
-| Validation | Phase 9 draft automated study + refusal probe executed; definitive human-graded study next (Phase 10) |
+| Prototype (V1 MVP) | **Shipped — v0.7.0**, Phases 3–9.5 complete, 88 unit tests |
+| Validation | Phase 9 draft automated study + refusal probe executed; Phase 9.5 Explainable-AI battery executed; definitive human-graded study next (Phase 10) |
 
 The prototype is no longer deferred: `prototype/ssrl/` is a working, dependency-free
 package (extract → enrich → calibrate → Q&A → narrative → CLI → watch → MCP →
-micro-LLM proposer). Validation evidence lives in `prototype/REPORT-P9.md`
-(§6.1 draft study, §6.2 refusal probe battery) — the grounded condition scored
-entity-F1 **0.61** (recall 1.0) vs baseline 0.15.
+micro-LLM proposer → **explain/verify**). Validation evidence lives in
+`prototype/REPORT-P9.md` (§6.1 draft study, §6.2 refusal probe battery) — the
+grounded condition scored entity-F1 **0.61** (recall 1.0) vs baseline 0.15 — and
+`prototype/REPORT-P10.md` (ADR-009 Explainable-AI battery: ceiling 3/3 PASS;
+fabricated reference 1/1 caught).
 
 ## Repository structure
 
 ```text
 SSRL/
 ├── README.md
-├── roadmap.md              # Phases 0–10; 3–9 done, 10 (publication) next
+├── roadmap.md              # Phases 0–10; 3–9.5 done, 10 (publication) next
 ├── LICENSE
 ├── docs/
 │   ├── vision.md              # Mentality, objectives, non-goals, principles
@@ -98,15 +100,15 @@ SSRL/
 │   ├── prior-art/             # W2 — tools
 │   ├── discourse/             # W3 — practitioner pain points
 │   ├── probes/                # W4 — throwaway experiments (not the prototype)
-│   └── decisions/             # W5 — ADR-001…008 (all accepted)
+│   └── decisions/             # W5 — ADR-001…009 (008 micro-LLM, 009 Explainable AI)
 └── prototype/
     ├── README.md              # Prototype readme (quick start, verified properties)
     ├── BUILDLOG.md            # Per-phase build log (Phases 1–9)
     ├── REPORT-V1.md           # V1 MVP delivery report (Phases 3–6.5)
-    ├── REPORT-P7.md / REPORT-P8.md / REPORT-P9.md
+    ├── REPORT-P7.md / REPORT-P8.md / REPORT-P9.md / REPORT-P10.md
     ├── ssrl/                  # The V1 package (stdlib only, zero deps)
-    ├── lab/                   # Phase 7–9 labs + study/probe harnesses
-    └── tests/                 # 67 unit tests
+    ├── lab/                   # Phase 7–10 labs + study/probe/battery harnesses
+    └── tests/                 # 88 unit tests
 ```
 
 ---
