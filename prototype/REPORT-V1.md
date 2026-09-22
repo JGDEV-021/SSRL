@@ -138,7 +138,7 @@ traceability backbone that the "research gates code" cardinal rule demands.
 | ADR-004 | no vectors/embeddings in fact layer / first projection | no embedding code anywhere |
 | ADR-005 | **H1 grounded Q&A primary; H3 narrative co-primary; H4 graph supporting** | `qa.py` + `narrative.py` are the two projection surfaces |
 | ADR-006 | CLI first, then MCP | `cli.py` is the complete integration surface |
-| ADR-007 | hypothesis sources: structure/naming first, LLM last (proposer only) | `semantics.py` is 100% deterministic heuristics; zero LLM calls |
+| ADR-007 | hypothesis sources: structure/naming first, LLM last (proposer only) | `semantics.py` is 100% deterministic heuristics; zero LLM calls. Phase 9 later added the micro-LLM proposer (`ADR-008`), which only *proposes* capped hypotheses (`LLMProposal` ≤ 0.5) — never facts |
 
 ### 3.3 Frozen requirements ↔ MVP contract
 
@@ -651,8 +651,9 @@ Module: `cli.py` (139 lines) + `__main__.py`. ADR-006 (CLI first); everything re
 
 File: `tests/test_mvp.py`, fixture `tests/fixtures/pkgapp/`, runner:
 `python -m unittest discover -s tests -v`. **33 tests, all green, ~0.2 s.**
-*(Phases 7–8 later added `TestWatch`, `TestImpact`, `TestMCPServer` — current
-suite: **59** tests; see `REPORT-P7.md` / `REPORT-P8.md`.)*
+*(Phases 7–9 later added `TestWatch`, `TestImpact`, `TestMCPServer`,
+`TestLLMProposer` — current suite: **67** tests; see `REPORT-P7.md` /
+`REPORT-P8.md` / `REPORT-P9.md`.)*
 
 ### 14.1 Fixture (`pkgapp/` — 6 files, deliberately small and deterministic)
 

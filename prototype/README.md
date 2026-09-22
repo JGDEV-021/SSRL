@@ -1,19 +1,20 @@
-# SSRL Prototype — V1 MVP + Phases 7–8
+# SSRL Prototype — V1 MVP + Phases 7–9
 
 **SSRL = Semantic Software Representation Layer.** A deterministic, evidence-backed
 representation of Python codebases: structural *facts* (confidence 1.0) plus
 labeled semantic *hypotheses* (calibrated confidence), surfaced through a
 grounded Q&A (H1) and a living narrative (H3).
 
-Chosen directions locked in ADR-001…007 (Gate G1 passed). Zero runtime
-dependencies — stdlib `ast` only (ADR-002).
+Chosen directions locked in ADR-001…008 (Gate G1 + Phase 9 additions). Zero
+runtime dependencies — stdlib `ast` only (ADR-002).
 
 ## Status
 
 ```text
 V1 MVP complete: extract -> enrich -> calibrate -> Q&A -> narrative -> CLI
-Roadmap Phase 7 (lab integration: `watch`, continuous regeneration) and
-Phase 8 (agent surface: MCP over stdio + CI impact report) complete (v0.6.0).
+Roadmap Phase 7 (lab integration: `watch`, continuous regeneration), Phase 8
+(agent surface: MCP over stdio + CI impact report) and Phase 9 (micro-LLM
+hypothesis proposer, ADR-008) complete (v0.7.0).
 ```
 
 ## Package layout (`prototype/ssrl/`)
@@ -30,7 +31,8 @@ Phase 8 (agent surface: MCP over stdio + CI impact report) complete (v0.6.0).
 | `impact.py` | CI impact report: "what does this PR affect?" — modules, importers, callers, entry points, flows (Phase 8) |
 | `watch.py` | Continuous no-manual-sync regeneration (Phase 7, NFR-3): stat-poll diff + D-8 incremental rebuild |
 | `mcp.py` | Dependency-free MCP server over stdio (Phase 8, ADR-006 v1.5): `ask/why/narrative/stats/audit/impact` tools |
-| `cli.py` | `build|enrich|ask|why|narrative|audit|stats|json|watch|impact|mcp` (ADR-006) |
+| `llm.py` | Micro-LLM hypothesis proposer (Phase 9, ADR-008): Ollama/OpenAICompat/Mock providers, closed tasks, `LLMProposal` evidence (cap 0.5) |
+| `cli.py` | `build|enrich|ask|why|narrative|audit|stats|json|watch|impact|mcp|propose` (ADR-006) |
 | `__main__.py` | `python -m ssrl ...` entry point |
 
 ## Quick start
@@ -46,7 +48,9 @@ python -m ssrl.cli audit     <repo>            # calibration table
 python -m ssrl.cli json      <repo> --out art.json [--enrich]
 python -m ssrl.cli watch     <repo> --enrich   # continuous regen (Phase 7)
 python -m ssrl.cli impact    <repo> path.py [--git main]  # "what does this PR affect?" (Phase 8)
-python -m ssrl.mcp           --repo <repo> --enrich      # MCP agent surface over stdio (Phase 8)
+python -m ssrl.cli mcp      <repo> [--enrich]   # MCP agent server over stdio (Phase 8)
+python -m ssrl.mcp          --repo <repo> --enrich      # same MCP surface (Phase 8)
+python -m ssrl.cli propose  <repo> --mock                # micro-LLM proposals (Phase 9)
 ```
 
 `watch` regenerates the layer whenever the corpus changes, re-parsing only the
@@ -57,7 +61,14 @@ entry points and flows; with `--git BASE` it reads the diff from git for CI.
 agents (Claude Code, Cline, Cursor) consume grounded answers with evidence:
 `ask`, `why`, `narrative`, `stats`, `audit`, `impact`. Cache is on by default
 (never touches the corpus).
-See `REPORT-P8.md` for the scripted agent session and coherence check.
+`propose` runs the Phase 9 micro-LLM proposer (ADR-008): it names Flows and
+labels unit roles from tiny facts-only bundles against a local model
+(`qwen3:0.6b` via Ollama by default). Output is hypotheses only —
+`LLMProposal` evidence, confidence capped at 0.5, never facts; the
+deterministic pipeline never calls the model. Offline? Use `--mock`
+(deterministic) or check the provider. Requires the artifact (enrich).
+See `REPORT-P8.md` for the scripted agent session and coherence check, and
+`REPORT-P9.md` for the micro-LLM proposer and experiment seed.
 
 Run tests (zero deps, stdlib `unittest`):
 
@@ -76,7 +87,7 @@ python -m unittest discover -s tests -v
 | Fact confidence | Structural facts carry `confidence: 1.0`; hypotheses are `< 1.0` and labeled (FR-3/FR-4) |
 | Incremental cache (D-8) | File-level sha256 cache: cold 0 hits → warm 31/31 from_cache, artifact identical |
 | Call resolution | Same-module + cross-module (import-alias and attribute-prefix) linkage, labeled `resolution:` |
-| Test suite | `unittest`: 59 tests green (extract, cache, semantics, confidence, index, qa, narrative, watch, impact, mcp) |
+| Test suite | `unittest`: 67 tests green (extract, cache, semantics, confidence, index, qa, narrative, watch, impact, mcp, llm) |
 
 ## Measured stats (V1)
 
@@ -120,9 +131,10 @@ Ids are stable (`module::<id>`, `class::<mid>::<name>`, `func::<mid>::<name>`).
 - Call resolution is name/alias based — no type inference; `self.method()` and
   shadowed names resolve heuristically. Facts are exact; *linkage* is best-effort
   and labeled.
-- Hypotheses come from naming/structure heuristics + call-graph evidence (RN-4).
-  An LLM would only *propose* hypotheses; SSRL recalibrates with structural
-  evidence — not implemented in the MVP (ADR-007).
+- Hypotheses come from naming/structure heuristics + call-graph evidence (RN-4),
+  plus — since Phase 9 — micro-LLM proposals as a *last*, capped source
+  (`LLMProposal`, conf ≤ 0.5): the model proposes, structure disposes
+  (ADR-007 / ADR-008).
 - Flat-scope methods: two methods with the same name in different classes of the
   same module share a `func::` id; CONTAINS edges still attach them to the right
   class (documented limitation of flat func ids).
@@ -134,3 +146,9 @@ Ids are stable (`module::<id>`, `class::<mid>::<name>`, `func::<mid>::<name>`).
   bursts (documented in `REPORT-P7.md`).
 - Impact granularity is whole-module; MCP is stdio-only with a single repo context
   and a pinned protocol version (documented in `REPORT-P8.md`).
+- The LLM side (Phase 9, ADR-008) is **proponent-only, micro, and optional**: a
+  real model must be reachable locally (Ollama `qwen3:0.6b`, ~0.6 B params);
+  proposals are deliberately small-named and confined to the closed tasks —
+  no open-ended reasoning. The experiment harness (`lab/p9_experiment_seed.jsonl`)
+  seeds the controlled RQ-3 study; grading is a human step, not yet run
+  (documented in `REPORT-P9.md`).

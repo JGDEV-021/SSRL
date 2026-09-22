@@ -11,5 +11,6 @@
 | [ADR-005](ADR-005-primary-projection.md) | Primary projection (RN-1): **H1 grounded Q&A** as primary; H3 living narrative as the differentiated co-surface; H4 graph demoted to supporting | **Accepted** | W1, W2, W3 triangulation |
 | [ADR-006](ADR-006-integration-surface.md) | Integration: **CLI first**, then **MCP** for agents | **Accepted** | W2 (editor/agent protocol won); dev-friendly NFR-1 |
 | [ADR-007](ADR-007-hypothesis-sources.md) | Hypothesis sources: **structure/naming first, LLM last** | **Accepted** | W1 (LLM grounding), W2 (Aider repo map) |
+| [ADR-008](ADR-008-micro-llm-proponent.md) | LLM component: **micro model (Qwen3-0.6B class), proponent only** — one optional stage (`propose`) between enrichment and projection; closed tasks, tiny evidence bundles, "model proposes, structure disposes" | **Accepted** | ADR-007 RN-4; speed/small-context NFRs; Phase 9 rationale |
 
 **Gate G1 status: PASSED.** All ADRs ratified. Requirements and architecture frozen to v1.0. Prototype coding may begin (roadmap Phase 3).

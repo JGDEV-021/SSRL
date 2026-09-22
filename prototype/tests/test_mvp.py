@@ -6,7 +6,7 @@ FIXTURES = os.path.join(os.path.dirname(os.path.abspath(__file__)), "fixtures", 
 SRC = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, SRC)
 
-from ssrl import confidence, extract, impact as impactmod, index as indexmod, mcp, model, narrative as narr, qa, semantics, watch as watchmod
+from ssrl import confidence, extract, impact as impactmod, index as indexmod, llm, mcp, model, narrative as narr, qa, semantics, watch as watchmod
 
 
 def build_artifact(enrich=False):
@@ -485,6 +485,97 @@ class TestMCPServer(unittest.TestCase):
         self.assertEqual(parsed[1]["result"]["content"][0]["text"].split("\n")[0].split(" ")[0],
                          "files=6")
         self.assertEqual(parsed[2]["error"]["code"], -32700)
+
+
+class TestLLMProposer(unittest.TestCase):
+    def setUp(self):
+        self.art = build_artifact(enrich=True)
+        self.idx = indexmod.Index(self.art)
+        self.runner = llm.MockProvider()
+
+    def test_mock_provider_deterministic_and_parses(self):
+        d1 = llm.propose_flows(self.idx, self.art, self.runner)[0]
+        self.runner = llm.MockProvider()
+        d2, _ = llm.propose_flows(self.idx, self.art, self.runner)
+        self.assertEqual(d1, d2)
+        self.assertGreaterEqual(len(d1), len([n for n in self.art["nodes"] if n["type"] == "Flow"]))
+        for dec in d1:
+            self.assertEqual(dec["kind"], "flow")
+            self.assertLessEqual(len(dec["label"].split()), 6)
+            self.assertTrue(dec["target"].startswith("flow::"))
+
+    def test_flow_bundle_facts_only_and_capped(self):
+        flows = [n for n in self.art["nodes"] if n["type"] == "Flow"]
+        flow = sorted(flows, key=lambda n: n["id"])[0]
+        b = llm.flow_bundle(self.idx, flow)
+        self.assertLessEqual(b["chars"], llm.MAX_FLOW_CHARS)
+        self.assertIn(flow["id"], b["text"])
+        for sid in (flow.get("metadata") or {}).get("steps", []):
+            self.assertIn(sid, b["text"])
+
+    def test_unit_bundle_and_taxonomy(self):
+        mod = self.idx.node("module::db")
+        b = llm.unit_bundle(self.idx, mod)
+        self.assertLessEqual(b["chars"], llm.MAX_UNIT_CHARS)
+        self.assertIn("module::db", b["text"])
+        text = llm.UNIT_PROMPT_SYSTEM.replace("{taxa}", ", ".join(llm.ROLE_TAXONOMY))
+        for role in llm.ROLE_TAXONOMY:
+            self.assertIn(role, text)
+
+    def test_parse_rejects_drift_and_bad_taxonomy(self):
+        self.assertIsNone(llm.parse_flow_decision("not json at all"))
+        self.assertIsNone(llm.parse_flow_decision("""{"label": "a very long label that exceeds six words allowed limit", "confidence": 0.9}"""))
+        d = llm.parse_flow_decision("""{"label": "query db", "confidence": 0.6}""")
+        self.assertEqual(d["label"], "query db")
+        self.assertEqual(d["confidence"], 0.6)
+        self.assertIsNone(llm.parse_unit_decision("""{"role": "made-up-role", "confidence": 0.9}"""))
+        u = llm.parse_unit_decision("""{"role": "Persistence", "confidence": 0.7}""")
+        self.assertEqual(u["role"], "persistence")
+
+    def test_confidence_clamped(self):
+        d = llm.parse_flow_decision("""{"label": "x", "confidence": 4}""")
+        self.assertEqual(d["confidence"], 0.5)
+        d2 = llm.parse_flow_decision("""{"label": "x", "confidence": null}""")
+        self.assertEqual(d2["confidence"], 0.5)
+
+    def test_apply_proposals_llm_ceiling_and_origin(self):
+        r = llm.run(self.idx, self.art, self.runner, scope="flows")
+        art, stats = r
+        self.assertGreaterEqual(stats["accepted"], 1)
+        self.assertLessEqual(stats["covered"], 2)
+        proposed = [n for n in art["nodes"]
+                    if (n.get("metadata") or {}).get("origin") == "llm"]
+        self.assertGreaterEqual(len(proposed), stats["accepted"])
+        for n in proposed:
+            self.assertEqual(n["type"], "Intent")
+            self.assertEqual(n["evidence"][0]["type"], "LLMProposal")
+            self.assertLessEqual(n["evidence"][0]["weight"], 0.5)
+            cal, note = confidence.calibrate(n)
+            self.assertLessEqual(cal, 0.5)
+        edges = [e for e in art["edges"] if e["relationship"] == "SUPPORTS_INTENT"
+                 and e.get("metadata", {}).get("hypothesis")]
+        self.assertGreaterEqual(len(edges), 1)
+
+    def test_offline_provider_produces_no_errors_and_artifact_unchanged(self):
+        class Offline(llm.MockProvider):
+            def probe(self):
+                return False
+            def complete(self, system, user, max_tokens=220):
+                raise TimeoutError("offline")
+        base_nodes = [n["id"] for n in self.art["nodes"]]
+        art, stats = llm.run(self.idx, self.art, Offline(), scope="all")
+        self.assertEqual(stats["accepted"], 0)
+        self.assertEqual([n["id"] for n in art["nodes"]], base_nodes)
+
+    def test_scope_units_labels_modules(self):
+        art, stats = llm.run(self.idx, self.art, self.runner, scope="units")
+        self.assertGreaterEqual(stats["accepted"], 1)
+        proposed = {n["id"] for n in art["nodes"]
+                    if (n.get("metadata") or {}).get("origin") == "llm"}
+        self.assertTrue(any(i.startswith("intent::module::") for i in proposed))
+        audit_rows = confidence.audit([n for n in art["nodes"] if n["type"] == "Intent"])
+        llm_rows = [r for r in audit_rows if "LLMProposal" in r["evidence_sources"]]
+        self.assertGreaterEqual(len(llm_rows), 1)
 
 
 if __name__ == "__main__":

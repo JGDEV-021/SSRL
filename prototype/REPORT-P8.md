@@ -120,9 +120,10 @@ a working drop-in CI report.
 
 ## 4. Verification
 
-- **59 unit tests green** (~0.7 s), including new `TestImpact` (5) and
-  `TestMCPServer` (13: handshake, notification, ping, tools/list, each tool,
-  unknown tool/method, parse-error, stdio round-trip).
+- **67 unit tests green** (~0.7 s), including `TestImpact` (5), `TestMCPServer`
+  (13: handshake, notification, ping, tools/list, each tool, unknown
+  tool/method, parse-error, stdio round-trip) and `TestLLMProposer` (8, added
+  in Phase 9).
 - TestImpact regression locked real bug: duplicate importer rows (two IMPORTS
   edges) — `_node_ids` now dedupes.
 - Determinism re-verified on doc_rag (identical artifacts across runs).

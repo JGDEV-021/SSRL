@@ -200,7 +200,7 @@ Implementation: `prototype/ssrl/` — 10 modules, stdlib only, deterministic. Co
 - **Hypotheses can be produced without AI and labeled honestly.** Call-chain flows, naming/docstring intents, and module/class domain concepts are generated with `confidence < 1.0` and explicit evidence; `why`/`audit` explain each.
 - **Primary projection works on real code.** The grounded Q&A answers `where is X`, `who calls X`, `what does X do`, `imports of X`, `entry points`, `flows` with facts split from hypotheses.
 - **Continuity is implementable.** File-level hash caching (D-8) makes warm builds incremental without perturbing determinism.
-- **59 unit tests green** on a synthetic fixture; determinism verified on both real corpora; `watch` keeps the layer fresh incrementally and an MCP agent surface exposes `ask/why/narrative/stats/audit/impact` with evidence (Phases 7–8).
+- **67 unit tests green** on a synthetic fixture; determinism verified on both real corpora; `watch` keeps the layer fresh incrementally and an MCP agent surface exposes `ask/why/narrative/stats/audit/impact` with evidence (Phases 7–8). Phase 9 adds a **micro-LLM hypothesis proposer** (Qwen3-0.6B class, ADR-008): proponent-only, facts-only bundles ≤ 2600 chars, `LLMProposal` evidence capped at 0.5 — plus an experiment seed (`lab/p9_experiment_seed.jsonl`) pitting a naive "ask the agent" baseline against SSRL-grounded context for the RQ-3 comprehension study.
 
 Full metrics and honest limits: [`prototype/REPORT-V1.md`](../prototype/REPORT-V1.md), [`prototype/README.md`](../prototype/README.md), [`prototype/BUILDLOG.md`](../prototype/BUILDLOG.md).
 

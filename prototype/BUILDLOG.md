@@ -119,7 +119,7 @@ Coverage surface (33 green):
 - `prototype/REPORT-P7.md` — Phase 7 lab report (watch design, lab measurements, live demo).
 - `prototype/REPORT-P8.md` — Phase 8 report (MCP agent surface, impact report, coherence check).
 - `prototype/README.md` — quick-start, package map, verified properties, measured stats.
-- `roadmap.md` — Phase 3–6.5 + Phases 7–8 close-out marks; Phase 9 next.
+- `roadmap.md` — Phase 3–6.5 + Phases 7–9 close-out marks; Phase 10 next.
 - `paper/SSRL-v0.2.md` → **v0.3** — position paper updated with prototype findings (see `paper/SSRL-v0.3.md`).
 
 ---
@@ -189,9 +189,54 @@ subcommands `impact` and `mcp`, lab driver `lab/p8_lab.py`, report
 
 ---
 
-## 9. Remaining (post-Phase 8)
+## 9. Phase 9 — Micro-LLM proposer (ADR-008)
 
-- Phase 9: RQ-3 comprehension study + full calibration; LLM as hypothesis
-  *proponent* with structural re-scoring (RN-4 / ADR-007).
+Implemented per roadmap.md:198 (experimental-validation groundwork) + the
+author directive: the LLM component is a **micro model (Qwen3-0.6B class)** —
+proponent only, small contexts, speed-focused. New module `ssrl/llm.py` (v0.7.0),
+CLI subcommand `propose`, lab driver `lab/p9_lab.py`, report
+`prototype/REPORT-P9.md`, decision `research/decisions/ADR-008-micro-llm-proponent.md`.
+
+- **Where it works (ADR-008):** exactly one optional stage — `propose` between
+  enrichment and projection. The deterministic pipeline (`build`→`enrich`→
+  `ask`/`narrative`) never calls the LLM (RN-4 / ADR-007); `propose` is pure:
+  it only materializes hypotheses, and `--out` is required to persist them.
+- **What it answers (closed tasks):** Task A `flow_intent` — ≤6-word name for a
+  Flow chain (from facts: signature/callees); Task B `unit_role` — a unit labeled
+  from a closed taxonomy `persistence|model|service|config|infra|entrypoint|
+  controller|ui|util|unknown`. Output={"label"|"role", confidence, rationale},
+  temperature 0, parsed leniently (`parse_flow_decision`/`parse_unit_decision`),
+  drift/off-taxonomy → rejected (counted, never crashes).
+- **What context is passed (tiny evidence bundles):** facts only — ids, signature,
+  callees, contained units, imports (`flow_bundle` ≤ 2600 chars;
+  `unit_bundle` ≤ 2200 chars). Measured on doc_rag: flow bundles
+  min=223 median=553 max=1279 chars (≈ 345 tokens at ~3.7 chars/tok) — a micro
+  model's whole window is plenty.
+- **Model proposes, structure disposes:** accepted proposals become `Intent`
+  nodes with evidence `LLMProposal` capped at **conf 0.5**
+  (`SOURCE_CEILING["LLMProposal"]`), edge `SUPPORTS_INTENT`, metadata
+  `origin:"llm"`, rationale, `llm_conf`. Deterministic evidence is never
+  overwritten; already-covered intents are skipped.
+- **Providers (zero-dep, ADR-002):** `OllamaProvider` (`/api/chat`, qwen3:0.6b),
+  `OpenAICompatProvider` (`/v1/chat/completions`), `MockProvider` (deterministic,
+  offline/tests). Probe gates the run; unreachable endpoint → exit 3 with a
+  friendly message. Budget: timeout 30 s, no retries, failure → None (no error,
+  artifact unchanged).
+- **Lab (`lab/p9_lab.py`, doc_rag, offline → mock):** scope=all → 49 requests /
+  49 proposals (10 flows + 39 units), 0 covered, 0 errors; ~0.004 s mock;
+  deterministic across runs (ids+names+rationales identical).
+- **Experiment seed (roadmap Phase 9, "ask-the-agent" baseline):** the lab writes
+  `lab/p9_experiment_seed.jsonl` with questions × two contexts — *baseline*
+  (raw unit names, naive agent) vs *SSRL-grounded* (deterministic evidence
+  bundles) — to be answered and graded in the controlled RQ-3 study.
+- **Tests:** `TestLLMProposer` (8) → suite **67 green** (compileall clean,
+  determinism re-verified end-to-end).
+
+---
+
+## 10. Remaining (post-Phase 9)
+
+- Phase 9 study execution: run the seeded experiment (baseline vs Source+SSRL)
+  with a live micro model and grade answers (roadmap success criterion).
 - H2 progressive-zoom drill-down and H4 graph navigation (supporting projections).
 - Line-level/intra-file impact (whole-module today) and MCP resources/streaming.

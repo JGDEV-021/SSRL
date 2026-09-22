@@ -30,7 +30,7 @@ Completed:
 - [x] W4 probe (stdlib `ast`: 100% parse, 3.3 s / 1058 nodes, 0 deps)
 - [x] W5 ADRs (ADR-001…007) — **all accepted**
 - [x] **Gate G1 PASSED** — ADR-005 signed off (2026); requirements/architecture frozen to v1.0
-- [x] **V1 MVP** — `prototype/ssrl/` package (extract → enrich → calibrate → Q&A → narrative → CLI), 59 unit tests green, validated on both corpora with determinism
+- [x] **V1 MVP** — `prototype/ssrl/` package (extract → enrich → calibrate → Q&A → narrative → CLI), 67 unit tests green, validated on both corpora with determinism
 - [x] **Phase 7: lab integration** — `watch` (continuous no-manual-sync regeneration, delta-only re-parse via D-8); success criteria verified on real repos read-only (see `prototype/REPORT-P7.md`)
 - [x] **Phase 8: end-to-end + agent surface** — MCP server over stdio (zero-dep, evidence-preserving tools `ask/why/narrative/stats/audit/impact`) + CI impact report `impact [--git]`; CLI and MCP answer the same layer coherently (see `prototype/REPORT-P8.md`)
 
@@ -139,7 +139,7 @@ research/
 - [x] Evidence sources: naming, structure (call-graph), entry-point/docstring signal (`prototype/ssrl/semantics.py`)
 - [x] Every hypothesis labeled, with confidence and evidence (`confidence.calibrate`)
 - [x] Facts and hypotheses kept strictly separate in all surfaces (listings, Q&A, narrative)
-- [ ] LLM proposals as proponent only (RN-4 / ADR-007) — deferred, MVP is fully deterministic
+- [ ] LLM proposals as proponent only (RN-4 / ADR-007) — ✅ **implemented in Phase 9** as a *micro* model (Qwen3-0.6B class), proponent-only, `LLMProposal` evidence capped at 0.5 (ADR-008); still marked deferred for the V1 MVP core, which stays fully deterministic
 
 **Success criteria:** semantic labels are useful and their uncertainty is visible → **Verified**: flows (doc_rag 10), intents (174 jgpredictor), service/domain concepts (24 jgpredictor), all `confidence < 1.0`, exposed via `ask flows|intents`, `audit`, `why`.
 
@@ -164,11 +164,13 @@ Compressed Phases 3–6 into a minimal cohesive package shipped as the **V1 MVP*
 - [x] `prototype/ssrl/` package (10 modules, zero deps)
 - [x] CLI (ADR-006): `build | enrich | ask | why | narrative | audit | stats | json`
 - [x] Incremental cache (D-8): 31/31 from_cache on warm run, artifact identical
-- [x] Tests: 59 unit tests green (extract, cache, semantics, confidence, index, qa, narrative, watch, impact, mcp)
+- [x] Tests: 67 unit tests green (extract, cache, semantics, confidence, index, qa, narrative, watch, impact, mcp, llm)
 - [x] Determinism verified end-to-end on both corpora (fresh + cached)
 - [x] Reports: `prototype/BUILDLOG.md`, `prototype/REPORT-V1.md`, `prototype/README.md`
 
-**Next (post-Phase 8):** Phase 9 (RQ-3 comprehension study + full calibration, LLM-as-proponent per ADR-007).
+**Next (post-Phase 9):** Phase 10 publication prep; Phase 9 *study execution* —
+grade the seeded experiment (`lab/p9_experiment_seed.jsonl`) with a live micro
+model and run the full calibration analysis.
 
 ---
 
@@ -202,6 +204,20 @@ Compressed Phases 3–6 into a minimal cohesive package shipped as the **V1 MVP*
 - Controlled experiments: Source-only vs Source+SSRL (and vs raw agent Q&A)
 - Metrics: time to understand, time to find a bug, time to onboard, answer accuracy
 - Must handle the "ask the agent" baseline (threat §11 of the paper)
+
+**Implemented (groundwork):**
+- [x] Micro-LLM hypothesis proposer (`ssrl/llm.py`, ADR-008) — Qwen3-0.6B-class
+      model via Ollama/OpenAI-compatible providers, or deterministic mock.
+- [x] Proponent-only, never fact: `LLMProposal` evidence capped at conf 0.5,
+      `SUPPORTS_INTENT`, `origin:"llm"` (RN-4 / ADR-007 obeyed).
+- [x] Tiny contexts by design: facts-only bundles, ≤ 2600 chars (flows) /
+      ≤ 2200 chars (units) — fit a micro model's whole window
+      (doc_rag flows: median 553 chars ≈ 149 tokens).
+- [x] Experiment seed (`lab/p9_experiment_seed.jsonl`): 6 questions × baseline
+      (raw names) vs SSRL-grounded contexts, answers + grading left to the
+      study run.
+- [ ] Study execution: run baseline vs Source+SSRL vs raw-agent on a live model
+      and grade answers (see `prototype/REPORT-P9.md`).
 
 **Success criteria:** measurable, significant comprehension improvement.
 

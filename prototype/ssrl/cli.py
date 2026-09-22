@@ -16,6 +16,10 @@ Commands:
                                         (Phase 8, ADR-006 supporting surface)
   mcp    <repo> [--enrich]              MCP server over stdio for AI agents
                                         (Phase 8, ADR-006 v1.5)
+  propose <repo> [--model qwen3:0.6b]   micro-LLM hypothesis proposer (Phase 9,
+       [--provider ollama|openai|mock]  ADR-008): names flows + labels unit roles;
+       [--scope flows|units|all]        output is LLMProposal hypotheses (cap 0.5),
+                                        never facts
 
 Zero dependencies. Deterministic. Every claim carries evidence.
 """
@@ -151,6 +155,36 @@ def cmd_mcp(args):
     return 0
 
 
+def cmd_propose(args):
+    from ssrl import llm
+    art, idx = load_artifact(args.repo, args.cache, enrich_ok=True)
+    provider = llm.make_provider("mock" if args.mock else args.provider,
+                                 endpoint=args.endpoint, model=args.model,
+                                 api_key=args.api_key, timeout=args.timeout)
+    if not provider.probe():
+        ep = getattr(provider, "endpoint", "-")
+        print(f"error: provider '{args.provider}' unreachable at {ep} "
+              f"(model '{args.model}'); start the server or pass --mock",
+              file=sys.stderr)
+        return 3
+    art, stats = llm.run(idx, art, provider, scope=args.scope)
+    print(json.dumps({k: stats[k] for k in sorted(stats)}, indent=2))
+    proposed = sorted((n for n in art["nodes"]
+                       if (n.get("metadata") or {}).get("origin") == "llm"),
+                      key=lambda n: n["id"])
+    if proposed:
+        print()
+        print("LLM-PROPOSED INTENTS (hypotheses, never facts):")
+        for n in proposed:
+            print(f"  {n['id']}: '{n['name']}' conf={n['confidence']} "
+                  f"rationale={n['metadata'].get('rationale', '')}")
+    if args.out:
+        with open(args.out, "w", encoding="utf-8") as f:
+            f.write(json.dumps(art, ensure_ascii=False, indent=1))
+        print(f"wrote {args.out}")
+    return 0
+
+
 def cmd_watch(args):
     cache_dir = None if args.no_cache else _cache_dir_for(args.repo)
     w = watchmod.Watch(args.repo, cache_dir=cache_dir, enrich_ok=args.enrich,
@@ -179,17 +213,17 @@ def main(argv=None):
     wt = sub.add_parser("watch"); wt.add_argument("repo"); wt.add_argument("--interval", type=float, default=2.0); wt.add_argument("--enrich", action="store_true"); wt.add_argument("--events"); wt.add_argument("--max", type=int); wt.add_argument("--no-cache", action="store_true"); wt.set_defaults(fn=cmd_watch)
     imp = sub.add_parser("impact"); imp.add_argument("repo"); imp.add_argument("files", nargs="*"); imp.add_argument("--git"); imp.add_argument("--json", action="store_true"); imp.add_argument("--no-enrich", action="store_true"); imp.add_argument("--cache", action="store_true"); imp.set_defaults(fn=cmd_impact)
     mc = sub.add_parser("mcp"); mc.add_argument("repo"); mc.add_argument("--enrich", action="store_true"); mc.add_argument("--no-cache", action="store_true"); mc.set_defaults(fn=cmd_mcp)
+    pp = sub.add_parser("propose"); pp.add_argument("repo"); pp.add_argument("--provider", default="ollama", choices=["ollama", "openai", "mock"]); pp.add_argument("--endpoint"); pp.add_argument("--model", default="qwen3:0.6b"); pp.add_argument("--api-key"); pp.add_argument("--timeout", type=float, default=30.0); pp.add_argument("--scope", default="flows", choices=["flows", "units", "all"]); pp.add_argument("--mock", action="store_true", help="force deterministic mock provider"); pp.add_argument("--out"); pp.add_argument("--cache", action="store_true"); pp.set_defaults(fn=cmd_propose)
 
     args = p.parse_args(argv)
     if not getattr(args, "fn", None):
         p.print_help()
         return 2
     try:
-        args.fn(args)
+        return args.fn(args) or 0
     except FileNotFoundError as ex:
         print(f"error: {ex}", file=sys.stderr)
         return 1
-    return 0
 
 
 if __name__ == "__main__":

@@ -109,7 +109,7 @@ with delta-only parsing at ~0.4–0.5 s per change on `doc_rag`.
 6 new tests in `tests/test_mvp.py` (`TestWatch`): diff detection (add/modify/remove),
 initial full-parse, delta-only re-parse, static-cycle no-op, deletion reflected,
 revert converges. Total suite at Phase 7 close: **39 tests, all green, ~0.65 s.**
-*(Phase 8 later added `TestImpact` + `TestMCPServer` — current suite: **59**;
-see `REPORT-P8.md`.)*
+*(Phase 8 added `TestImpact` + `TestMCPServer`; Phase 9 added `TestLLMProposer` —
+current suite: **67** at Phase 9 close; see `REPORT-P8.md` / `REPORT-P9.md`.)*
 
 Reproduce: `python lab/p7_lab.py` and `python -m unittest discover -s tests -v`.
