@@ -200,7 +200,7 @@ Implementation: `prototype/ssrl/` — 10 modules, stdlib only, deterministic. Co
 - **Hypotheses can be produced without AI and labeled honestly.** Call-chain flows, naming/docstring intents, and module/class domain concepts are generated with `confidence < 1.0` and explicit evidence; `why`/`audit` explain each.
 - **Primary projection works on real code.** The grounded Q&A answers `where is X`, `who calls X`, `what does X do`, `imports of X`, `entry points`, `flows` with facts split from hypotheses.
 - **Continuity is implementable.** File-level hash caching (D-8) makes warm builds incremental without perturbing determinism.
-- **33 unit tests green** on a synthetic fixture; determinism verified on both real corpora.
+- **39 unit tests green** on a synthetic fixture; determinism verified on both real corpora; continuous `watch` regeneration (Phase 7) keeps the layer fresh without manual sync.
 
 Full metrics and honest limits: [`prototype/REPORT-V1.md`](../prototype/REPORT-V1.md), [`prototype/README.md`](../prototype/README.md), [`prototype/BUILDLOG.md`](../prototype/BUILDLOG.md).
 

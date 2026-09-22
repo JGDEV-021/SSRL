@@ -651,6 +651,8 @@ Module: `cli.py` (139 lines) + `__main__.py`. ADR-006 (CLI first); everything re
 
 File: `tests/test_mvp.py` (268 lines), fixture `tests/fixtures/pkgapp/`, runner:
 `python -m unittest discover -s tests -v`. **33 tests, all green, ~0.2 s.**
+*(Phase 7 later added a `TestWatch` class — current suite: **39** tests; see
+`REPORT-P7.md`.)*
 
 ### 14.1 Fixture (`pkgapp/` — 6 files, deliberately small and deterministic)
 

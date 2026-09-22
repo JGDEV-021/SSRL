@@ -6,7 +6,7 @@ FIXTURES = os.path.join(os.path.dirname(os.path.abspath(__file__)), "fixtures", 
 SRC = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, SRC)
 
-from ssrl import confidence, extract, index as indexmod, model, narrative as narr, qa, semantics
+from ssrl import confidence, extract, index as indexmod, model, narrative as narr, qa, semantics, watch as watchmod
 
 
 def build_artifact(enrich=False):
@@ -262,6 +262,76 @@ class TestWhyCli(unittest.TestCase):
         out = buf.getvalue()
         self.assertNotIn("not found", out)
         self.assertIn("func::db::save", out)
+
+
+class TestWatch(unittest.TestCase):
+    def setUp(self):
+        import shutil, tempfile
+        self.tmp = tempfile.mkdtemp()
+        self.d = os.path.join(self.tmp, "repo")
+        shutil.copytree(FIXTURES, self.d)
+        self.cache_dir = os.path.join(self.tmp, "cache")
+        self.w = watchmod.Watch(self.d, cache_dir=self.cache_dir, interval=0.0)
+        self.addCleanup(self.w.close)
+
+    def _write(self, rel, content):
+        p = os.path.join(self.d, rel.replace("/", os.sep))
+        os.makedirs(os.path.dirname(p), exist_ok=True)
+        with open(p, "w", encoding="utf-8") as f:
+            f.write(content)
+
+    def test_diff_detects_add_modify_remove(self):
+        base = watchmod.scan(self.d)
+        self._write("newmod.py", "def fresh():\n    return 1\n")
+        self._write("db.py", "# changed\ndef save():\n    pass\n")
+        os.remove(os.path.join(self.d, "main.py"))
+        added, modified, removed = watchmod.diff(base, watchmod.scan(self.d))
+        self.assertEqual(added, ["newmod.py"])
+        self.assertEqual(modified, ["db.py"])
+        self.assertEqual(removed, ["main.py"])
+
+    def test_initial_sync_parses_everything(self):
+        ev = self.w.initial_sync()
+        self.assertEqual(ev["type"], "initial")
+        self.assertEqual(ev["reparsed"], 6)
+        self.assertEqual(ev["from_cache"], 0)
+        self.assertEqual(ev["files"], 6)
+        self.assertEqual(ev["errors"], 0)
+
+    def test_change_reparses_only_delta(self):
+        start = self.w.initial_sync()
+        self._write("db.py", "# evolved\nimport sqlite3\n\ndef connect(path):\n    return None\n\ndef save(row):\n    pass\n\ndef new_feature():\n    return 'x'\n")
+        ev = self.w.step()
+        self.assertIsNotNone(ev)
+        self.assertEqual(ev["type"], "change")
+        self.assertEqual(ev["modified"], ["db.py"])
+        self.assertEqual(ev["reparsed"], 1)
+        self.assertEqual(ev["from_cache"], 5)
+        self.assertEqual(ev["delta"]["nodes"], 1)
+
+    def test_static_cycle_returns_none(self):
+        self.w.initial_sync()
+        self.assertIsNone(self.w.step())
+
+    def test_deletion_is_reflected(self):
+        start = self.w.initial_sync()
+        os.remove(os.path.join(self.d, "main.py"))
+        ev = self.w.step()
+        self.assertEqual(ev["removed"], ["main.py"])
+        self.assertEqual(ev["files"], 5)
+        self.assertLess(ev["nodes"], start["nodes"])
+
+    def test_revert_restores_artifact(self):
+        orig = open(os.path.join(self.d, "db.py"), encoding="utf-8").read()
+        start = self.w.initial_sync()
+        self._write("db.py", orig + "\ndef extra_new():\n    return 2\n")
+        temp = self.w.step()
+        self.assertGreater(temp["nodes"], start["nodes"])
+        self._write("db.py", orig)
+        ev = self.w.step()
+        self.assertEqual(ev["nodes"], start["nodes"])
+        self.assertEqual(ev["reparsed"], 1)
+        self.assertEqual(ev["from_cache"], 5)
 
 
 if __name__ == "__main__":

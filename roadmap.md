@@ -30,8 +30,8 @@ Completed:
 - [x] W4 probe (stdlib `ast`: 100% parse, 3.3 s / 1058 nodes, 0 deps)
 - [x] W5 ADRs (ADR-001…007) — **all accepted**
 - [x] **Gate G1 PASSED** — ADR-005 signed off (2026); requirements/architecture frozen to v1.0
-- [x] **V1 MVP** — `prototype/ssrl/` package (extract → enrich → calibrate → Q&A → narrative → CLI), 33 unit tests green, validated on both corpora with determinism
-- [ ] Phase 7: lab integration (real-world testbed, incremental watch)
+- [x] **V1 MVP** — `prototype/ssrl/` package (extract → enrich → calibrate → Q&A → narrative → CLI), 39 unit tests green, validated on both corpora with determinism
+- [x] **Phase 7: lab integration** — `watch` (continuous no-manual-sync regeneration, delta-only re-parse via D-8); success criteria verified on real repos read-only (see `prototype/REPORT-P7.md`)
 - [ ] Phase 8: end-to-end + agent surface (MCP)
 
 ---
@@ -164,11 +164,11 @@ Compressed Phases 3–6 into a minimal cohesive package shipped as the **V1 MVP*
 - [x] `prototype/ssrl/` package (10 modules, zero deps)
 - [x] CLI (ADR-006): `build | enrich | ask | why | narrative | audit | stats | json`
 - [x] Incremental cache (D-8): 31/31 from_cache on warm run, artifact identical
-- [x] Tests: 33 unit tests green (extract, cache, semantics, confidence, index, qa, narrative)
+- [x] Tests: 39 unit tests green (extract, cache, semantics, confidence, index, qa, narrative, watch)
 - [x] Determinism verified end-to-end on both corpora (fresh + cached)
 - [x] Reports: `prototype/BUILDLOG.md`, `prototype/REPORT-V1.md`, `prototype/README.md`
 
-**Next (post-MVP):** Phase 7 lab integration (incremental watch on a real evolving project), Phase 8 (end-to-end + MCP agent surface).
+**Next (post-Phase 7):** Phase 8 (end-to-end + MCP agent surface).
 
 ---
 

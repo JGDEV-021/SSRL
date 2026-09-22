@@ -1,4 +1,4 @@
-# SSRL Prototype — V1 MVP
+# SSRL Prototype — V1 MVP + Phase 7
 
 **SSRL = Semantic Software Representation Layer.** A deterministic, evidence-backed
 representation of Python codebases: structural *facts* (confidence 1.0) plus
@@ -14,6 +14,8 @@ dependencies — stdlib `ast` only (ADR-002).
 V1 MVP complete: extract -> enrich -> calibrate -> Q&A -> narrative -> CLI
 Roadmap Phase 3 (facts), Phase 4 (Q&A projection), Phase 5 (semantic
 enrichment), Phase 6 (confidence engine) all implemented for the MVP.
+Phase 7 (lab integration) complete: `watch` — continuous regeneration on real
+evolving projects, no manual sync (v0.5.0).
 ```
 
 ## Package layout (`prototype/ssrl/`)
@@ -27,7 +29,8 @@ enrichment), Phase 6 (confidence engine) all implemented for the MVP.
 | `index.py` | In-memory index: find, callers/callees, imports/deps, entry points |
 | `qa.py` | Grounded, deterministic Q&A with FACTS vs HYPOTHESES separation (H1, FR-6a) |
 | `narrative.py` | Living narrative, generated at build-time (H3) |
-| `cli.py` | `build|enrich|ask|why|narrative|audit|stats|json` (ADR-006) |
+| `watch.py` | Continuous no-manual-sync regeneration (Phase 7, NFR-3): stat-poll diff + D-8 incremental rebuild |
+| `cli.py` | `build|enrich|ask|why|narrative|audit|stats|json|watch` (ADR-006) |
 | `__main__.py` | `python -m ssrl ...` entry point |
 
 ## Quick start
@@ -41,7 +44,12 @@ python -m ssrl.cli why       <repo> func::db::save
 python -m ssrl.cli narrative <repo>
 python -m ssrl.cli audit     <repo>            # calibration table
 python -m ssrl.cli json      <repo> --out art.json [--enrich]
+python -m ssrl.cli watch     <repo> --enrich   # continuous regen (Phase 7)
 ```
+
+`watch` regenerates the layer whenever the corpus changes, re-parsing only the
+delta (D-8 cache replays the rest); cache is on by default for this command.
+See `REPORT-P7.md` for lab measurements and the live read-only demo.
 
 Run tests (zero deps, stdlib `unittest`):
 
@@ -60,7 +68,7 @@ python -m unittest discover -s tests -v
 | Fact confidence | Structural facts carry `confidence: 1.0`; hypotheses are `< 1.0` and labeled (FR-3/FR-4) |
 | Incremental cache (D-8) | File-level sha256 cache: cold 0 hits → warm 31/31 from_cache, artifact identical |
 | Call resolution | Same-module + cross-module (import-alias and attribute-prefix) linkage, labeled `resolution:` |
-| Test suite | `unittest`: 33 tests green (extract, cache, semantics, confidence, index, qa, narrative) |
+| Test suite | `unittest`: 39 tests green (extract, cache, semantics, confidence, index, qa, narrative, watch) |
 
 ## Measured stats (V1)
 
@@ -112,4 +120,7 @@ Ids are stable (`module::<id>`, `class::<mid>::<name>`, `func::<mid>::<name>`).
   class (documented limitation of flat func ids).
 - `from . import X` relative imports resolve within the scanned root; package
   identity outside the root is unknown.
-- No watch/regenerate-on-change loop yet; cache is manual via `--cache`.
+- `watch` re-parses only the delta per change; the D-8 cache is *single-version per
+  file*, so reverting to a previously-seen file version re-parses it once (correct,
+  just not replayed). Poll interval must be ≥ the regeneration time for back-to-back
+  bursts (documented in `REPORT-P7.md`).

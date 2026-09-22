@@ -116,15 +116,50 @@ Coverage surface (33 green):
 
 - `prototype/BUILDLOG.md` — this log.
 - `prototype/REPORT-V1.md` — V1 MVP report (status, verification matrix, metrics, honest limits).
+- `prototype/REPORT-P7.md` — Phase 7 lab report (watch design, lab measurements, live demo).
 - `prototype/README.md` — quick-start, package map, verified properties, measured stats.
-- `roadmap.md` — Phase 3–6.5 close-out marks; Phase 7/8 next.
+- `roadmap.md` — Phase 3–6.5 + Phase 7 close-out marks; Phase 8 next.
 - `paper/SSRL-v0.2.md` → **v0.3** — position paper updated with prototype findings (see `paper/SSRL-v0.3.md`).
 
 ---
 
-## 7. Remaining (post-V1 MVP, planned)
+## 7. Phase 7 — Lab Integration (watch / no-manual-sync)
 
-- Phase 7 lab: incremental watch/regenerate-on-change on a real evolving project.
+Implemented per roadmap.md:175-183. New module `prototype/ssrl/watch.py` (v0.5.0) +
+CLI command `watch` and lab driver `prototype/lab/p7_lab.py`.
+
+- **Design (zero-dep, ADR-002):** polling stat baseline `{rel: (mtime_ns, size)}`
+  (`watch.scan`/`watch.diff`); on change, `extract.build(root, cache_dir)` with the
+  D-8 cache replays unchanged modules → only the delta is re-parsed.
+  `initial_sync()`/`step()` are directly callable (tests + lab), `run()` composes the
+  timed loop. `--events` writes a JSON-lines log. Cache **on by default** for
+  `watch` (incremental parsing is the point of continuous operation; other commands
+  keep opt-in `--cache`).
+- **Lab measurement (`lab/p7_lab.py`, doc_rag copy, enrich on):**
+
+  | # | event | reparsed | from_cache | nodes | edges | Δnodes | elapsed_s |
+  | --- | --- | --- | --- | --- | --- | --- | --- |
+  | 1 | initial | 31 | 0 | 306 | 741 | — | 0.91 |
+  | 2 | +fn in retriever | 1 | 30 | 307 | 742 | +1 | 0.44 |
+  | 3 | +new module | 1 | 31 | 309 | 744 | +2 | 0.41 |
+  | 4 | −new module | 0 | 31 | 307 | 742 | −2 | 0.41 |
+  | 5 | body edit | 1 | 30 | 307 | 742 | 0 | 0.47 |
+  | 6 | revert | 1 | 30 | 306 | 741 | −1 | 0.43 |
+
+  Revert converges the artifact to the initial build exactly (306/741) — no drift.
+- **Live read-only demo (`watch <jpredictor> --enrich`, interval 0.3 s):** initial
+  sync `reparsed=0 from_cache=122` (all cached), then silent polls until a change —
+  continuous operation, corpus untouched (sha256 before/after identical, NFR-5).
+- **Known limitation, documented:** D-8 cache is single-version per file — reverting
+  re-parses the reverted file once (correct, not replayed).
+- **Tests:** `TestWatch` (6 tests: diff add/modify/remove, initial full-parse,
+  delta-only re-parse, static no-op, deletion, revert convergence) → suite **39 green**.
+
+---
+
+## 8. Remaining (post-V1 MVP + Phase 7)
+
+- Phase 7 lab: incremental watch/regenerate-on-change on a real evolving project. **DONE — see section 7 and `prototype/REPORT-P7.md`.**
 - Phase 8: end-to-end agent surface (MCP server over `narrative`/Q&A).
 - H2 progressive-zoom drill-down and H4 graph navigation (supporting projections).
 - Full RQ-3 calibration study (Phase 9): controlled comprehension experiments.

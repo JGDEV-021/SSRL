@@ -8,6 +8,9 @@ Commands:
   audit  <repo> [--cache DIR]           confidence calibration table
   stats  <repo> [--cache DIR]           fact-model statistics
   json   <repo> [--cache DIR] [--out F] export full artifact (NFR-7)
+  watch  <repo> [--interval S] [--enrich] [--events F] [--max N]
+                                        continuous no-manual-sync regeneration
+                                        (Phase 7); cache enabled by default
 
 Zero dependencies. Deterministic. Every claim carries evidence.
 """
@@ -19,16 +22,20 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from ssrl import confidence, extract, index as indexmod, narrative as narr, qa, semantics
+from ssrl import confidence, extract, index as indexmod, narrative as narr, qa, semantics, watch as watchmod
 
 
 DEFAULT_CACHE = os.path.join(os.path.expanduser("~"), ".ssrl", "cache")
 
 
+def _cache_dir_for(repo):
+    repo = os.path.abspath(repo)
+    return DEFAULT_CACHE + "/" + (repo.replace(":", "").replace(os.sep, "_") or "repo")
+
+
 def load_artifact(repo, use_cache, enrich_ok=False):
     repo = os.path.abspath(repo)
-    cache_dir = DEFAULT_CACHE + "/" + (repo.replace(":", "").replace(os.sep, "_") or "repo")
-    cdir = cache_dir if use_cache else None
+    cdir = _cache_dir_for(repo) if use_cache else None
     if enrich_ok:
         art = extract.build(repo, cache_dir=cdir, verbose=False)
         art = semantics.enrich(art, verbose=False)
@@ -110,6 +117,19 @@ def cmd_json(args):
         print(payload)
 
 
+def cmd_watch(args):
+    cache_dir = None if args.no_cache else _cache_dir_for(args.repo)
+    w = watchmod.Watch(args.repo, cache_dir=cache_dir, enrich_ok=args.enrich,
+                       interval=args.interval, events=args.events)
+    print(f"watching {os.path.abspath(args.repo)} "
+          f"(interval={args.interval}s enrich={args.enrich} cache={not args.no_cache})")
+    try:
+        w.run(max_iterations=args.max, on_event=lambda ev: print(watchmod.render(ev)))
+    except KeyboardInterrupt:
+        print("\nwatch stopped")
+    return 0
+
+
 def main(argv=None):
     p = argparse.ArgumentParser(prog="ssrl", description="SSRL — semantic software representation layer (MVP)")
     sub = p.add_subparsers(dest="cmd")
@@ -122,6 +142,7 @@ def main(argv=None):
     au = sub.add_parser("audit"); au.add_argument("repo"); au.add_argument("--cache", action="store_true"); au.set_defaults(fn=cmd_audit)
     st = sub.add_parser("stats"); st.add_argument("repo"); st.add_argument("--cache", action="store_true"); st.set_defaults(fn=cmd_stats)
     j = sub.add_parser("json"); j.add_argument("repo"); j.add_argument("--out"); j.add_argument("--cache", action="store_true"); j.add_argument("--enrich", action="store_true"); j.set_defaults(fn=cmd_json)
+    wt = sub.add_parser("watch"); wt.add_argument("repo"); wt.add_argument("--interval", type=float, default=2.0); wt.add_argument("--enrich", action="store_true"); wt.add_argument("--events"); wt.add_argument("--max", type=int); wt.add_argument("--no-cache", action="store_true"); wt.set_defaults(fn=cmd_watch)
 
     args = p.parse_args(argv)
     if not getattr(args, "fn", None):
