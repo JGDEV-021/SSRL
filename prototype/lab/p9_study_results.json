@@ -1,0 +1,736 @@
+{
+ "corpus": "doc_rag",
+ "agent": "qwen3_0_6b",
+ "method": "draft automated pass, entity-level F1 vs deterministic gold (facts)",
+ "rows": [
+  {
+   "id": "q1",
+   "question": "who calls init_db",
+   "condition": "baseline",
+   "answer": "- __init__  \n- __main__  \n- __post_init__  \n- _api_query  \n- _backfill_embeddings  \n- _build_index  \n- _candidates  \n- _candidates_or_fallback  \n- _chunk_key  \n- _chunk_member  \n- _chunks_unchanged  \n- _class_file  \n- _classes_dir  \n- _cmd_bench  \n- _cmd_build  \n- _cmd_context  \n- _cmd_embed  \n- _cmd_purge  \n- _cmd_quality  \n- _cmd_search  \n- _cmd_status  \n- _cosine_scores  \n- _count  \n- _dedup_chunks  \n- _detect_dim  \n- _download_tarball  \n- _ensure_source_chunks  \n- _expected_hit  \n- _external_coverage  \n- _finish_code  \n- _flush  \n- _flush  \n- _flush_members  \n- _index_exists  \n- _index_ready  \n- _insert_chunks  \n- _is_nav_only  \n- _is_reference  \n- _lookup_terms  \n- _match_score  \n- _member_metadata  \n- _migrate  \n- _minmax  \n- _normalize_html_headings  \n- _pack_vector  \n- _page_chunks  \n- _print_json  \n- _project_filter  \n- _rag_coverage  \n- _render  \n- _repl  \n- _replace_chunks  \n- _replace_source_chunks  \n- _result_line  \n- _run_all  \n- _run_db  \n- _run_git  \n- _section_text  \n- _security  \n- _ser  \n- _sha  \n- _split_long_text  \n- _sweep_duplicates  \n- _terms  \n- _token_overlap  \n- _unpack_vector  \n- _upsert_source  \n- _word_count  \n- analyze  \n- assess_requirement  \n- authority  \n- available  \n- await_script_completion  \n- bench  \n- benchmark.py  \n- build  \n- build  \n- build  \n- build_context  \n- build_expanded_match  \n- build_tests  \n- child  \n- chunk_article  \n- chunk_markdown  \n- chunk_reference  \n- chunker.py  \n- class_ancestors  \n- class_exists  \n- classify_doc_type  \n- clean_snippet  \n- clear_cache  \n- cli.py  \n- close  \n- config.py  \n- connect  \n- context.py  \n- data/_dryrun.py  \n- data/_simulate_queries.py  \n- data/frameworks/knit/last_changelog.py  \n- data/frameworks/rbxutil/build_list.py",
+   "gold": [
+    "build",
+    "embed",
+    "index_scripts",
+    "purge",
+    "remove_project_scripts",
+    "search",
+    "stats"
+   ],
+   "elapsed_s": 42.728,
+   "tokens_prompt": 890,
+   "tokens_eval": 500,
+   "hits": [
+    "build"
+   ],
+   "recall": 0.143,
+   "precision": 0.011,
+   "f1": 0.02,
+   "extra": [
+    "__init__",
+    "__main__",
+    "__post_init__",
+    "_api_query",
+    "_backfill_embeddings",
+    "_build_index",
+    "_candidates",
+    "_candidates_or_fallback",
+    "_chunk_key",
+    "_chunk_member"
+   ]
+  },
+  {
+   "id": "q1",
+   "question": "who calls init_db",
+   "condition": "ssrl",
+   "answer": "func::indexer::build  \nfunc::indexer::embed  \nfunc::indexer::purge  \nfunc::indexer::stats  \nfunc::retriever::search  \nfunc::scripts::index_scripts  \nfunc::scripts::remove_project_scripts",
+   "gold": [
+    "build",
+    "embed",
+    "index_scripts",
+    "purge",
+    "remove_project_scripts",
+    "search",
+    "stats"
+   ],
+   "elapsed_s": 5.469,
+   "tokens_prompt": 187,
+   "tokens_eval": 52,
+   "hits": [
+    "build",
+    "embed",
+    "index_scripts",
+    "purge",
+    "remove_project_scripts",
+    "search",
+    "stats"
+   ],
+   "recall": 1.0,
+   "precision": 0.7,
+   "f1": 0.824,
+   "extra": [
+    "indexer",
+    "retriever",
+    "scripts"
+   ]
+  },
+  {
+   "id": "q1",
+   "question": "who calls init_db",
+   "condition": "layer",
+   "answer": "Callers of `init_db`: build, embed, stats, purge, search, index_scripts, remove_project_scripts (7 facts, confidence 1.0).",
+   "gold": [
+    "build",
+    "embed",
+    "index_scripts",
+    "purge",
+    "remove_project_scripts",
+    "search",
+    "stats"
+   ],
+   "elapsed_s": 0.001,
+   "tokens_prompt": 0,
+   "tokens_eval": 0,
+   "hits": [
+    "build",
+    "embed",
+    "index_scripts",
+    "purge",
+    "remove_project_scripts",
+    "search",
+    "stats"
+   ],
+   "recall": 1.0,
+   "precision": 0.875,
+   "f1": 0.933,
+   "extra": [
+    "init_db"
+   ]
+  },
+  {
+   "id": "q2",
+   "question": "where is embed",
+   "condition": "baseline",
+   "answer": "- embed  \n- embed  \n- embedder.py  \n- embed  \n- embed  \n- embedder.py  \n- embed  \n- embed  \n- embedder.py  \n- embed  \n- embed  \n- embedder.py  \n- embed  \n- embed  \n- embedder.py  \n- embed  \n- embed  \n- embedder.py  \n- embed  \n- embed  \n- embedder.py  \n- embed  \n- embed  \n- embedder.py  \n- embed  \n- embed  \n- embedder.py  \n- embed  \n- embed  \n- embedder.py  \n- embed  \n- embed  \n- embedder.py  \n- embed  \n- embed  \n- embedder.py  \n- embed  \n- embed  \n- embedder.py  \n- embed  \n- embed  \n- embedder.py  \n- embed  \n- embed  \n- embedder.py  \n- embed  \n- embed  \n- embedder.py  \n- embed  \n- embed  \n- embedder.py  \n- embed  \n- embed  \n- embedder.py  \n- embed  \n- embed  \n- embedder.py  \n- embed  \n- embed  \n- embedder.py  \n- embed  \n- embed  \n- embedder.py  \n- embed  \n- embed  \n- embedder.py  \n- embed  \n- embed  \n- embedder.py  \n- embed  \n- embed  \n- embedder.py  \n- embed  \n- embed  \n- embedder.py  \n- embed  \n- embed  \n- embedder.py  \n- embed  \n- embed  \n- embedder.py  \n- embed  \n- embed  \n- embedder.py  \n- embed  \n- embed  \n- embedder.py  \n- embed  \n- embed  \n- embedder.py  \n- embed  \n- embed  \n- embedder.py  \n- embed  \n- embed  \n- embedder.py  \n- embed  \n- embed  \n- embedder.py  \n- embed  \n- embed  \n- embedder.py  \n- embed  \n- embed  \n- embedder.py  \n- embed  \n- embed  \n- embedder.py  \n- embed  \n- embed  \n- embedder.py  \n- embed  \n- embed  \n- embedder.py  \n- embed  \n- embed  \n- embedder.py  \n- embed  \n- embed  \n- embedder.py  \n- embed  \n- embed  \n- embedder.py  \n- embed  \n- embed  \n- embedder.py  \n- embed  \n- embed  \n- embedder.py  \n- embed  \n- embed  \n- embedder.py  \n- embed  \n- embed  \n- embedder.py  \n- embed  \n- embed",
+   "gold": [
+    "embedder"
+   ],
+   "elapsed_s": 42.04,
+   "tokens_prompt": 889,
+   "tokens_eval": 500,
+   "hits": [
+    "embedder"
+   ],
+   "recall": 1.0,
+   "precision": 0.5,
+   "f1": 0.667,
+   "extra": [
+    "embed"
+   ]
+  },
+  {
+   "id": "q2",
+   "question": "where is embed",
+   "condition": "ssrl",
+   "answer": "- {\"node\": \"func::embedder::embed\", \"loc\": \"embedder.py:88\"}  \n- {\"node\": \"func::indexer::embed\", \"loc\": \"indexer.py:414\"}",
+   "gold": [
+    "embedder"
+   ],
+   "elapsed_s": 4.984,
+   "tokens_prompt": 158,
+   "tokens_eval": 49,
+   "hits": [
+    "embedder"
+   ],
+   "recall": 1.0,
+   "precision": 0.25,
+   "f1": 0.4,
+   "extra": [
+    "embed",
+    "indexer",
+    "node"
+   ]
+  },
+  {
+   "id": "q2",
+   "question": "where is embed",
+   "condition": "layer",
+   "answer": "Function `embed` defined at indexer.py:414 (confidence 1.0).",
+   "gold": [
+    "embedder"
+   ],
+   "elapsed_s": 0.001,
+   "tokens_prompt": 0,
+   "tokens_eval": 0,
+   "hits": [],
+   "recall": 0.0,
+   "precision": 0.0,
+   "f1": 0.0,
+   "extra": [
+    "embed",
+    "indexer"
+   ]
+  },
+  {
+   "id": "q3",
+   "question": "which modules import db",
+   "condition": "baseline",
+   "answer": "-Chunk\n-DocEmbedder\n-Node\n-Node\n-Section\n-WallyInfo\n-WatchHandler\n-Stats\n-__init__\n-__init__\n-__init__\n-__init__\n-__init__\n-__main__\n-__post_init__\n-__api_query\n-__backfill_embeddings\n-__build_index\n-__candidates\n-__candidates_or_fallback\n-__chunk_key\n-__chunk_member\n-__chunks_unchanged\n-__class_file\n-__classes_dir\n-__cmd_bench\n-__cmd_build\n-__cmd_context\n-__cmd_embed\n-__cmd_purge\n-__cmd_quality\n-__cmd_search\n-__cmd_status\n-__cosine_scores\n-__count\n-__dedup_chunks\n-__detect_dim\n-__download_tarball\n-__ensure_source_chunks\n-__expected_hit\n-__external_coverage\n-__finish_code\n-__flush\n-__flush\n-__flush_members\n-__index_exists\n-__index_ready\n-__insert_chunks\n-__is_nav_only\n-__is_reference\n-__lookup_terms\n-__match_score\n-__member_metadata\n-__migrate\n-__minmax\n-__normalize_html_headings\n-__pack_vector\n-__page_chunks\n-__print_json\n-__project_filter\n-__rag_coverage\n-__render\n-__repl\n-__replace_chunks\n-__replace_source_chunks\n-__result_line\n-__run_all\n-__run_db\n-__run_git\n-Section\n-__init__\n-__init__\n-__init__\n-__init__\n-__init__\n-__init__\n-__init__\n-__init__\n-__init__\n-__init__\n-__init__\n-__init__\n-__init__\n-__init__\n-__init__\n-__init__\n-__init__\n-__init__\n-__init__\n-__init__\n-__init__\n-__init__\n-__init__\n-__init__\n-__init__\n-__init__\n-__init__\n-__init__\n-__init__\n-__init__\n-__init__\n-__init__\n-__init__\n-__init__\n-__init__\n-__init__\n-__init__\n-__init__\n-__init__\n-__init__",
+   "gold": [
+    "indexer",
+    "quality",
+    "retriever",
+    "scripts"
+   ],
+   "elapsed_s": 42.229,
+   "tokens_prompt": 890,
+   "tokens_eval": 500,
+   "hits": [],
+   "recall": 0.0,
+   "precision": 0.0,
+   "f1": 0.0,
+   "extra": [
+    "__init__",
+    "__main__",
+    "__post_init__",
+    "chunk",
+    "docembedder",
+    "node",
+    "section",
+    "stats",
+    "wallyinfo",
+    "watchhandler"
+   ]
+  },
+  {
+   "id": "q3",
+   "question": "which modules import db",
+   "condition": "ssrl",
+   "answer": "- module::indexer\n- module::chunker\n- module::chunker\n- module::config\n- module::db\n- module::embedder\n- module::ingest\n- module::textutil\n- module::quality\n- module::retriever\n- module::expand\n- module::expand\n- module::textutil\n- module::trust\n- module::scripts",
+   "gold": [
+    "indexer",
+    "quality",
+    "retriever",
+    "scripts"
+   ],
+   "elapsed_s": 6.252,
+   "tokens_prompt": 309,
+   "tokens_eval": 84,
+   "hits": [
+    "indexer",
+    "quality",
+    "retriever",
+    "scripts"
+   ],
+   "recall": 1.0,
+   "precision": 0.333,
+   "f1": 0.5,
+   "extra": [
+    "chunker",
+    "config",
+    "db",
+    "embedder",
+    "expand",
+    "ingest",
+    "textutil",
+    "trust"
+   ]
+  },
+  {
+   "id": "q3",
+   "question": "which modules import db",
+   "condition": "layer",
+   "answer": "Module `db.py`: 0 class(es), 8 top-level function(s), 6 import(s).\nModule docstring: doc_rag/db.py — Camada SQLite do índice RAG (doc_rag.db).\n\nSchema:\n    meta      — metadados globais (versão, último build, contagens)\n    sources   — páginas indexadas (1 linha por arquivo .md do creator-docs)\n    chunks    — trechos com embedding (BLOB float32) e rótulos de membro\n    chunks_fts— ",
+   "gold": [
+    "indexer",
+    "quality",
+    "retriever",
+    "scripts"
+   ],
+   "elapsed_s": 0.001,
+   "tokens_prompt": 0,
+   "tokens_eval": 0,
+   "hits": [],
+   "recall": 0.0,
+   "precision": 0.0,
+   "f1": 0.0,
+   "extra": [
+    "build",
+    "db",
+    "doc_rag",
+    "rag"
+   ]
+  },
+  {
+   "id": "q4",
+   "question": "list the entry points",
+   "condition": "baseline",
+   "answer": "- Chunk\n- DocEmbedder\n- Node\n- Node\n- Section\n- WallyInfo\n- WatchHandler\n- _Stats\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__.py\n- __main__.py\n- __post_init__\n- _api_query\n- _backfill_embeddings\n- _build_index\n- _candidates\n- _candidates_or_fallback\n- _chunk_key\n- _chunk_member\n- _chunks_unchanged\n- _class_file\n- _classes_dir\n- _cmd_bench\n- _cmd_build\n- _cmd_context\n- _cmd_embed\n- _cmd_purge\n- _cmd_quality\n- _cmd_search\n- _cmd_status\n- _cosine_scores\n- _count\n- _dedup_chunks\n- _detect_dim\n- _download_tarball\n- _ensure_source_chunks\n- _expected_hit\n- _external_coverage\n- _finish_code\n- _flush\n- _flush\n- _flush_members\n- _index_exists\n- _index_ready\n- _insert_chunks\n- _is_nav_only\n- _is_reference\n- _lookup_terms\n- _match_score\n- _member_metadata\n- _migrate\n- _minmax\n- _normalize_html_headings\n- _pack_vector\n- _page_chunks\n- _print_json\n- _project_filter\n- _rag_coverage\n- _render\n- _repl\n- _replace_chunks\n- _replace_source_chunks\n- _result_line\n- _run_all\n- _run_db\n- _run_git\n- _section_text\n- _security\n- _ser\n- _sha\n- _split_long_text\n- _sweep_duplicates\n- _terms\n- _token_overlap\n- _unpack_vector\n- _upsert_source\n- _word_count\n- analyze\n- assess_requirement\n- authority\n- available\n- await_script_completion\n- bench\n- benchmark.py\n- build\n- build\n- build\n- build_context\n- build_expanded_match\n- build_tests\n- child\n- chunk_article\n- chunk_markdown\n- chunk_reference\n- chunker.py\n- class_ancestors\n- class_exists\n- classify_doc_type\n- clean_snippet\n- clear_cache\n- cli.py\n- close\n-",
+   "gold": [
+    "main",
+    "iter_page_chunks",
+    "strip_markdown_links",
+    "search_for_context",
+    "on_modified",
+    "update_test_file",
+    "details",
+    "text",
+    "title",
+    "child",
+    "display",
+    "layout",
+    "get_meta_int",
+    "purge",
+    "available",
+    "dim",
+    "encode",
+    "assess_requirement",
+    "expand_query",
+    "query_groups",
+    "ensure_llms_full",
+    "read_file",
+    "class_exists",
+    "clear_cache",
+    "search_properties",
+    "index_scripts",
+    "remove_project_scripts",
+    "devforum_quality_boost",
+    "reddit_quality_boost"
+   ],
+   "elapsed_s": 42.25,
+   "tokens_prompt": 890,
+   "tokens_eval": 500,
+   "hits": [
+    "assess_requirement",
+    "available",
+    "child",
+    "class_exists",
+    "clear_cache"
+   ],
+   "recall": 0.172,
+   "precision": 0.052,
+   "f1": 0.079,
+   "extra": [
+    "__init__",
+    "__main__",
+    "__post_init__",
+    "_api_query",
+    "_backfill_embeddings",
+    "_build_index",
+    "_candidates",
+    "_candidates_or_fallback",
+    "_chunk_key",
+    "_chunk_member"
+   ]
+  },
+  {
+   "id": "q4",
+   "question": "list the entry points",
+   "condition": "ssrl",
+   "answer": "- func::benchmark::main  \n- func::chunker::iter_page_chunks  \n- func::chunker::strip_markdown_links  \n- func::context::search_for_context  \n- func::data.frameworks.rbxutil.build_tests::on_modified  \n- func::data.frameworks.rbxutil.build_tests::update_test_file  \n- func::data.frameworks.react-lua.bin.run-benchmarks::details  \n- func::data.frameworks.react-lua.bin.run-benchmarks::text  \n- func::data.frameworks.react-lua.bin.run-benchmarks::title  \n- func::data.frameworks.react-lua.bin.svg::child  \n- func::data.frameworks.react-lua.bin.svg::display  \n- func::data.frameworks.react-lua.bin.svg::layout  \n- func::db::get_meta_int  \n- func::db::purge  \n- func::embedder::available  \n- func::embedder::dim  \n- func::embedder::encode  \n- func::evidence::assess_requirement  \n- func::expand::expand_query  \n- func::expand::query_groups  \n- func::ingest::ensure_llms_full  \n- func::ingest::read_file  \n- func::refapi::class_exists  \n- func::refapi::clear_cache  \n- func::refapi::search_properties  \n- func::scripts::index_scripts  \n- func::scripts::remove_project_scripts  \n- func::trust::devforum_quality_boost  \n- func::trust::reddit_quality_boost",
+   "gold": [
+    "main",
+    "iter_page_chunks",
+    "strip_markdown_links",
+    "search_for_context",
+    "on_modified",
+    "update_test_file",
+    "details",
+    "text",
+    "title",
+    "child",
+    "display",
+    "layout",
+    "get_meta_int",
+    "purge",
+    "available",
+    "dim",
+    "encode",
+    "assess_requirement",
+    "expand_query",
+    "query_groups",
+    "ensure_llms_full",
+    "read_file",
+    "class_exists",
+    "clear_cache",
+    "search_properties",
+    "index_scripts",
+    "remove_project_scripts",
+    "devforum_quality_boost",
+    "reddit_quality_boost"
+   ],
+   "elapsed_s": 17.549,
+   "tokens_prompt": 429,
+   "tokens_eval": 312,
+   "hits": [
+    "assess_requirement",
+    "available",
+    "child",
+    "class_exists",
+    "clear_cache",
+    "details",
+    "devforum_quality_boost",
+    "dim",
+    "display",
+    "encode",
+    "ensure_llms_full",
+    "expand_query",
+    "get_meta_int",
+    "index_scripts",
+    "iter_page_chunks",
+    "layout",
+    "main",
+    "on_modified",
+    "purge",
+    "query_groups",
+    "read_file",
+    "reddit_quality_boost",
+    "remove_project_scripts",
+    "search_for_context",
+    "search_properties",
+    "strip_markdown_links",
+    "text",
+    "title",
+    "update_test_file"
+   ],
+   "recall": 1.0,
+   "precision": 0.725,
+   "f1": 0.841,
+   "extra": [
+    "benchmark",
+    "chunker",
+    "context",
+    "db",
+    "embedder",
+    "evidence",
+    "expand",
+    "ingest",
+    "refapi",
+    "scripts"
+   ]
+  },
+  {
+   "id": "q4",
+   "question": "list the entry points",
+   "condition": "layer",
+   "answer": "Entry points (no callers in repo): main, strip_markdown_links, iter_page_chunks, search_for_context, update_test_file, on_modified, text, title, details, child, layout, display, get_meta_int, purge, available.",
+   "gold": [
+    "main",
+    "iter_page_chunks",
+    "strip_markdown_links",
+    "search_for_context",
+    "on_modified",
+    "update_test_file",
+    "details",
+    "text",
+    "title",
+    "child",
+    "display",
+    "layout",
+    "get_meta_int",
+    "purge",
+    "available",
+    "dim",
+    "encode",
+    "assess_requirement",
+    "expand_query",
+    "query_groups",
+    "ensure_llms_full",
+    "read_file",
+    "class_exists",
+    "clear_cache",
+    "search_properties",
+    "index_scripts",
+    "remove_project_scripts",
+    "devforum_quality_boost",
+    "reddit_quality_boost"
+   ],
+   "elapsed_s": 0.001,
+   "tokens_prompt": 0,
+   "tokens_eval": 0,
+   "hits": [
+    "child",
+    "details",
+    "display",
+    "get_meta_int",
+    "iter_page_chunks",
+    "layout",
+    "main",
+    "on_modified",
+    "purge",
+    "search_for_context",
+    "strip_markdown_links",
+    "text",
+    "title",
+    "update_test_file"
+   ],
+   "recall": 0.483,
+   "precision": 1.0,
+   "f1": 0.651,
+   "extra": []
+  },
+  {
+   "id": "q5",
+   "question": "what does the flow from search do",
+   "condition": "baseline",
+   "answer": "- __init__.py  \n- __main__.py  \n- _api_query  \n- _backfill_embeddings  \n- _build_index  \n- _candidates  \n- _candidates_or_fallback  \n- _chunk_key  \n- _chunk_member  \n- _chunks_unchanged  \n- _class_file  \n- _classes_dir  \n- _cmd_bench  \n- _cmd_build  \n- _cmd_context  \n- _cmd_embed  \n- _cmd_purge  \n- _cmd_quality  \n- _cmd_search  \n- _cmd_status  \n- _cosine_scores  \n- _count  \n- _dedup_chunks  \n- _detect_dim  \n- _download_tarball  \n- _ensure_source_chunks  \n- _expected_hit  \n- _external_coverage  \n- _finish_code  \n- _flush  \n- _flush  \n- _flush_members  \n- _index_exists  \n- _index_ready  \n- _insert_chunks  \n- _is_nav_only  \n- _is_reference  \n- _lookup_terms  \n- _match_score  \n- _member_metadata  \n- _migrate  \n- _minmax  \n- _normalize_html_headings  \n- _pack_vector  \n- _page_chunks  \n- _print_json  \n- _project_filter  \n- _rag_coverage  \n- _render  \n- _repl  \n- _replace_chunks  \n- _replace_source_chunks  \n- _result_line  \n- _run_all  \n- _run_db  \n- _run_git  \n- _section_text  \n- _security  \n- _ser  \n- _sha  \n- _split_long_text  \n- _sweep_duplicates  \n- _terms  \n- _token_overlap  \n- _unpack_vector  \n- _upsert_source  \n- _word_count  \n- analyze  \n- assess_requirement  \n- authority  \n- available  \n- await_script_completion  \n- bench  \n- benchmark.py  \n- build  \n- build  \n- build  \n- build_context  \n- build_expanded_match  \n- build_tests  \n- child  \n- chunk_article  \n- chunk_markdown  \n- chunk_reference  \n- chunker.py  \n- class_ancestors  \n- class_exists  \n- classify_doc_type  \n- clean_snippet  \n- clear_cache  \n- cli.py  \n- close  \n- config.py  \n- connect  \n- context.py  \n- data/_dryrun.py  \n- data/_simulate_queries.py  \n- data/frameworks/knit/last_changelog.py  \n- data/frameworks/rbxutil/build_list.py  \n- data/frameworks",
+   "gold": [
+    "connect",
+    "get_meta",
+    "init_db",
+    "get_embedder",
+    "_api_query",
+    "_candidates_or_fallback",
+    "_cosine_scores",
+    "_index_exists",
+    "_minmax",
+    "search",
+    "clean_snippet",
+    "authority"
+   ],
+   "elapsed_s": 42.183,
+   "tokens_prompt": 893,
+   "tokens_eval": 500,
+   "hits": [
+    "_api_query",
+    "_candidates_or_fallback",
+    "_cosine_scores",
+    "_index_exists",
+    "_minmax",
+    "authority",
+    "clean_snippet",
+    "connect"
+   ],
+   "recall": 0.667,
+   "precision": 0.087,
+   "f1": 0.154,
+   "extra": [
+    "__init__",
+    "__main__",
+    "_backfill_embeddings",
+    "_build_index",
+    "_candidates",
+    "_chunk_key",
+    "_chunk_member",
+    "_chunks_unchanged",
+    "_class_file",
+    "_classes_dir"
+   ]
+  },
+  {
+   "id": "q5",
+   "question": "what does the flow from search do",
+   "condition": "ssrl",
+   "answer": "- {\"flow\": \"flow::func::context::search_for_context\", \"steps\": [\"func::db::connect\", \"func::db::get_meta\", \"func::db::init_db\", \"func::embedder::get_embedder\", \"func::retriever::_api_query\", \"func::retriever::_candidates_or_fallback\", \"func::retriever::_cosine_scores\", \"func::retriever::_index_exists\", \"func::retriever::_minmax\", \"func::retriever::search\", \"func::textutil::clean_snippet\", \"func::trust::authority\"]}\n- {\"flow\": \"flow::func::data.frameworks.react-lua.bin.svg::display\", \"steps\": [\"func::data.frameworks.react-lua.bin.svg::escape\", \"func::data.frameworks.react-lua.bin.svg::namehash\", \"func::data.frameworks.react-lua.bin.svg::pixels\", \"func::data.frameworks.react-lua.bin.svg::subtree\"]}\n- {\"flow\": \"flow::func::embedder::available\", \"steps\": [\"func::embedder::_detect_dim\", \"func::embedder::embed\", \"func::embedder::load\"]}\n- {\"flow\": \"flow::func::evidence::assess_requirement\", \"steps\": [\"func::evidence::_external_coverage\", \"func::evidence::_rag_coverage\", \"func::evidence::_token_overlap\", \"func::expand::_lookup_terms\", \"func::expand::_terms\"]}\n- {\"flow\": \"flow::func::expand::expand_query\", \"steps\": [\"func::expand::_lookup_terms\", \"func::expand::_terms\"]}\n- {\"flow\": \"flow::func::expand::query_groups\", \"steps\": [\"func::expand::_lookup_terms\", \"func::expand::_terms\"]}",
+   "gold": [
+    "connect",
+    "get_meta",
+    "init_db",
+    "get_embedder",
+    "_api_query",
+    "_candidates_or_fallback",
+    "_cosine_scores",
+    "_index_exists",
+    "_minmax",
+    "search",
+    "clean_snippet",
+    "authority"
+   ],
+   "elapsed_s": 25.354,
+   "tokens_prompt": 849,
+   "tokens_eval": 380,
+   "hits": [
+    "_api_query",
+    "_candidates_or_fallback",
+    "_cosine_scores",
+    "_index_exists",
+    "_minmax",
+    "authority",
+    "clean_snippet",
+    "connect",
+    "get_embedder",
+    "get_meta",
+    "init_db",
+    "search"
+   ],
+   "recall": 1.0,
+   "precision": 0.316,
+   "f1": 0.48,
+   "extra": [
+    "_detect_dim",
+    "_external_coverage",
+    "_lookup_terms",
+    "_rag_coverage",
+    "_terms",
+    "_token_overlap",
+    "assess_requirement",
+    "available",
+    "context",
+    "db"
+   ]
+  },
+  {
+   "id": "q5",
+   "question": "what does the flow from search do",
+   "condition": "layer",
+   "answer": "10 Flow hypotheses (calibrated confidence):\n  - flow::func::benchmark::main conf=0.88 — strong hypothesis\n  - flow::func::chunker::iter_page_chunks conf=0.88 — strong hypothesis\n  - flow::func::context::search_for_context conf=0.88 — strong hypothesis\n  - flow::func::data.frameworks.react-lua.bin.svg::display conf=0.88 — strong hypothesis\n  - flow::func::db::get_meta_int conf=0.88 — strong hypothesis\n  - flow::func::embedder::available conf=0.88 — strong hypothesis\n  - flow::func::embedder::encode conf=0.88 — strong hypothesis\n  - flow::func::evidence::assess_requirement conf=0.88 — strong hypothesis\n  - flow::func::expand::expand_query conf=0.88 — strong hypothesis\n  - flow::func::expand::query_groups conf=0.88 — strong hypothesis",
+   "gold": [
+    "connect",
+    "get_meta",
+    "init_db",
+    "get_embedder",
+    "_api_query",
+    "_candidates_or_fallback",
+    "_cosine_scores",
+    "_index_exists",
+    "_minmax",
+    "search",
+    "clean_snippet",
+    "authority"
+   ],
+   "elapsed_s": 0.001,
+   "tokens_prompt": 0,
+   "tokens_eval": 0,
+   "hits": [],
+   "recall": 0.0,
+   "precision": 0.0,
+   "f1": 0.0,
+   "extra": [
+    "assess_requirement",
+    "available",
+    "benchmark",
+    "chunker",
+    "context",
+    "db",
+    "display",
+    "embedder",
+    "encode",
+    "evidence"
+   ]
+  },
+  {
+   "id": "q6",
+   "question": "which files does indexer depend on",
+   "condition": "baseline",
+   "answer": "- __init__.py\n- __main__.py\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__\n- __init__",
+   "gold": [
+    "chunker",
+    "config",
+    "db",
+    "embedder",
+    "ingest",
+    "textutil"
+   ],
+   "elapsed_s": 41.862,
+   "tokens_prompt": 892,
+   "tokens_eval": 500,
+   "hits": [],
+   "recall": 0.0,
+   "precision": 0.0,
+   "f1": 0.0,
+   "extra": [
+    "__init__",
+    "__main__"
+   ]
+  },
+  {
+   "id": "q6",
+   "question": "which files does indexer depend on",
+   "condition": "ssrl",
+   "answer": "- module::benchmark\n- module::chunker\n- module::cli\n- module::config\n- module::db\n- module::embedder\n- module::expand\n- module::indexer\n- module::ingest\n- module::quality\n- module::retriever\n- module::textutil\n- module::trust",
+   "gold": [
+    "chunker",
+    "config",
+    "db",
+    "embedder",
+    "ingest",
+    "textutil"
+   ],
+   "elapsed_s": 6.207,
+   "tokens_prompt": 699,
+   "tokens_eval": 72,
+   "hits": [
+    "chunker",
+    "config",
+    "db",
+    "embedder",
+    "ingest",
+    "textutil"
+   ],
+   "recall": 1.0,
+   "precision": 0.462,
+   "f1": 0.632,
+   "extra": [
+    "benchmark",
+    "cli",
+    "expand",
+    "indexer",
+    "quality",
+    "retriever",
+    "trust"
+   ]
+  },
+  {
+   "id": "q6",
+   "question": "which files does indexer depend on",
+   "condition": "layer",
+   "answer": "Module `indexer.py`: 0 class(es), 17 top-level function(s), 18 import(s).\nModule docstring: doc_rag/indexer.py — Build/refresh do índice RAG.\n\nPipeline por página:\n    ingest (creator-docs) → sha check → chunk_markdown → embed → upsert SQLite\n\nSe o embedder não estiver disponível, os chunks são gravados sem vetor e o\nretrieval roda em modo lexical (FTS5/BM25) — o índice continua válido.",
+   "gold": [
+    "chunker",
+    "config",
+    "db",
+    "embedder",
+    "ingest",
+    "textutil"
+   ],
+   "elapsed_s": 0.001,
+   "tokens_prompt": 0,
+   "tokens_eval": 0,
+   "hits": [
+    "embedder",
+    "ingest"
+   ],
+   "recall": 0.333,
+   "precision": 0.286,
+   "f1": 0.308,
+   "extra": [
+    "build",
+    "chunk_markdown",
+    "doc_rag",
+    "embed",
+    "indexer"
+   ]
+  }
+ ],
+ "aggregates": {
+  "baseline": {
+   "f1_mean": 0.153,
+   "recall_mean": 0.33,
+   "tokens_prompt": 5344,
+   "tokens_eval": 3000,
+   "elapsed_s": 253.29
+  },
+  "ssrl": {
+   "f1_mean": 0.613,
+   "recall_mean": 1.0,
+   "tokens_prompt": 2631,
+   "tokens_eval": 949,
+   "elapsed_s": 65.81
+  },
+  "layer": {
+   "f1_mean": 0.315,
+   "recall_mean": 0.303,
+   "tokens_prompt": 0,
+   "tokens_eval": 0,
+   "elapsed_s": 0.01
+  }
+ },
+ "gold": {
+  "who calls init_db": "callers of func::db::init_db: build, embed, index_scripts, purge, remove_project_scripts, search, stats",
+  "where is embed": "locations: embedder.py:88",
+  "which modules import db": "modules importing module::db: indexer, quality, retriever, scripts",
+  "list the entry points": "entry points (29): func::benchmark::main, func::chunker::iter_page_chunks, func::chunker::strip_markdown_links, func::context::search_for_context, func::data.frameworks.rbxutil.build_tests::on_modified, func::data.frameworks.rbxutil.build_tests::update_test_file, func::data.frameworks.react-lua.bin.run-benchmarks::details, func::data.frameworks.react-lua.bin.run-benchmarks::text, func::data.frameworks.react-lua.bin.run-benchmarks::title, func::data.frameworks.react-lua.bin.svg::child, func::data.frameworks.react-lua.bin.svg::display, func::data.frameworks.react-lua.bin.svg::layout, func::db::get_meta_int, func::db::purge, func::embedder::available, func::embedder::dim, func::embedder::encode, func::evidence::assess_requirement, func::expand::expand_query, func::expand::query_groups, func::ingest::ensure_llms_full, func::ingest::read_file, func::refapi::class_exists, func::refapi::clear_cache, func::refapi::search_properties, func::scripts::index_scripts, func::scripts::remove_project_scripts, func::trust::devforum_quality_boost, func::trust::reddit_quality_boost",
+  "what does the flow from search do": "flow flow::func::context::search_for_context steps (12): func::db::connect, func::db::get_meta, func::db::init_db, func::embedder::get_embedder, func::retriever::_api_query, func::retriever::_candidates_or_fallback, func::retriever::_cosine_scores, func::retriever::_index_exists, func::retriever::_minmax, func::retriever::search, func::textutil::clean_snippet, func::trust::authority",
+  "which files does indexer depend on": "deps of module::indexer: chunker, config, db, embedder, ingest, textutil"
+ }
+}
