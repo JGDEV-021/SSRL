@@ -14,6 +14,8 @@ This paper introduces the Semantic Software Representation Layer (SSRL): a propo
 
 v0.3 updates: the research program has passed its first gate (G1). The primary projection question (RQ-2) is resolved by evidence in favor of **grounded Q&A (H1) with a living narrative (H3) as co-surface**, and this resolution is now validated by a working, dependency-free V1 prototype on real repositories (Sections 8, 13, 15).
 
+v0.3.1 (validation-status update): the validation phase (roadmap Phase 9) has executed its **draft automated study** and a **refusal probe battery**. The probes proved that the micro model's refusals were a prompt-contract artifact — not a capability wall — and the resulting context-system improvement (deterministic-CLI agent contract + evidence filtering) lifted the SSRL-grounded condition to entity-F1 **0.61** (recall 1.0) versus baseline 0.15 (Section 13, 15). The remaining validation step — the human-graded multi-arm study — is scoped for publication (Phase 10).
+
 ---
 
 ## 1. Introduction
@@ -168,7 +170,7 @@ Methodology and gates are specified in [`research/plan.md`](../research/plan.md)
 - **Scale.** Dense systems may overwhelm the consumption surface; projections must manage cognitive load.
 - **The "ask the agent" baseline.** If agent Q&A becomes good enough on raw code, SSRL's value claim weakens — exactly why RQ-1/RQ-2 must be tested empirically, not assumed.
 
-v0.3 addition: **hypothesis quality.** The MVP's naming/structure heuristics produce hypotheses that are *labeled and bounded* but not yet quality-validated; the `audit` output is the instrument, ground truth remains future work (Phase 9).
+v0.3 addition: **hypothesis quality.** The MVP's naming/structure heuristics produce hypotheses that are *labeled and bounded* but not yet quality-validated; the `audit` output is the instrument, and ground truth is being established by the Phase 9 study (draft automated pass executed in REPORT-P9 §6.1; human grading is the definitive step).
 
 ## 12. Limitations
 
@@ -180,7 +182,8 @@ SSRL will not: guarantee perfect intent extraction; guarantee correctness; scale
 2. **Research Phase 1.** Literature, prior art, practitioner discourse, probes. ✅ W1–W4 complete.
 3. **Decision & spec freeze.** ADRs 001–007 **all accepted**; requirements/architecture **frozen to v1.0**. ✅ **Gate G1 PASSED.**
 4. **V1 prototype.** Facts-only extraction **plus** the primary projection (H1 QA), hypotheses (enrichment), confidence engine, living narrative (H3), and a CLI — delivered as a single dependency-free package. ✅ (Phases 3–6 of the roadmap, compressed; see Section 15.)
-5. **Validation.** Controlled comprehension experiments (Phase 9). ⏳ Next.
+5. **Lab integration, agent surface, micro-LLM proposer.** Continuous regeneration (`watch`), the MCP agent surface + CI impact reports, and a Qwen3-0.6B-class hypothesis *proponent* (ADR-008) with tiny, facts-only evidence bundles. ✅ (Phases 7–9.)
+6. **Validation.** Phase 9 executed: the **draft automated study** (baseline 0.15 / SSRL-grounded 0.61 / deterministic layer 0.32, entity-F1 vs facts gold) and a **refusal probe battery** proving the micro model's refusals were a prompt artifact — the CLI-contract + evidence-filtering improvement is exactly the context-system fix it motivated (REPORT-P9 §6.1–§6.2). ✅ groundwork. The **definitive human-graded multi-arm study** (accuracy + time-to-understand, mid-size model arm, closed tasks) is the remaining step, scoped for publication (Phase 10). ⏳
 
 ## 14. Evidence base (summary)
 
@@ -191,6 +194,7 @@ SSRL will not: guarantee perfect intent extraction; guarantee correctness; scale
 | W3 · Practitioner discourse | Is the comprehension gap real? | Confirmed: onboarding cost, unreadable systems, agent-as-substitute pain, reported continuously. |
 | W4 · Probe | Is the fact layer cheap? | stdlib `ast` parses 100% of two real corpora (31 + 122 files) in ~0.5–3.3 s, deterministic, zero deps. |
 | W5 · Decisions | Which directions survive? | ADR-001…007 accepted; Q&A primary; graph hypothesis support dropped as primary. |
+| P9 · Validation draft | Does grounding help a micro LLM answer? | Refusals were a **prompt artifact** (CLI contract removes 100%); grounded commands with a deterministic-contract prompt score entity-F1 **0.61** vs baseline 0.15; answer-framed contexts score higher but collapse the task to transcription (REPORT-P9 §6.2). |
 
 ## 15. Prototype findings (V1 MVP)
 
@@ -200,11 +204,11 @@ Implementation: `prototype/ssrl/` — 10 modules, stdlib only, deterministic. Co
 - **Hypotheses can be produced without AI and labeled honestly.** Call-chain flows, naming/docstring intents, and module/class domain concepts are generated with `confidence < 1.0` and explicit evidence; `why`/`audit` explain each.
 - **Primary projection works on real code.** The grounded Q&A answers `where is X`, `who calls X`, `what does X do`, `imports of X`, `entry points`, `flows` with facts split from hypotheses.
 - **Continuity is implementable.** File-level hash caching (D-8) makes warm builds incremental without perturbing determinism.
-- **67 unit tests green** on a synthetic fixture; determinism verified on both real corpora; `watch` keeps the layer fresh incrementally and an MCP agent surface exposes `ask/why/narrative/stats/audit/impact` with evidence (Phases 7–8). Phase 9 adds a **micro-LLM hypothesis proposer** (Qwen3-0.6B class, ADR-008): proponent-only, facts-only bundles ≤ 2600 chars, `LLMProposal` evidence capped at 0.5 — plus an experiment seed (`lab/p9_experiment_seed.jsonl`) pitting a naive "ask the agent" baseline against SSRL-grounded context for the RQ-3 comprehension study.
+- **67 unit tests green** on a synthetic fixture; determinism verified on both real corpora; `watch` keeps the layer fresh incrementally and an MCP agent surface exposes `ask/why/narrative/stats/audit/impact` with evidence (Phases 7–8). Phase 9 added the **micro-LLM hypothesis proposer** (Qwen3-0.6B class, ADR-008): proponent-only, facts-only bundles ≤ 2600 chars, `LLMProposal` evidence capped at 0.5 — with the experiment seed (`lab/p9_experiment_seed.jsonl`) pitting a naive "ask the agent" baseline against SSRL-grounded context. Its validation ran the **draft automated study** (SSRL-grounded condition: entity-F1 **0.61**, recall 1.0 over 6 questions vs baseline 0.15) and a **refusal probe battery** (`lab/p9_probe.py`, REPORT-P9 §6.2) showing the micro model's refusals were a prompt-contract artifact — removed by a deterministic-CLI agent contract plus evidence filtering.
 
 Full metrics and honest limits: [`prototype/REPORT-V1.md`](../prototype/REPORT-V1.md), [`prototype/README.md`](../prototype/README.md), [`prototype/BUILDLOG.md`](../prototype/BUILDLOG.md).
 
-These findings are *positive but preliminary*: they validate mechanics at MVP scale, not the comprehension-value claim (RQ-1) — that remains Phase 9's job.
+These findings are *positive but preliminary*: they validate mechanics at MVP scale and produce a first quantitative signal for RQ-1 (the draft automated pass); the definitive comprehension-value claim awaits the human-graded study (Phase 10).
 
 ## 16. Conclusion
 

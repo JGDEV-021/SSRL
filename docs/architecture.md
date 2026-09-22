@@ -1,9 +1,11 @@
 # SSRL Architecture — Design Concerns & Decisions
 
-- Version: **1.0 (frozen — Gate G1 passed)**
-- Status: D-1…D-7 resolved and **accepted** (ADR-001…007). D-8 has a working assumption (file-level hash+mtime) pending prototype data.
+- Version: **1.0 (frozen — Gate G1 passed; D-8 and ADR-008 implemented since)**
+- Status: D-1…D-7 resolved and **accepted** (ADR-001…007); **ADR-008 (Phase 9)**
+  adds the optional micro-LLM proponent stage. D-8 (file-level hash+mtime cache) is
+  **implemented and measured** (REPORT-V1 §7.2), not merely assumed.
 
-> This document records the invariants the architecture must respect and the decisions the research phase resolved (ADR-001…007). D-1 is resolved by ADR-005; D-8 retains a working assumption (file-level hash+mtime cache) until prototype data indicates otherwise.
+> This document records the invariants the architecture must respect and the decisions the research phase resolved (ADR-001…007). D-1 is resolved by ADR-005; D-8 (file-level hash+mtime cache) is implemented in the prototype. Phase 9 added ADR-008 (micro-LLM proposer, one optional stage between enrichment and projection); see `research/decisions/ADR-008-micro-llm-proponent.md`.
 
 ---
 

@@ -2,8 +2,8 @@
 
 > Making software understandable — to humans and to AI.
 
-[![Status](https://img.shields.io/badge/status-research%20%2F%20docs--phase-orange)]()
-[![Version](https://img.shields.io/badge/docs-v0.2-blue)]()
+[![Status](https://img.shields.io/badge/status-prototype%20%2F%20validation-orange)]()
+[![Version](https://img.shields.io/badge/docs-v0.3-blue)]()
 [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
 AI made writing code cheap. SSRL asks the next question: **how do we make code easy to understand?**
@@ -61,22 +61,25 @@ The graph is *one* projection. The product is the layer. Which projection become
 | Stage | State |
 | --- | --- |
 | Vision & Principles | Done |
-| Spec-driven Requirements | Draft |
-| Position Paper | Draft (v0.2) |
-| Research Plan | Draft |
-| Research & Analysis | **Not started — next** |
-| Prototype | No code yet (gated by research) |
+| Spec-driven Requirements | Frozen v1.0 (Gate G1 passed) |
+| Position Paper | Draft (v0.3 — G1 resolution + prototype findings) |
+| Research Plan | Executed (G1 passed; W1–W5, ADR-001…008) |
+| Research & Analysis | Done |
+| Prototype (V1 MVP) | **Shipped — v0.7.0**, Phases 3–9 complete, 67 unit tests |
+| Validation | Phase 9 draft automated study + refusal probe executed; definitive human-graded study next (Phase 10) |
 
-> Code is intentionally deferred. The design space is still under investigation; writing a parser now would be guessing.
-
----
+The prototype is no longer deferred: `prototype/ssrl/` is a working, dependency-free
+package (extract → enrich → calibrate → Q&A → narrative → CLI → watch → MCP →
+micro-LLM proposer). Validation evidence lives in `prototype/REPORT-P9.md`
+(§6.1 draft study, §6.2 refusal probe battery) — the grounded condition scored
+entity-F1 **0.61** (recall 1.0) vs baseline 0.15.
 
 ## Repository structure
 
 ```text
 SSRL/
 ├── README.md
-├── roadmap.md
+├── roadmap.md              # Phases 0–10; 3–9 done, 10 (publication) next
 ├── LICENSE
 ├── docs/
 │   ├── vision.md              # Mentality, objectives, non-goals, principles
@@ -87,26 +90,36 @@ SSRL/
 │   └── projections/
 │       └── graph.md           # Graph projection — a candidate, not the product
 ├── paper/
-│   └── SSRL-v0.2.md           # Position paper
+│   ├── SSRL-v0.2.md           # Position paper (research phase)
+│   └── SSRL-v0.3.md           # Position paper (G1 + prototype findings)
 ├── research/
 │   ├── plan.md                # Research questions, hypotheses, methods, sources
 │   ├── literature/            # W1 — papers
 │   ├── prior-art/             # W2 — tools
 │   ├── discourse/             # W3 — practitioner pain points
 │   ├── probes/                # W4 — throwaway experiments (not the prototype)
-│   └── decisions/             # W5 — ADR-001…007
-└── prototype/                 # Intentionally empty until research concludes
+│   └── decisions/             # W5 — ADR-001…008 (all accepted)
+└── prototype/
+    ├── README.md              # Prototype readme (quick start, verified properties)
+    ├── BUILDLOG.md            # Per-phase build log (Phases 1–9)
+    ├── REPORT-V1.md           # V1 MVP delivery report (Phases 3–6.5)
+    ├── REPORT-P7.md / REPORT-P8.md / REPORT-P9.md
+    ├── ssrl/                  # The V1 package (stdlib only, zero deps)
+    ├── lab/                   # Phase 7–9 labs + study/probe harnesses
+    └── tests/                 # 67 unit tests
 ```
 
 ---
 
 ## Getting involved
 
-SSRL is currently a research project. The most valuable contributions today:
+SSRL has a working V1 prototype (`prototype/`) and an active validation track.
+Valuable contributions today:
 
 - Criticism of the vision and principles ([`docs/vision.md`](docs/vision.md))
 - Pointers to related work ([`docs/related-work.md`](docs/related-work.md))
 - Real-world comprehension pain points
+- Feedback on the prototype's output quality (facts vs hypotheses vs `ask`)
 
 ---
 

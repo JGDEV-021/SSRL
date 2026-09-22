@@ -1,10 +1,14 @@
 # SSRL V1 MVP — Comprehensive Delivery Report
 
-**Document status:** final.
+**Document status:** final — records the **V1 MVP snapshot** (`v0.4.0`, roadmap Phases 3–6.5).
+**Status today:** Phases 7–9 are complete (prototype is `v0.7.0`) — see `REPORT-P7.md`,
+`REPORT-P8.md`, `REPORT-P9.md`, `prototype/README.md` and `roadmap.md` for the current
+state; the repository is git-tracked and published at
+`https://github.com/JGDEV-021/SSRL` (V1 MVP committed as `8d24440`).
 **Version covered:** `prototype/ssrl/__init__.py` → `__version__ = "0.4.0"`; graph artifact `graph_version = "0.4"`.
 **Target of record:** the SSRL V1 MVP delivered under the author directive *"construindo, sem parar, todas as fases possíveis — V1 MVP pronta. Sempre anote tudo, sempre faça relatórios, não erre."*
 **Language policy:** repository documentation in English; author conversation in Portuguese.
-**Repo root:** `C:\Users\joaog\Downloads\SSRL` (git pending — nothing committed per standing instruction).
+**Repo root:** `C:\Users\joaog\Downloads\SSRL`.
 
 ---
 
@@ -823,9 +827,9 @@ the MVP now provides a substrate for (`audit` als instrument).
 | H3 living narrative co-surface | ADR-005 | `narrative.py` sectioned report regenerated on demand (never stale) |
 | H2 progressive zoom | supporting | not built in MVP (roadmap Phase 7/8+); index primitives (`children`, `deps_closure`) prepare it |
 | H4 graph navigation | supporting | Sourcetrail's failure (W2); `json` export is the raw material when re-opened |
-| RQ-1 value | future | Phase 9 controlled experiments pending |
+| RQ-1 value | in progress | draft automated pass executed in Phase 9 (entity-F1 vs facts gold) — human grading pending |
 | RQ-2 interaction | **resolved (G1)** | H1+H3 implemented as chosen |
-| RQ-3 trust/calibration | in progress | policy + `audit`/`why` implemented; statistical calibration pending |
+| RQ-3 trust/calibration | in progress | policy + `audit`/`why` implemented; Phase 9 draft pass + calibration instrumentation; statistical validation pending |
 | RQ-4 hypothesis sources | resolved (RN-4/ADR-007) | naming+structure only; LLM-proposer deferred |
 | RQ-5 semantic concepts | in progress | Flow/Intent/Service/DomainConcept survive contact with both corpora (376 total hypotheses) |
 
@@ -839,7 +843,8 @@ the MVP now provides a substrate for (`audit` als instrument).
    and labeled.
 2. **No LLM anywhere (by design, ADR-007).** Hypothesis quality is limited to what naming +
    structure encode; an LLM-proponent layer that feeds the confidence engine is the natural
-   next step but is intentionally out of the MVP.
+   next step but is intentionally out of the MVP. *(Since Phase 9: the micro-LLM proponent
+   exists as an optional, capped hypothesis source — ADR-008; the MVP core stays deterministic.)*
 3. **Flat function ids.** Two same-named methods in different classes of one module share a
    `func::<mid>::<name>` id; the CONTAINS edge still ties each to its true class. Documented
    limit of the flat id scheme.
@@ -847,11 +852,15 @@ the MVP now provides a substrate for (`audit` als instrument).
    identity above the root is unknown (so, e.g., a sub-package importing its own parent
    package may resolve heuristically).
 5. **No watch loop yet.** The cache is manual via `--cache`; Phase 7 (watch/regenerate) is the
-   natural successor and is a thin design extension on top of D-8.
+   natural successor and is a thin design extension on top of D-8. *(Done in Phase 7: `watch` —
+   see `REPORT-P7.md`.)*
 6. **Confidence not statistically calibrated.** `audit` reports, but ground-truth /
-   calibration-vs-behavior validation is Phase 9 work.
+   calibration-vs-behavior validation is Phase 9 work. *(Phase 9 executed a draft automated pass
+   with facts-derived gold + a probe battery — see REPORT-P9 §6.1–§6.2; statistical
+   validation is pending.)*
 7. **Comprehension-gain not yet measured.** No controlled experiments; the MVP proves
-   mechanics and honesty, not the RQ-1 value claim.
+   mechanics and honesty, not the RQ-1 value claim. *(Phase 9 ran an automated proxy — the
+   draft study, REPORT-P9 §6.1; the human-graded study remains.)*
 8. **Corpus diversity.** Two Python repos (CLI-style + library-style) — a narrow slice of
    the design space; multi-language and other domains await later phases.
 9. **Intent heuristics over-trigger on tests.** `tests.test_smoke` contributes ~9 intents to
@@ -1069,6 +1078,8 @@ source says so — sample excerpt for shape, not a literal slice.)
 The V1 MVP is a **compressed vertical slice** of every executable roadmap phase: a working,
 tested, deterministic, dependency-free layer from raw Python to grounded answers and living
 narrative — with every semantic claim visibly uncertain and every fact traced to a line.
-It was committed to git as `8d24440`; Phase 7 (`cdba65b`) and Phase 8 added the watch loop and
-the MCP agent surface (see `REPORT-P7.md` / `REPORT-P8.md`). The next recommended step is
-Phase 9 (controlled comprehension experiments + LLM-as-proponent) when the author says go.
+It was committed to git as `8d24440`; Phase 7 (`cdba65b`) and Phase 8 (`4da9c1b`) added the
+watch loop and the MCP agent surface (see `REPORT-P7.md` / `REPORT-P8.md`), and Phase 9
+(`bcd0996` + study/probe) delivered the micro-LLM proposer and the validation groundwork
+(REPORT-P9 §6.1–§6.2). The next step is the definitive human-graded study within Phase 10
+(publication).

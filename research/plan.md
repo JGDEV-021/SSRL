@@ -1,7 +1,10 @@
 # SSRL Research Plan (Phase 1)
 
 - Version: 0.2
-- Status: **Executed (W1–W4 complete, W5 ADRs delivered) — Gate G1 pending ADR-005 sign-off**
+- Status: **Executed (W1–W4 complete, W5 ADRs delivered) — Gate G1 PASSED (2026)**.
+  This record describes the *research* phase as executed. Downstream state —
+  V1 prototype through Phase 9 validation — is tracked in `roadmap.md`,
+  `docs/architecture.md`, `paper/SSRL-v0.3.md` and `prototype/REPORT-P9.md`.
 
 > Purpose: gather evidence to (1) validate that SSRL addresses a real problem, (2) resolve the **primary projection** (RN-1), and (3) de-risk architecture decisions (architecture D-1…D-8) — *before* any implementation code is written.
 
