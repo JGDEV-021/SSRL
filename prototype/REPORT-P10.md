@@ -102,15 +102,20 @@ warned about, now measurable on the external process.
 
 ## 6. Verification
 
-- **Tests:** 95 green (incl. MCP wiring for both new tools, determinism
+- **Tests:** 104 green (incl. MCP wiring for both new tools, determinism
   double-runs, empty-narration REVIEW, the external-import-not-invented case,
   the PT relation-consistency pair, PT QA routing and the IMPORTS-dedupe
-  regression).
+  regression, plus the deleted-symbols view suite: 5 history tests,
+  deleted-citation auditor tests, `pass_groundedness` parameterization, and
+  the MCP `deleted` tool).
 - **CLI e2e:** `ssrl explain <repo> --node func::db::save` (WHAT/WHY/HOW with
   callers/callees + deriving stage) and `ssrl verify <repo> file.py
   --explanation-file narration.txt` → `VERDICT: PASS groundedness=1.0
   invented=0` over the fixture corpus.
 - **Determinism:** identical inputs → byte-identical result dicts (unit-tested).
+- **Deleted-symbols smoke:** on the demo corpus, `ssrl deleted <repo> --cache`
+  → `no deleted symbols (structure unchanged since previous build)` with
+  `has_history=True`, after the §9.6 build had cached a snapshot.
 
 ## 7. Honest limits
 
@@ -126,21 +131,24 @@ warned about, now measurable on the external process.
   False-PASS is possible when the mentioned relation doesn't square with the
   verb (e.g. "removed the call to X" is not parsed as a removal).
 - **Single-artifact context.** The auditor reasons over the current artifact
-  (ADR-003); narrations about pre-HEAD state (deleted code) naturally cite
-  symbols the layer no longer has → the review team must read those as
-  "recently deleted", which is visualized via `impact`'s missing-module path.
+  (ADR-003). Narrations about pre-HEAD state are audit-able through the
+  **deleted-symbols view** (Phase 10, `deleted`): a quoted identifier resolving
+  against the view is a `deleted` citation — a real removal, not invented, and
+  excluded from the groundedness denominator. The view is single-version (diff
+  between two adjacent cached builds, not a git timeline).
 
 ## 8. Open items (Phase 10)
+
+Remaining after the §11 shipments:
 
 - Real Claude/Codex-grade integration day: wire the MCP server into an agent
   session (Claude Code / Cline) and collect naturally-produced narrations for a
   larger battery.
-- Verdict threshold tuning from data (0.8 / invented==0 is the v0.8 default,
-  per ADR-009 §5).
-- Reference a "deleted-symbols" view (from `watch` history) so narrations about
-  removals are audit-able instead of missing-module REVIEW noise.
 - The definitive Phase 9 human-graded multi-arm study is unchanged and still
   required for the publication claims (see REPORT-P9 §6.1).
+
+*Shipped since the original list:* verdict threshold tuning from data + the
+deleted-symbols-view citation path (§11, BUILDLOG §9.7).
 
 ## 9. Live demo — three fixes shipped
 
@@ -170,13 +178,43 @@ adversarial 1/1); suite 88 → **95 green**. Full trace: BUILDLOG §9.6.
 ## 10. To run
 
 ```console
-python -m unittest tests.test_mvp tests.test_explain        # 95 tests
+python -m unittest discover -s tests           # 104 tests
 python -m ssrl.cli explain tests/fixtures/pkgapp --node func::db::save
 printf 'I changed `db.py`: `save` now calls `models.validate`.' | \
   python -m ssrl.cli verify tests/fixtures/pkgapp db.py
+python -m ssrl.cli deleted tests/fixtures/pkgapp --cache   # deleted-symbols view
 python lab/p10_eai.py                                       # battery, writes results
 ```
 
 The battery is deterministic given the seed: narrations (authored by
 opencode/big-pickle) are checked into `lab/p10_eai_seed.json` so results are
 reproducible without any model at runtime.
+
+## 11. Phase 10 groundwork shipped (deleted-symbols view + threshold from data)
+
+The two §8 items the author selected next are implemented, tested and
+documented (full trace: BUILDLOG §9.7).
+
+**Deleted-symbols view** — `ssrl/history.py` (new), wired into `extract.build`
+through a cache dir: a structural **snapshot** (`<cache_dir>/snapshot.json`,
+SNAPSHOT_VERSION=1, facts only) is persisted and `artifact["deleted"]`
+(`has_history`, `modules_removed`, `symbols_removed`, `relations_removed`,
+`counts`) diffs it against the new artifact. Surfaces: CLI `deleted
+<repo> [--json] [--cache]` and MCP tool `deleted`. The auditor adds the
+`deleted` citation kind — a quoted identifier resolving against a removed
+symbol is a real removal, never `invented`, and is excluded from the
+groundedness denominator. First build → `has_history=False`.
+
+**Threshold from data** — `lab/p10_eai.py` grows `_threshold_analysis`: a
+sweep of `pass_groundedness` (0.0–1.0) over the seeded battery reports
+per-threshold outcomes, `min_faithful` / `max_adversarial` the **safe band
+`(0.667, 1.0]`**, `current_in_band=True` and `fully_accurate_thresholds`; the
+sweep table lands in `lab/p10_eai_results.md` ("## Threshold sensitivity").
+Default stays **0.8** — the only data-honest move on a 4-row battery.
+
+**Onboarding** — `HowToUse.md` (root), `AI LAYER/` (recipe to teach a coding
+AI + `MCP-CONNECT.md`), bundled opencode skill `.opencode/skills/ssrl/`.
+
+**Verification** — suite 95 → **104 green**; battery re-run consistent (ceiling
+3/3, adversarial 1/1, safe band in range); CLI smoke on the demo corpus
+(`deleted --cache` → no symbols removed, `has_history=True`).

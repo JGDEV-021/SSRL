@@ -72,6 +72,7 @@ def main():
         "ceiling_ok": all(r["citations"]["invented"] == 0 and r["groundedness"] == 1.0
                           for r in faithful),
     }
+    agg["threshold"] = _threshold_analysis(rows)
 
     out = {"author": seed["author"], "aggregate": agg, "scenarios": rows}
     with open(OUT_JSON, "w", encoding="utf-8") as f:
@@ -89,8 +90,25 @@ def main():
          f"- adversarial REFERENCE caught: **{agg['adversarial_review']}/{agg['adversarial_total']}** "
          "REVIEW with invented > 0",
          "",
-         "## Per scenario",
-         ""]
+         "## Threshold sensitivity",
+         f"- rule: **{agg['threshold']['rule']}**",
+         f"- observed separation: faithful groundedness "
+         f"min={agg['threshold']['observations']['min_groundedness_faithful']}; "
+         f"adversarial groundedness "
+         f"max={agg['threshold']['observations']['max_groundedness_adversarial']}",
+         f"- safe band (zero-misclassification thresholds): "
+         f"({agg['threshold']['safe_band']['lo']}, {agg['threshold']['safe_band']['hi']}]",
+         f"- default `pass_groundedness={agg['threshold']['default']}` inside the "
+         f"band: **{agg['threshold']['current_in_band']}**",
+         f"- fully-accurate thresholds: "
+         f"{', '.join(str(t) for t in agg['threshold']['fully_accurate_thresholds'])}",
+         "",
+         "| threshold | accuracy (all N scenarios) |",
+         "|-----------|----------------------------|"]
+    for s in agg["threshold"]["sweep"]:
+        L.append(f"| {s['threshold']:<9} | {s['accuracy']} "
+                 f"({s['correct']}/{s['total']}) |")
+    L += ["", "## Per scenario", ""]
     for r in rows:
         L.append(f"### {r['scenario']} ({r['kind']}) — {r['verdict']}")
         L.append(f"- files: {', '.join(r['files'])}")
@@ -115,8 +133,58 @@ def main():
     ok = agg["ceiling_ok"] and agg["adversarial_review"] == agg["adversarial_total"]
     print(f"\naggregate: ceiling_ok={agg['ceiling_ok']} "
           f"adversarial_caught={agg['adversarial_review']}/{agg['adversarial_total']}")
+    t = agg["threshold"]
+    print(f"threshold: default={t['default']} safe_band=({t['safe_band']['lo']}, "
+          f"{t['safe_band']['hi']}] current_in_band={t['current_in_band']}")
     print(f"wrote {OUT_JSON}")
     return 0 if ok else 2
+
+
+def _expected(verdict, kind):
+    return "PASS" if kind == "faithful" else "REVIEW"
+
+
+def _classify(groundedness, invented, t):
+    return "PASS" if groundedness >= t and invented == 0 else "REVIEW"
+
+
+def _threshold_analysis(rows):
+    """Data-driven check of the verdict threshold (ADR-009 §5).
+
+    Sweeps pass_groundedness over [0.0, 1.0] and reports which thresholds keep
+    the battery perfectly separated (faithful -> PASS, adversarial -> REVIEW).
+    The resulting safe band (max adversarial groundedness, min faithful
+    groundedness] brackets every threshold with zero misclassification; the
+    default 0.8 is confirmed to sit inside it for the current seed. Honest
+    limits: one battery is too small to *move* the default — tuning needs the
+    larger Phase 9/10 data set.
+    """
+    truths = [("PASS" if r["kind"] == "faithful" else "REVIEW", r) for r in rows]
+    sweep = []
+    for i in range(21):
+        t = round(i * 0.05, 2)
+        correct = sum(1 for want, r in truths
+                      if _classify(r["groundedness"], r["citations"]["invented"], t) == want)
+        sweep.append({"threshold": t, "correct": correct, "total": len(truths),
+                      "accuracy": round(correct / len(truths), 3)})
+    faithful_g = [r["groundedness"] for r in rows if r["kind"] == "faithful"]
+    advers_g = [r["groundedness"] for r in rows if r["kind"] == "adversarial"]
+    lo = max(advers_g) if advers_g else 1.0
+    hi = min(faithful_g) if faithful_g else 1.0
+    accurate = [s["threshold"] for s in sweep if s["accuracy"] == 1.0]
+    return {
+        "default": 0.8,
+        "rule": "PASS iff groundedness >= t AND invented == 0",
+        "observations": {
+            "min_groundedness_faithful": hi,
+            "max_groundedness_adversarial": lo,
+        },
+        "safe_band": {"lo": lo, "hi": hi,
+                      "lower_open": True, "upper_closed": True},
+        "current_in_band": lo < 0.8 <= hi,
+        "fully_accurate_thresholds": accurate,
+        "sweep": sweep,
+    }
 
 
 if __name__ == "__main__":

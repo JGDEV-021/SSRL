@@ -150,6 +150,38 @@ class TestVerifyExplanation(unittest.TestCase):
         self.assertGreaterEqual(d["claims"]["checked"], 1)
         self.assertTrue(d["claims"]["consistency_failures"])
 
+    def test_deleted_citation_not_invented(self):
+        art, idx = a_ctx()
+        art["deleted"] = {
+            "has_history": True,
+            "symbols_removed": [{"id": "func::db::save_legacy", "type": "Function",
+                                 "name": "save_legacy", "module": "db"}],
+            "modules_removed": [], "relations_removed": [],
+            "counts": {"modules": 0, "symbols": 1, "relations": 0},
+        }
+        n = "I removed `save_legacy` from `db.py`; the old persistence path is gone."
+        d = explain.verify_explanation(art, ["db.py"], n, index=idx)
+        self.assertEqual(d["citations"]["invented"], 0)
+        self.assertGreaterEqual(d["citations"]["deleted"], 1)
+        self.assertIn("save_legacy", d["citations"]["deleted_details"])
+        self.assertEqual(d["verdict"], "PASS")  # deleted != fabricated
+
+    def test_no_deleted_view_is_invented(self):
+        art, idx = a_ctx()
+        d = explain.verify_explanation(art, ["db.py"],
+                                       "I removed the `old_flow` helper.", index=idx)
+        self.assertEqual(d["citations"]["invented"], 1)  # no deleted view -> fabricated
+
+    def test_pass_groundedness_parameter(self):
+        art, idx = a_ctx()
+        n = "I wired `save` and also removed the fictional `toplevel_nothing` bit."
+        d = explain.verify_explanation(art, ["db.py"], n, index=idx)
+        self.assertEqual(d["verdict"], "REVIEW")           # invented -> always REVIEW
+        self.assertEqual(d["citations"]["invented"], 1)
+        self.assertLess(d["groundedness"], 0.8)
+        d2 = explain.verify_explanation(art, ["db.py"], n, index=idx, pass_groundedness=0.3)
+        self.assertEqual(d2["verdict"], "REVIEW")  # invented==0 still required
+
     def test_unquoted_resolves_but_never_invents(self):
         art, idx = a_ctx()
         n = "I touched init_db and the save path; init_db is a one-liner."
@@ -223,6 +255,11 @@ class TestExplainMCP(unittest.TestCase):
         self.assertIsNone(err)
         self.assertIn("VERDICT: REVIEW", text)
         self.assertIn("parse_logs_forever", text)
+
+    def test_deleted_tool(self):
+        text, err = self._tool("deleted", {})
+        self.assertIsNone(err)
+        self.assertIn("no history snapshot", text)
 
 
 if __name__ == "__main__":

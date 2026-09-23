@@ -12,6 +12,7 @@ Audit contract (ADR-009):
   - Quoted identifiers (`x`, "x", 'x') are explicit citations.
       resolved to an artifact identifier -> present
       matched to an external import     -> external (not invented)
+      matched to a recently-deleted symbol (history view) -> deleted (not invented)
       resolved to nothing               -> invented  (fabricated reference)
   - Identifier-shaped unquoted tokens that resolve add "hits"; those that do
     not resolve are reported as unresolved/ignored, never counted invented.
@@ -23,6 +24,10 @@ Audit contract (ADR-009):
 
 Rules: the AI is the witness, the layer is the notary. Everything is
 deterministic, stdlib-only, no model. Output dicts are JSON-safe and sorted.
+
+Threshold (ADR-009 §5): verdict PASS iff groundedness >= pass_groundedness
+(default 0.8) AND invented == 0. The sweeps in lab/p10_eai.py confirm the
+default sits inside the battery-observed safe band.
 """
 
 import re
@@ -112,6 +117,38 @@ def _resolve(idx, cand):
     for n in idx.nodes:
         if n.get("name") == c:
             return n
+    return None
+
+
+def _deleted_lookup(artifact):
+    """Index the deleted-symbols view (history) for citation resolution."""
+    d = (artifact or {}).get("deleted") or {}
+    ids = {}
+    names = {}
+    for r in d.get("symbols_removed", []):
+        ids[r["id"]] = r
+        names.setdefault(r["name"], r)
+        names.setdefault(r["name"].rsplit(".", 1)[-1], r)
+    for m in d.get("modules_removed", []):
+        ids[m["id"]] = m
+        mid = m["id"].split("::", 1)[-1]
+        names.setdefault(mid, m)
+        names.setdefault(mid.rsplit(".", 1)[-1], m)
+    return ids, names
+
+
+def _deleted_ref(cand, del_ids, del_names):
+    """Resolve a quoted candidate to a recently-deleted symbol, or None."""
+    c = cand.strip()
+    if not c:
+        return None
+    if c in del_ids:
+        return del_ids[c]
+    if c in del_names:
+        return del_names[c]
+    tail = c.rsplit("::", 1)[-1].rsplit(".", 1)[-1]
+    if tail in del_names:
+        return del_names[tail]
     return None
 
 
@@ -268,10 +305,14 @@ def _pair_consistent(idx, ids, kw):
     return False
 
 
-def verify_explanation(artifact, changed_files, narration, index=None):
+def verify_explanation(artifact, changed_files, narration, index=None, pass_groundedness=0.8):
     """Audit a coding AI's self-explanation against the artifact.
 
-    Deterministic. Grounding + structural consistency only (ADR-009).
+    Deterministic. Grounding + structural consistency only (ADR-009). The
+    verdict uses `pass_groundedness` (default 0.8, ADR-009 §5) AND invented==0.
+    Citations resolving to recently-deleted symbols (artifact['deleted'],
+    from the history view) count as `deleted`: real, so never invented, and
+    excluded from the groundedness denominator like external imports.
     """
     idx = index or Index(artifact)
     rep = impactmod.impact_changed(artifact, changed_files, index=idx)
@@ -282,12 +323,20 @@ def verify_explanation(artifact, changed_files, narration, index=None):
         scope.add(f"module::{mid}")
         scope.update(info["symbols"])
 
+    del_ids, del_names = _deleted_lookup(artifact)
+
     text = (narration or "").replace("``", "`")  # tolerate pasted markdown double-backticks
     citations = []
     for raw in (g for m in QUOTE_RE.finditer(text) for g in m.groups() if g is not None):
         r = _resolve(idx, raw)
         if r is None:
-            citations.append({"raw": raw, "kind": "invented", "id": None, "in_scope": False})
+            deleted = _deleted_ref(raw, del_ids, del_names)
+            if deleted:
+                citations.append({"raw": raw, "kind": "deleted", "id": deleted["id"],
+                                  "in_scope": True})
+            else:
+                citations.append({"raw": raw, "kind": "invented", "id": None,
+                                  "in_scope": False})
         elif r.get("external"):
             citations.append({"raw": raw, "kind": "external", "id": r["target"], "in_scope": False})
         else:
@@ -341,9 +390,10 @@ def verify_explanation(artifact, changed_files, narration, index=None):
     present = [c for c in citations if c["kind"] == "present"]
     invented = [c for c in citations if c["kind"] == "invented"]
     external = [c for c in citations if c["kind"] == "external"]
+    deleted = [c for c in citations if c["kind"] == "deleted"]
     denom = len(present) + len(invented)
     groundedness = round(len(present) / denom, 3) if denom else 1.0
-    if denom and groundedness >= 0.8 and not invented:
+    if denom and groundedness >= pass_groundedness and not invented:
         verdict = "PASS"
     else:
         verdict = "REVIEW"
@@ -353,10 +403,12 @@ def verify_explanation(artifact, changed_files, narration, index=None):
         "verdict": verdict,
         "citations": {
             "count": len(citations), "present": len(present), "invented": len(invented),
-            "external": len(external), "in_scope": sum(1 for c in present if c["in_scope"]),
+            "external": len(external), "deleted": len(deleted),
+            "in_scope": sum(1 for c in present if c["in_scope"]),
             "unquoted_hits": len(unquoted_hits),
             "unresolved_tokens": max(0, len(set(_IDENT_RE.findall(body))) - len(unquoted_hits)),
             "invented_details": [c["raw"] for c in invented],
+            "deleted_details": [c["raw"] for c in deleted],
         },
         "claims": {
             "checked": claims_checked,
@@ -418,7 +470,8 @@ def render_verify(d):
     cit = d["citations"]
     L = [f"VERDICT: {d['verdict']}  groundedness={d['groundedness']}",
          f"citations: count={cit['count']} present={cit['present']} "
-         f"invented={cit['invented']} external={cit['external']} in_scope={cit['in_scope']} "
+         f"invented={cit['invented']} external={cit['external']} "
+         f"deleted={cit['deleted']} in_scope={cit['in_scope']} "
          f"unquoted_hits={cit['unquoted_hits']} unresolved_tokens={cit['unresolved_tokens']}"]
     c = d["change_scope"]
     L.append(f"change scope: {c['files']} file(s), {c['modules']} module(s), "
@@ -429,6 +482,11 @@ def render_verify(d):
                  + ", ".join(sorted(set(cit["invented_details"]))))
     elif cit["invented"] == 0:
         L.append("invented citations: none")
+    if cit["deleted_details"]:
+        L.append("deleted citations (referenced recently-deleted symbols): "
+                 + ", ".join(sorted(set(cit["deleted_details"]))))
+    else:
+        L.append("deleted citations: none")
     cl = d["claims"]
     if cl["unsupported"]:
         L.append(f"unsupported claims (sentences citing nothing, {len(cl['unsupported'])}): "

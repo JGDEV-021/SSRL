@@ -17,9 +17,13 @@ Commands:
   explain <repo> --node ID | FILES...   grounded WHAT/WHY/HOW (ADR-009):
        [--git BASE] [--json]            the coding AI explains itself against the
        [--no-enrich]                    layer — node mode or change mode
-  verify <repo> FILES... [--git BASE]   explanation auditor (ADR-009): cross-check
+verify <repo> FILES... [--git BASE]   explanation auditor (ADR-009): cross-check
        --explanation TEXT @|--file      a free-text self-explanation against the
-       [--json] [--no-enrich]           artifact -> groundedness + PASS/REVIEW
+        [--json] [--no-enrich]           artifact -> groundedness + PASS/REVIEW
+   deleted <repo> [--json] [--cache]    deleted-symbols view (Phase 10): modules,
+                                        symbols and relations removed since the
+                                        previous D-8 cached build — keeps
+                                        narrations about removals audit-able
   mcp    <repo> [--enrich]              MCP server over stdio for AI agents
                                         (Phase 8, ADR-006 v1.5)
   propose <repo> [--model qwen3:0.6b]   micro-LLM hypothesis proposer (Phase 9,
@@ -37,7 +41,7 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from ssrl import confidence, extract, explain as ex, impact as impactmod, index as indexmod, narrative as narr, qa, semantics, watch as watchmod
+from ssrl import confidence, extract, explain as ex, history, impact as impactmod, index as indexmod, narrative as narr, qa, semantics, watch as watchmod
 
 
 DEFAULT_CACHE = os.path.join(os.path.expanduser("~"), ".ssrl", "cache")
@@ -232,6 +236,15 @@ def cmd_verify(args):
     return 0
 
 
+def cmd_deleted(args):
+    art, _ = load_artifact(args.repo, args.cache)
+    if args.json:
+        print(json.dumps(art["deleted"], ensure_ascii=False, indent=2))
+    else:
+        print(history.render_deleted(art["deleted"]))
+    return 0
+
+
 def cmd_propose(args):
     from ssrl import llm
     art, idx = load_artifact(args.repo, args.cache, enrich_ok=True)
@@ -292,6 +305,7 @@ def main(argv=None):
     exx = sub.add_parser("explain"); exx.add_argument("repo"); exx.add_argument("--node"); exx.add_argument("files", nargs="*"); exx.add_argument("--git"); exx.add_argument("--json", action="store_true"); exx.add_argument("--no-enrich", action="store_true"); exx.add_argument("--cache", action="store_true"); exx.set_defaults(fn=cmd_explain)
     vf = sub.add_parser("verify"); vf.add_argument("repo"); vf.add_argument("files", nargs="*"); vf.add_argument("--explanation"); vf.add_argument("--explanation-file"); vf.add_argument("--git"); vf.add_argument("--json", action="store_true"); vf.add_argument("--no-enrich", action="store_true"); vf.add_argument("--cache", action="store_true"); vf.set_defaults(fn=cmd_verify)
     mc = sub.add_parser("mcp"); mc.add_argument("repo"); mc.add_argument("--enrich", action="store_true"); mc.add_argument("--no-cache", action="store_true"); mc.set_defaults(fn=cmd_mcp)
+    de = sub.add_parser("deleted"); de.add_argument("repo"); de.add_argument("--json", action="store_true"); de.add_argument("--cache", action="store_true"); de.set_defaults(fn=cmd_deleted)
     pp = sub.add_parser("propose"); pp.add_argument("repo"); pp.add_argument("--provider", default="ollama", choices=["ollama", "openai", "mock"]); pp.add_argument("--endpoint"); pp.add_argument("--model", default="qwen3:0.6b"); pp.add_argument("--api-key"); pp.add_argument("--timeout", type=float, default=30.0); pp.add_argument("--scope", default="flows", choices=["flows", "units", "all"]); pp.add_argument("--mock", action="store_true", help="force deterministic mock provider"); pp.add_argument("--out"); pp.add_argument("--cache", action="store_true"); pp.set_defaults(fn=cmd_propose)
 
     args = p.parse_args(argv)

@@ -65,24 +65,39 @@ The graph is *one* projection. The product is the layer. Which projection become
 | Position Paper | Draft (v0.3 — G1 resolution + prototype findings) |
 | Research Plan | Executed (G1 passed; W1–W5, ADR-001…009) |
 | Research & Analysis | Done |
-| Prototype (V1 MVP) | **Shipped — v0.7.0**, Phases 3–9.5 complete, 95 unit tests |
-| Validation | Phase 9 draft automated study + refusal probe executed; Phase 9.5 Explainable-AI battery executed; definitive human-graded study next (Phase 10) |
+| Prototype (V1 MVP) | **Shipped — v0.7.0**, Phases 3–9.5 complete + Phase 10 groundwork, 104 unit tests |
+| Validation | Phase 9 draft automated study + refusal probe executed; Phase 9.5 Explainable-AI battery executed; Phase 10 groundwork: deleted-symbols view + threshold sweep; definitive human-graded study next (Phase 10) |
 
 The prototype is no longer deferred: `prototype/ssrl/` is a working, dependency-free
 package (extract → enrich → calibrate → Q&A → narrative → CLI → watch → MCP →
-micro-LLM proposer → **explain/verify**). Validation evidence lives in
+micro-LLM proposer → **explain/verify** → **deleted**). Validation evidence lives in
 `prototype/REPORT-P9.md` (§6.1 draft study, §6.2 refusal probe battery) — the
 grounded condition scored entity-F1 **0.61** (recall 1.0) vs baseline 0.15 — and
 `prototype/REPORT-P10.md` (ADR-009 Explainable-AI battery: ceiling 3/3 PASS;
-fabricated reference 1/1 caught).
+fabricated reference 1/1 caught; deleted-symbols citations verified; safe threshold
+band measured at `(0.667, 1.0]` with the default `0.8` in band).
+
+## For AI agents and new users
+
+- **[`HowToUse.md`](HowToUse.md)** — the practical guide: cold start, projections,
+  the explain/audit contract, MCP wiring, testing.
+- **[`AI LAYER/`](AI%20LAYER/README.md)** — how to teach a coding AI to use SSRL
+  ("the witness and the notary") and how to connect the MCP server
+  ([`AI LAYER/MCP-CONNECT.md`](AI%20LAYER/MCP-CONNECT.md)).
+- **Bundled opencode skill** — `.opencode/skills/ssrl/SKILL.md` auto-loads the
+  agent-side workflow for opencode agents working in this repo.
 
 ## Repository structure
 
 ```text
 SSRL/
 ├── README.md
-├── roadmap.md              # Phases 0–10; 3–9.5 done, 10 (publication) next
+├── HowToUse.md               # Practical usage guide (humans + agents)
+├── roadmap.md                # Phases 0–10; 3–9.5 done, 10 (publication) next
 ├── LICENSE
+├── AI LAYER/                 # Teach an AI to use SSRL + MCP connection guide
+├── .opencode/
+│   └── skills/ssrl/          # Bundled opencode skill for working with SSRL
 ├── docs/
 │   ├── vision.md              # Mentality, objectives, non-goals, principles
 │   ├── concepts.md            # The semantic model (facts, hypotheses, confidence)
@@ -108,7 +123,7 @@ SSRL/
     ├── REPORT-P7.md / REPORT-P8.md / REPORT-P9.md / REPORT-P10.md
     ├── ssrl/                  # The V1 package (stdlib only, zero deps)
     ├── lab/                   # Phase 7–10 labs + study/probe/battery harnesses
-    └── tests/                 # 95 unit tests
+    └── tests/                 # 104 unit tests
 ```
 
 ---

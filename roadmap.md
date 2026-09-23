@@ -14,7 +14,7 @@
 Stage: Prototype — V1 MVP complete (Phases 3–6 compressed into an MVP)
 
 Progress:
-█▓▓▓▓▓▓▓▓░ 92%
+██▓▓▓▓▓▓▓░ 94%
 ```
 
 Completed:
@@ -36,6 +36,8 @@ Completed:
 - [x] **Phase 9: experimental validation groundwork** — micro-LLM proposer (ADR-008), probe battery → prompt-contract fix, study re-run **baseline 0.15 / ssrl 0.61 / layer 0.32**, ssrl recall 1.0/6 (see `prototype/REPORT-P9.md`)
 - [x] **Phase 9.5: Explainable AI for external coding agents (ADR-009)** — grounded self-explanation axis: MCP/CLI `explain` + `verify_explanation` auditor, "the AI is the witness, the layer is the notary"; battery with an opencode big-pickle subagent as synthetic coding AI: **ceiling 3/3 PASS, fabricated reference 1/1 caught** (see `prototype/REPORT-P10.md`)
 - [x] **Live demo + three fixes** — a real external-coding-AI loop (subagent builds a CLI game, self-explains, `verify` audits) exposed: duplicate `IMPORTS` edges for multi-symbol `from x import a, b`; auditor relation grammar EN-only (now EN+PT); QA PT question patterns (now routed). Suite 88 → **95 green** (BUILDLOG §9.6)
+- [x] **Phase 10 groundwork (deleted view + threshold)** — `ssrl/history.py` deleted-symbols view (CLI/MCP `deleted`, auditor `deleted` citations), threshold sweep from the seeded battery → safe band `(0.667, 1.0]`, default 0.8 in band. Suite 95 → **104 green** (BUILDLOG §9.7)
+- [x] **Onboarding deliverables** — `HowToUse.md`, `AI LAYER/` (teach a coding AI to use SSRL + MCP connection), bundled opencode skill `.opencode/skills/ssrl/`; paper + ADRs + all docs updated
 
 ---
 
@@ -267,6 +269,17 @@ to the *external* process).
       auditor relation grammar EN-only → **EN+PT** (explain.py); QA intent
       parser EN-only → **PT patterns + stopwords** (qa.py). Suite now **95 green**
       (BUILDLOG §9.6).
+- [x] Phase 10 groundwork (BUILDLOG §9.7, REPORT-P10 §11): **deleted-symbols
+      view** — `ssrl/history.py` snapshot diff (`extract.build` via cache dir) +
+      CLI/MCP `deleted`, auditor adds the **`deleted`** citation kind (a quoted
+      identifier resolving against a removed symbol is a real removal, never
+      `invented`, excluded from the groundedness denominator). **Threshold from
+      data** — `pass_groundedness` sweep in `lab/p10_eai.py` → safe band
+      `(0.667, 1.0]`, `current_in_band=True`, default **0.8 kept in band**.
+      Suite 95 → **104 green**.
+- [x] Onboarding deliverables: `HowToUse.md`, `AI LAYER/` (teach a coding AI to
+      use SSRL + `MCP-CONNECT.md`), bundled opencode skill
+      `.opencode/skills/ssrl/SKILL.md` — paper, ADRs and all docs updated.
 - [ ] Open items, documented in REPORT-P10: nested/ambiguous identifier
       extraction noise, "grounded but wrong reason" (no semantic entailment) —
       both by-design ceilings, not bugs.

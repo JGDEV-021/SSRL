@@ -371,6 +371,76 @@ class TestWatch(unittest.TestCase):
         self.assertEqual(ev["from_cache"], 5)
 
 
+class TestDeletedView(unittest.TestCase):
+    def setUp(self):
+        import shutil, tempfile
+        self.tmp = tempfile.mkdtemp()
+        self.d = os.path.join(self.tmp, "repo")
+        shutil.copytree(FIXTURES, self.d)
+        self.cache = os.path.join(self.tmp, "cache")
+
+    def _write(self, rel, content):
+        p = os.path.join(self.d, rel.replace("/", os.sep))
+        os.makedirs(os.path.dirname(p), exist_ok=True)
+        with open(p, "w", encoding="utf-8") as f:
+            f.write(content)
+
+    def tearDown(self):
+        import shutil
+        shutil.rmtree(self.tmp)
+
+    def test_first_build_no_history(self):
+        a = extract.build(self.d, cache_dir=self.cache)
+        d = a["deleted"]
+        self.assertFalse(d["has_history"])
+        self.assertEqual(d["counts"]["symbols"], 0)
+        self.assertEqual(d["counts"]["modules"], 0)
+        self.assertEqual(d["counts"]["relations"], 0)
+        self.assertTrue(os.path.exists(os.path.join(self.cache, "snapshot.json")))
+
+    def test_removed_symbol_detected(self):
+        a = extract.build(self.d, cache_dir=self.cache)
+        self._write("main.py", "def main():\n    return 1\n")
+        b = extract.build(self.d, cache_dir=self.cache)
+        d = b["deleted"]
+        self.assertTrue(d["has_history"])
+        removed = {s["id"] for s in d["symbols_removed"]}
+        self.assertIn("func::main::greeting", removed)
+        self.assertIn("func::main::_private_helper", removed)
+        self.assertEqual(d["counts"]["modules"], 0)  # file still exists
+        self.assertGreater(d["counts"]["relations"], 0)
+
+    def test_removed_module_detected(self):
+        a = extract.build(self.d, cache_dir=self.cache)
+        os.remove(os.path.join(self.d, "main.py"))
+        b = extract.build(self.d, cache_dir=self.cache)
+        d = b["deleted"]
+        self.assertTrue(d["has_history"])
+        mods = {m["id"] for m in d["modules_removed"]}
+        self.assertIn("module::main", mods)
+        self.assertEqual(d["counts"]["modules"], 1)
+
+    def test_revert_clears_deleted(self):
+        orig = open(os.path.join(self.d, "main.py"), encoding="utf-8").read()
+        a = extract.build(self.d, cache_dir=self.cache)
+        self._write("main.py", "def main():\n    return 1\n")
+        b = extract.build(self.d, cache_dir=self.cache)
+        self.assertGreater(b["deleted"]["counts"]["symbols"], 0)
+        self._write("main.py", orig)
+        c = extract.build(self.d, cache_dir=self.cache)
+        self.assertEqual(c["deleted"]["counts"]["symbols"], 0)
+        self.assertEqual(c["deleted"]["counts"]["relations"], 0)
+
+    def test_deterministic_snapshot_diff(self):
+        def sig():
+            a = extract.build(self.d, cache_dir=self.cache)
+            return (a["deleted"]["symbols_removed"], a["deleted"]["relations_removed"])
+        self._write("main.py", "x = 1\n")
+        s1 = sig()
+        s2 = sig()  # unchanged -> empty diff both times
+        self.assertEqual(s1, s2)
+
+
 class TestImpact(unittest.TestCase):
     def setUp(self):
         art = build_artifact(enrich=True)
@@ -454,7 +524,7 @@ class TestMCPServer(unittest.TestCase):
         r = self.call(3, "tools/list")
         names = [t["name"] for t in r["result"]["tools"]]
         self.assertEqual(names, ["ask", "why", "narrative", "stats", "audit", "impact",
-                                 "explain", "verify_explanation"])
+                                 "explain", "verify_explanation", "deleted"])
         ask = next(t for t in r["result"]["tools"] if t["name"] == "ask")
         self.assertEqual(ask["inputSchema"]["required"], ["question"])
 

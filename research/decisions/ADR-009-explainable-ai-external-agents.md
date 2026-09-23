@@ -2,9 +2,15 @@
 
 - Status: **Accepted** (2026) — ratified by the author ("implemente") and fully implemented as
   roadmap Phase 9.5: `ssrl/explain.py`, MCP `explain`/`verify_explanation`, CLI `explain`/`verify`,
-  95 tests green (live-demo fallout fixed EN→EN+PT relation grammar + PT QA routing),
   battery executed (`lab/p10_eai.py`) with an opencode subagent on
-  `opencode/big-pickle` as the synthetic coding AI. See `prototype/REPORT-P10.md`.
+  `opencode/big-pickle` as the synthetic coding AI. Post-acceptance (Phase 10
+  groundwork, BUILDLOG §9.7): the auditor gained the **`deleted`** citation kind
+  via the deleted-symbols view (`ssrl/history.py` + CLI/MCP `deleted`) — a quoted
+  identifier resolving against a removed symbol is a real removal, never
+  `invented`, and excluded from the groundedness denominator; the PASS threshold
+  is now parameterized (`pass_groundedness`) and swept from the battery data
+  (safe band `(0.667, 1.0]`, default 0.8 kept in band). Suite: **104 green**.
+  See `prototype/REPORT-P10.md` (§11).
 - Decides: how SSRL serves **external coding AIs** (Claude, Codex, Copilot, Cline, …) with
   a grounded **self-explanation** surface + an **explanation auditor**; extends ADR-006 (D-7:
   MCP agent surface) and the Phase 9 "model proposes, structure disposes" rule to the

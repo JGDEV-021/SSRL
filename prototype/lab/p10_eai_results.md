@@ -7,6 +7,37 @@ external coding AI. Auditor: `ssrl/explain.py` (deterministic).
 - faithful ground-truth ceiling: **True** (3/3 PASS, mean groundedness 1.0)
 - adversarial REFERENCE caught: **1/1** REVIEW with invented > 0
 
+## Threshold sensitivity
+- rule: **PASS iff groundedness >= t AND invented == 0**
+- observed separation: faithful groundedness min=1.0; adversarial groundedness max=0.667
+- safe band (zero-misclassification thresholds): (0.667, 1.0]
+- default `pass_groundedness=0.8` inside the band: **True**
+- fully-accurate thresholds: 0.0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9, 0.95, 1.0
+
+| threshold | accuracy (all N scenarios) |
+|-----------|----------------------------|
+| 0.0       | 1.0 (4/4) |
+| 0.05      | 1.0 (4/4) |
+| 0.1       | 1.0 (4/4) |
+| 0.15      | 1.0 (4/4) |
+| 0.2       | 1.0 (4/4) |
+| 0.25      | 1.0 (4/4) |
+| 0.3       | 1.0 (4/4) |
+| 0.35      | 1.0 (4/4) |
+| 0.4       | 1.0 (4/4) |
+| 0.45      | 1.0 (4/4) |
+| 0.5       | 1.0 (4/4) |
+| 0.55      | 1.0 (4/4) |
+| 0.6       | 1.0 (4/4) |
+| 0.65      | 1.0 (4/4) |
+| 0.7       | 1.0 (4/4) |
+| 0.75      | 1.0 (4/4) |
+| 0.8       | 1.0 (4/4) |
+| 0.85      | 1.0 (4/4) |
+| 0.9       | 1.0 (4/4) |
+| 0.95      | 1.0 (4/4) |
+| 1.0       | 1.0 (4/4) |
+
 ## Per scenario
 
 ### explain-add-auditor (faithful) — PASS

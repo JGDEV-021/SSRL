@@ -5,9 +5,13 @@
   adds the optional micro-LLM proponent stage; **ADR-009 (Phase 9.5)** extends the
   MCP/CLI agent surface with the Explainable-AI axis (`explain` +
   `verify_explanation`). D-8 (file-level hash+mtime cache) is **implemented and
-  measured** (REPORT-V1 §7.2), not merely assumed.
+  measured** (REPORT-V1 §7.2), not merely assumed. **Phase 10 groundwork** adds
+  the deleted-symbols view (`ssrl/history.py`: structural snapshot diffed across
+  builds, persisted next to the D-8 cache) and the auditor's `deleted` citation
+  kind + data-driven threshold sweep (`lab/p10_eai.py` → safe band `(0.667, 1.0]`,
+  default 0.8 in band).
 
-> This document records the invariants the architecture must respect and the decisions the research phase resolved (ADR-001…007). D-1 is resolved by ADR-005; D-8 (file-level hash+mtime cache) is implemented in the prototype. Phase 9 added ADR-008 (micro-LLM proposer, one optional stage between enrichment and projection); Phase 9.5 added ADR-009 (grounded self-explanation + explanation auditor for external coding agents). See `research/decisions/ADR-008-micro-llm-proponent.md` and `research/decisions/ADR-009-explainable-ai-external-agents.md`.
+> This document records the invariants the architecture must respect and the decisions the research phase resolved (ADR-001…007). D-1 is resolved by ADR-005; D-8 (file-level hash+mtime cache) is implemented in the prototype. Phase 9 added ADR-008 (micro-LLM proposer, one optional stage between enrichment and projection); Phase 9.5 added ADR-009 (grounded self-explanation + explanation auditor for external coding agents); Phase 10 groundwork added the deleted-symbols view as a by-product of the derived artifact (facts-only snapshot, history for the auditor). See `research/decisions/ADR-008-micro-llm-proponent.md` and `research/decisions/ADR-009-explainable-ai-external-agents.md`.
 
 ---
 

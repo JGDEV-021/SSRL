@@ -15,6 +15,7 @@ Tools (each answer is grounded, deterministic text):
   stats()                 fact-model statistics
   audit()                 calibration table (every hypothesis + its confidence)
   impact(changed_files)   CI impact report: "what does this PR affect?"
+  deleted()               deleted-symbols view (symbols removed since previous build)
 
 Launch:  python -m ssrl.mcp --repo <root> [--enrich]
 Cache is on by default (warm incremental builds, D-8); never touches the corpus.
@@ -25,7 +26,7 @@ import json
 import os
 import sys
 
-from . import confidence, extract, index as indexmod, narrative as narr, qa
+from . import confidence, extract, history, index as indexmod, narrative as narr, qa
 from . import explain as ex
 from . import impact as impactmod
 from . import semantics
@@ -104,6 +105,14 @@ TOOLS = [
                             "narration": {"type": "string",
                                           "description": "the coding AI's natural-language self-explanation"}},
                         "required": ["files", "narration"]},
+    },
+    {
+        "name": "deleted",
+        "description": ("Deleted-symbols view (Phase 10): modules, symbols and relations removed "
+                        "since the previous build snapshot (D-8 cache). Lets the coding AI reason "
+                        "about removals ('I deleted `X`') with the layer as notary instead of "
+                        "flagging those citations as fabricated."),
+        "inputSchema": {"type": "object", "properties": {}},
     },
 ]
 
@@ -255,6 +264,8 @@ class MCPServer:
                 raise ValueError("'narration' is required (non-empty string)")
             return ex.render_verify(ex.verify_explanation(
                 self.artifact, files, narration, index=self.index))
+        if name == "deleted":
+            return history.render_deleted(self.artifact["deleted"])
         raise ValueError(f"unhandled tool: {name}")
 
     # ---- protocol plumbing -------------------------------------------------

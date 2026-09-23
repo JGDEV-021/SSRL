@@ -6,6 +6,10 @@ CONTAINS / IMPORTS / CALLS relationships. Every fact carries evidence to
 
 Includes the incremental cache (D-8): files are re-parsed only when their
 sha256 content hash changes; unchanged modules contribute cached facts.
+
+Includes the deleted-symbols view (Phase 10): when a cache dir is used, build()
+diffs the previous snapshot against the current artifact and attaches a
+`deleted` report so narrations about removals stay audit-able (see `history`).
 """
 
 import ast
@@ -16,7 +20,7 @@ import sys
 import time
 from collections import Counter
 
-from . import model
+from . import history, model
 
 SKIP_DIRS = {".venv", "venv", "__pycache__", "node_modules", ".git", "dist", "build",
              "site-packages", ".mypy_cache", ".pytest_cache"}
@@ -286,6 +290,7 @@ def build(root, cache_dir=None, verbose=False):
     repo_file = os.path.basename(os.path.normpath(root))
     repo_id = model.new_id("repo", os.path.normpath(root).replace(os.sep, "/"))
 
+    prev_snapshot = history.load_snapshot(cache_dir) if cache_dir else None
     cached = load_cache(cache_dir) if cache_dir else {}
     entries = {}
     nodes = []
@@ -357,6 +362,9 @@ def build(root, cache_dir=None, verbose=False):
     }
     artifact = {"graph_version": "0.4", "generated_by": "ssrl-prototype-phase3",
                 "nodes": nodes, "edges": edges, "stats": stats}
+    artifact["deleted"] = history.deleted_symbols(prev_snapshot, artifact)
+    if cache_dir:
+        history.save_snapshot(cache_dir, artifact)
     return artifact
 
 

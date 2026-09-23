@@ -368,13 +368,61 @@ The demo surfaced three gaps, all fixed and regression-tested:
 
 ---
 
+## 9.7. Phase 10 groundwork — deleted-symbols view + threshold from data
+
+Close-out of the REPORT-P10 §8 "open items" that the author selected next:
+the **deleted-symbols view** (open item 3) and the **data-driven PASS
+threshold** (open item 2), plus the onboarding deliverables (HowToUse,
+AI LAYER, opencode skill).
+
+**Deleted-symbols view (`ssrl/history.py`, new):**
+- `build()` with a cache dir persists a structural **snapshot** to
+  `<cache_dir>/snapshot.json` (SNAPSHOT_VERSION=1 — facts only, never
+  hypotheses) and attaches `artifact["deleted"]` = `deleted_symbols(prev,
+  current)`: `has_history`, `modules_removed`, `symbols_removed`,
+  `relations_removed`, `counts`. First build → `has_history=False`.
+- Surfaces as CLI `deleted <repo> [--json] [--cache]` and MCP tool `deleted`
+  — module/symbol removals (ids like `func::main::greeting`,
+  `module::main`) are reported with deterministic diffs, `revert` clears the
+  snapshot, `--json` emits the raw report for machine use.
+- **Auditor integration** (`explain.py`): a quoted identifier that resolves
+  against the deleted view is a `deleted` citation — a *real* removal, never
+  `invented`, and excluded from the groundedness denominator. Tests
+  `test_deleted_citation_not_invented`, `test_no_deleted_view_is_invented`.
+
+**Threshold from data (`lab/p10_eai.py`):**
+- `_threshold_analysis` sweeps `pass_groundedness` over the seeded battery
+  (aggregate rows: 3 faithful + 1 adversarial), reporting per-threshold
+  PASS/REVIEW outcomes, `min_faithful` / `max_adversarial`, the **safe band**
+  `(0.667, 1.0]`, `current_in_band` and the fully-accurate threshold set.
+- Result: with this 4-row battery the ceiling on the faithful arm is
+  groundedness 1.0 and the adversarial arm maxes at 0.667 → **safe band
+  `(0.667, 1.0]`, default 0.8 stays in band** and the threshold is kept at 0.8
+  (honest constraint: the synthetic battery is far too small to justify moving
+  the default). Sweep table is reproduced in `lab/p10_eai_results.md` under
+  "## Threshold sensitivity".
+
+**Onboarding deliverables (docs):** `HowToUse.md` (repo root), `AI LAYER/`
+folder (how to teach a coding AI to use SSRL + `MCP-CONNECT.md`), and the
+bundled opencode skill `.opencode/skills/ssrl/SKILL.md`; README/roadmap/paper/
+ADR-009/architecture/REPORT-P10 updated.
+
+**Verification:** suite 95 → **104 green** (+9: TestDeletedView×5, deleted
+citation ×2, pass_groundedness ×1, MCP `deleted` tool ×1); battery verified
+with threshold section; CLI smoke on the demo corpus (`deleted --cache` →
+"no deleted symbols (structure unchanged since previous build)",
+`has_history=True`).
+
+---
+
 ## 10. Remaining (post-Phase 9.5)
 
 - Definitive RQ-3 study: human-graded multi-arm (Source-only vs Source+SSRL vs
   raw-agent), ≥ 3 graders, a mid-size model arm in addition to qwen3:0.6b,
   accuracy + time-to-understand (draft automated pass done — REPORT-P9 §6.1).
 - Explainable-AI (ADR-009) outreach: real Claude/Codex-grade MCP integration
-  session + larger narration battery to tune the PASS threshold from data
-  (REPORT-P10 §8).
+  session + a *larger* narration battery to re-tune the PASS threshold from data
+  (the 4-row battery sweep shipped in §9.7 confirms `(0.667, 1.0]` and keeps 0.8
+  in band, but is too small to justify moving the default).
 - H2 progressive-zoom drill-down and H4 graph navigation (supporting projections).
 - Line-level/intra-file impact (whole-module today) and MCP resources/streaming.

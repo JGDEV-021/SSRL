@@ -25,6 +25,13 @@ self-explanation axis: `ssrl/explain.py` with `explain` (WHAT/WHY/HOW) and the
 `verify_explanation` auditor (MCP + CLI). Battery (`lab/p10_eai.py`) using an
 opencode big-pickle subagent as the synthetic coding AI: faithful narrations
 3/3 PASS (ceiling), fabricated reference 1/1 caught (REPORT-P10).
+
+Phase 10 groundwork shipped: the **deleted-symbols view** (`ssrl/history.py` +
+CLI/MCP `deleted`) and the **data-driven threshold check** (deleted citations in
+the auditor; `pass_groundedness` sweep in `lab/p10_eai.py` → safe band
+`(0.667, 1.0]`, default 0.8 kept in band) — closing the REPORT-P10 §8 open
+items. Onboarding docs shipped too: `HowToUse.md`, `AI LAYER/`, and the bundled
+`.opencode/skills/ssrl/` skill (104 tests).
 ```
 
 ## Package layout (`prototype/ssrl/`)
@@ -32,7 +39,7 @@ opencode big-pickle subagent as the synthetic coding AI: faithful narrations
 | Module | Responsibility |
 | --- | --- |
 | `model.py` | Node/edge taxonomy, stable ids, `make_edge` (ADR-003) |
-| `extract.py` | AST fact extractor: Repository/Module/Class/Function/Method, CONTAINS/IMPORTS/CALLS, incremental cache (D-8) |
+| `extract.py` | AST fact extractor: Repository/Module/Class/Function/Method, CONTAINS/IMPORTS/CALLS, incremental cache (D-8), **deleted-symbols snapshot** (`artifact["deleted"]`) |
 | `semantics.py` | Hypothesis enrichment: Flows, Intents, Services/DomainConcepts (RN-2/RN-3) |
 | `confidence.py` | Calibration, `why`, `audit` (RQ-3 / FR-4) |
 | `index.py` | In-memory index: find, callers/callees, imports/deps, entry points |
@@ -40,10 +47,11 @@ opencode big-pickle subagent as the synthetic coding AI: faithful narrations
 | `narrative.py` | Living narrative, generated at build-time (H3) |
 | `impact.py` | CI impact report: "what does this PR affect?" — modules, importers, callers, entry points, flows (Phase 8) |
 | `watch.py` | Continuous no-manual-sync regeneration (Phase 7, NFR-3): stat-poll diff + D-8 incremental rebuild |
-| `mcp.py` | Dependency-free MCP server over stdio (Phase 8, ADR-006 v1.5): `ask/why/narrative/stats/audit/impact` tools (+`explain`/`verify_explanation` Phase 9.5) |
+| `mcp.py` | Dependency-free MCP server over stdio (Phase 8, ADR-006 v1.5): `ask/why/narrative/stats/audit/impact` tools (+`explain`/`verify_explanation` Phase 9.5, +`deleted` Phase 10) |
 | `llm.py` | Micro-LLM hypothesis proposer (Phase 9, ADR-008): Ollama/OpenAICompat/Mock providers, closed tasks, `LLMProposal` evidence (cap 0.5) |
-| `explain.py` | Phase 9.5 (ADR-009): grounded WHAT/WHY/HOW (`explain_node`/`explain_changed`) + explanation auditor `verify_explanation` — quoted citations (present/external/invented), unsupported claims, structural consistency, groundedness + verdict; deterministic, no model |
-| `cli.py` | `build|enrich|ask|why|narrative|audit|stats|json|watch|impact|explain|verify|mcp|propose` (ADR-006) |
+| `history.py` | Phase 10: deleted-symbols view — structural snapshot persisted to the cache dir; `deleted_symbols()` diffs the previous snapshot against the new artifact (modules/symbols/relations removed) |
+| `explain.py` | Phase 9.5 (ADR-009): grounded WHAT/WHY/HOW (`explain_node`/`explain_changed`) + explanation auditor `verify_explanation` — quoted citations (present/external/**deleted**/invented), unsupported claims, structural consistency, groundedness + verdict (threshold `pass_groundedness`); deterministic, no model |
+| `cli.py` | `build|enrich|ask|why|narrative|audit|stats|json|watch|impact|explain|verify|deleted|mcp|propose` (ADR-006) |
 | `__main__.py` | `python -m ssrl ...` entry point |
 
 ## Quick start
@@ -62,6 +70,7 @@ python -m ssrl.cli impact    <repo> path.py [--git main]  # "what does this PR a
 python -m ssrl.cli explain   <repo> --node func::x::y       # grounded WHAT/WHY/HOW (Phase 9.5)
 python -m ssrl.cli explain   <repo> path.py [--git main]   # change-mode grounded WHAT/WHY/HOW
 python -m ssrl.cli verify    <repo> path.py --explanation "I changed \`x.py\`: \`save\` now calls \`validate\`"
+python -m ssrl.cli deleted   <repo> [--cache] [--json]   # symbols removed since previous build (Phase 10)
 python -m ssrl.cli mcp      <repo> [--enrich]   # MCP agent server over stdio (Phase 8)
 python -m ssrl.mcp          --repo <repo> --enrich      # same MCP surface (Phase 8)
 python -m ssrl.cli propose  <repo> --mock                # micro-LLM proposals (Phase 9)
@@ -75,12 +84,18 @@ entry points and flows; with `--git BASE` it reads the diff from git for CI.
 agents (Claude Code, Cline, Cursor) consume grounded answers with evidence:
 `ask`, `why`, `narrative`, `stats`, `audit`, `impact`, plus the Phase 9.5
 `explain` (WHAT/WHY/HOW for a node or a change set) and `verify_explanation`
-(explanation auditor). Cache is on by default (never touches the corpus).
+(explanation auditor), plus the Phase 10 `deleted` (symbols removed since the
+previous build). Cache is on by default (never touches the corpus).
 `explain`/`verify` implement ADR-009: an external coding AI's self-explanation
 is cross-checked against the artifact — quoted identifiers are citations
 (fabricated refs flagged *invented*), asserted relations are consistency-checked,
 and the verdict is a deterministic PASS/REVIEW with a groundedness score. Narrate
 on stdin or with `--explanation-file`; `--git BASE` pulls the change set from git.
+Citing a recently-deleted symbol (seen via the history snapshot) counts as
+`deleted` — a real removal, never invented. The pass threshold defaults to 0.8
+and sits in the battery-measured safe band (see `lab/p10_eai_results.md`).
+`deleted` reports modules / symbols / relations removed since the previous cached
+build (`--json` for machine use); the first build reports no history.
 `propose` runs the Phase 9 micro-LLM proposer (ADR-008): it names Flows and
 labels unit roles from tiny facts-only bundles against a local model
 (`qwen3:0.6b` via Ollama by default). Output is hypotheses only —
@@ -108,7 +123,7 @@ python -m unittest discover -s tests -v
 | Fact confidence | Structural facts carry `confidence: 1.0`; hypotheses are `< 1.0` and labeled (FR-3/FR-4) |
 | Incremental cache (D-8) | File-level sha256 cache: cold 0 hits → warm 31/31 from_cache, artifact identical |
 | Call resolution | Same-module + cross-module (import-alias and attribute-prefix) linkage, labeled `resolution:` |
-| Test suite | `unittest`: 95 tests green (extract, cache, semantics, confidence, index, qa, narrative, watch, impact, mcp, llm, explain) |
+| Test suite | `unittest`: 104 tests green (extract, cache, history, semantics, confidence, index, qa, narrative, watch, impact, mcp, llm, explain) |
 
 ## Measured stats (V1)
 
@@ -182,3 +197,7 @@ Ids are stable (`module::<id>`, `class::<mid>::<name>`, `func::<mid>::<name>`).
   (unquoted CamelCase/snake tokens resolve as hits; explicitly quoted
   identifiers are the only thing that can be flagged *invented*). Both are
   by-design ceilings, not bugs.
+- The deleted-symbols view (Phase 10) derives from the *previous cached build*,
+  not from git history: a `deleted` result is only as fresh as the last
+  `--cache` build. The snapshot holds structural facts, never hypotheses; it is
+  single-version (the diff is between two adjacent builds, not a timeline).
